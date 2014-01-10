@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="Pandora"
+  id="myeclipse.1389273979145"
+  context-root="/Pandora"
+  j2ee-spec="5.0"
+  archive="Pandora.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+
