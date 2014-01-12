@@ -1,4 +1,4 @@
-package com.pandorabox.utils;
+package com.pandorabox.util;
 
 import java.security.MessageDigest;
 

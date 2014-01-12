@@ -1,10 +1,12 @@
 package com.pandorabox.domain;
 
+import java.io.Serializable;
+
 /**
  * ImageDescriptor对象用来描述文章中的图片
  * @author hywang
  * */
-public interface ImageDescriptor {
+public interface ImageDescriptor extends Serializable{
 	
 	/**图片在图片服务器上的相对路径*/
 	public String getRelativePath();

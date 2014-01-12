@@ -1,11 +1,13 @@
 package com.pandorabox.domain;
 
+import java.io.Serializable;
+
 /**
  * User对象用来描述系统的注册用户
  * 
  * @author hywang
  * */
-public interface User {
+public interface User extends Serializable{
 	
 	/**
 	 * 用户名

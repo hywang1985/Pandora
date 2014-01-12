@@ -1,10 +1,12 @@
 package com.pandorabox.domain;
 
+import java.io.Serializable;
+
 /**
  * LayoutBehavior对象用来描述布局行为，目前只有水平布局和居中布局两种
  * @author hywang
  * */
-public interface LayoutBehavior {
+public interface LayoutBehavior extends Serializable{
 	
 	/**布局的名称*/
 	public String getName();

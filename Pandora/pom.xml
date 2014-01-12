@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.pandorabox</groupId>
-	<artifactId>Pandora</artifactId>
+	<artifactId>PandoraBox</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0-SNAPSHOT</version>
 	<properties>
@@ -11,18 +11,40 @@
 		<org.springframework-version>4.0.0.RELEASE</org.springframework-version>
 		<org.hibernate-version>4.3.0.Final</org.hibernate-version>
 	</properties>
-	<name>Pandora</name>
+	<name>PandoraBox</name>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<dependency>
+			<groupId> org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version> ${org.aspectj-version}</version>
+		</dependency>
+		<!-- Apache dbcp -->
+		 <dependency>  
+            <groupId>commons-dbcp</groupId>  
+            <artifactId>commons-dbcp</artifactId>  
+            <version>1.4</version>  
+        </dependency> 
 		<!--Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
 		<dependency>
@@ -90,6 +112,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<finalName>Pandora</finalName>
+		<finalName>PandoraBox</finalName>
 	</build>
 </project>

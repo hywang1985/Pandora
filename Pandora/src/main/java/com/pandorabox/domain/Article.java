@@ -1,5 +1,6 @@
 package com.pandorabox.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * 文章的布局参数
  * @author hywang
  */
-public interface Article {
+public interface Article extends Serializable{
 	
 	/**
 	 * 文章的音乐URL
