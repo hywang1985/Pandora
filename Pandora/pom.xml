@@ -30,7 +30,7 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version> ${org.aspectj-version}</version>
 		</dependency>
-		<!-- Apache dbcp -->
+		<!-- Apache dbcp datasource-->
 		 <dependency>  
             <groupId>commons-dbcp</groupId>  
             <artifactId>commons-dbcp</artifactId>  
