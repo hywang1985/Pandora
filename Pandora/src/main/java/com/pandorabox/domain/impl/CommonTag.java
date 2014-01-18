@@ -4,16 +4,16 @@ import com.pandorabox.domain.Tag;
 
 public class CommonTag implements Tag {
 
+	private String value;
+
 	@Override
 	public void setValue(String value) {
-		// TODO Auto-generated method stub
-
+		this.value = value;
 	}
 
 	@Override
 	public String getValue() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.value;
 	}
 
 }
