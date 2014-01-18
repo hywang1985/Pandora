@@ -1,0 +1,64 @@
+package com.pandorabox.domain.impl;
+
+import java.util.List;
+
+import com.pandorabox.domain.Article;
+import com.pandorabox.domain.User;
+
+public class CommonUser implements User {
+
+	private static final long serialVersionUID = -484835266759517694L;
+
+	private String userName;
+	
+	private String passwd;
+	
+	private String name;
+	
+	private String email;
+	
+	private List<Article> articles;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPasswd() {
+		return passwd;
+	}
+
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public List<Article> getArticles() {
+		return this.articles;
+	}
+
+	@Override
+	public void setArticles(List<Article> articles) {
+		this.articles = articles;
+	}
+
+}

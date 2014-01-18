@@ -1,6 +1,7 @@
 package com.pandorabox.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User对象用来描述系统的注册用户
@@ -32,4 +33,10 @@ public interface User extends Serializable{
 	 */
 	public String getEmail();
 	public void setEmail(String email);
+	
+	/**
+	 * 该用户下创建的文章
+	 * */
+	public List<Article> getArticles();
+	public void setArticles(List<Article> articles);
 }

@@ -44,8 +44,8 @@ public interface Article extends Serializable{
 	/**
 	 * 文章所属的标签
 	 */
-	public List<String> getTags();
-	public void setTags(List<String> tags);
+	public List<Tag> getTags();
+	public void setTags(List<Tag> tags);
 	
 	/**
 	 * 文章作者

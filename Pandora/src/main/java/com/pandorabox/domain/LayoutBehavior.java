@@ -8,11 +8,18 @@ import java.io.Serializable;
  * */
 public interface LayoutBehavior extends Serializable{
 	
+	String HORIZONTAL_LAYOUT_NAME = "Horizontal";
+	
+	String VERTICAL_LAYOUT_NAME = "Vertical";
+	
+	String DEFAULT_HORIZONTAL_RELATIVE_CSS_PATH = "Horizontal.css";
+	
+	String DEFAULT_VERTICAL_RELATIVE_CSS_PATH = "Vertical.css";
 	/**布局的名称*/
 	public String getName();
 	public void setName(String name);
 	
 	/**布局对应的CSS文件相对于ApplicationContext的路径*/
 	public String getRelativeCSSPath();
-	public String setRelativeCSSPath(String relativeCSSPath);
+	public void setRelativeCSSPath(String relativeCSSPath);
 }
