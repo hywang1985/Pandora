@@ -6,6 +6,8 @@ public class CommonImageDescriptor implements ImageDescriptor {
 
 	private static final long serialVersionUID = 9184665947074587030L;
 
+	private int imageId;
+	
 	private String relativePath;
 	
 	private String bucketPath;
@@ -44,6 +46,14 @@ public class CommonImageDescriptor implements ImageDescriptor {
 
 	public void setFileSecret(String fileSecret) {
 		this.fileSecret = fileSecret;
+	}
+
+	public int getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(int imageId) {
+		this.imageId = imageId;
 	}
 
 }

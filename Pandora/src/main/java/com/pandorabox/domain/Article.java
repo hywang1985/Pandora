@@ -16,6 +16,9 @@ import java.util.List;
  */
 public interface Article extends Serializable{
 	
+	public int getArticleId();
+	public void setArticleId(int articleId);
+	
 	/**
 	 * 文章的音乐URL
 	 */

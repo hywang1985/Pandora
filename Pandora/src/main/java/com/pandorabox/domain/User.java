@@ -10,11 +10,13 @@ import java.util.List;
  * */
 public interface User extends Serializable{
 	
+	public int getUserId();
+	public void setUserId(int userId);
 	/**
 	 * 用户名
 	 */
-	public String getUserName();
-	public void setUserName(String userName);
+	public String getUsername();
+	public void setUsername(String username);
 	
 	/**
 	 * 密码

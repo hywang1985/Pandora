@@ -12,6 +12,8 @@ public class CommonArticle implements Article {
 
 	private static final long serialVersionUID = 3078586399874526136L;
 	
+	private int articleId;
+	
 	private String musicURL;
 
 	private List<ImageDescriptor> images; 
@@ -80,6 +82,14 @@ public class CommonArticle implements Article {
 
 	public void setLayoutBehavior(LayoutBehavior layoutBehavior) {
 		this.layoutBehavior = layoutBehavior;
+	}
+
+	public int getArticleId() {
+		return articleId;
+	}
+
+	public void setArticleId(int articleId) {
+		this.articleId = articleId;
 	}
 
 }

@@ -3,8 +3,8 @@
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.pandorabox.domain">
 	<class name="Article" table="article">
-		<id name="id" column="article_id">
-			<generator class="uuid" />
+		<id name="articleId" column="article_id">
+			<generator class="increment" />
 		</id>
 		<property name="musicURL" column="music_url" type="string" />
 		<property name="title" type="string" />

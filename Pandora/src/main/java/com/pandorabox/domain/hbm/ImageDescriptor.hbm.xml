@@ -3,8 +3,8 @@
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.pandorabox.domain">
 	<class name="ImageDescriptor" table="image_descriptor">
-		<id name="id" column="imgdescriptor_id">
-			<generator class="uuid" />
+		<id name="imageId" column="imgdescriptor_id">
+			<generator class="increment" />
 		</id>
 		<property name="relativePath" column="relative_path" type="string"/>
 		<property name="bucketPath" column="bucket_path" type="string"/>

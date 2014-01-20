@@ -6,6 +6,8 @@ public class CommonLayoutDescriptor implements LayoutBehavior {
 
 	private static final long serialVersionUID = 4330446575229575054L;
 
+	private int layoutId;
+	
 	/*默认布局为水平布局*/
 	private String name = LayoutBehavior.HORIZONTAL_LAYOUT_NAME;
 	
@@ -25,6 +27,14 @@ public class CommonLayoutDescriptor implements LayoutBehavior {
 
 	public void setRelativeCSSPath(String relativeCSSPath) {
 		this.relativeCSSPath = relativeCSSPath;
+	}
+
+	public int getLayoutId() {
+		return layoutId;
+	}
+
+	public void setLayoutId(int layoutId) {
+		this.layoutId = layoutId;
 	}
 	
 }

@@ -15,6 +15,10 @@ public interface LayoutBehavior extends Serializable{
 	String DEFAULT_HORIZONTAL_RELATIVE_CSS_PATH = "Horizontal.css";
 	
 	String DEFAULT_VERTICAL_RELATIVE_CSS_PATH = "Vertical.css";
+	
+	public int getLayoutId();
+	public void setLayoutId(int layoutId);
+	
 	/**布局的名称*/
 	public String getName();
 	public void setName(String name);

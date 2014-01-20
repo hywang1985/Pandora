@@ -9,7 +9,9 @@ public class CommonUser implements User {
 
 	private static final long serialVersionUID = -484835266759517694L;
 
-	private String userName;
+	private int userId;
+	
+	private String username;
 	
 	private String passwd;
 	
@@ -18,14 +20,6 @@ public class CommonUser implements User {
 	private String email;
 	
 	private List<Article> articles;
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public String getPasswd() {
 		return passwd;
@@ -59,6 +53,22 @@ public class CommonUser implements User {
 	@Override
 	public void setArticles(List<Article> articles) {
 		this.articles = articles;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

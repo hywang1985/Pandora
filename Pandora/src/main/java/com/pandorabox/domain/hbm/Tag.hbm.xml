@@ -3,7 +3,7 @@
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.pandorabox.domain">
 	<class name="Tag" table="tag">
-		<id name="id" column="tag_id" type="integer">
+		<id name="tagId" column="tag_id" type="integer">
 			<generator class="increment" />
 		</id>
 		<property name="value"/>

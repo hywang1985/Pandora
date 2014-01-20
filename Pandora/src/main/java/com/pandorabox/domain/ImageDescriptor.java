@@ -8,6 +8,9 @@ import java.io.Serializable;
  * */
 public interface ImageDescriptor extends Serializable{
 	
+	int getImageId();
+	void setImageId(int imageId);
+	
 	/**图片在图片服务器上的相对路径*/
 	public String getRelativePath();
 	public void setRelativePath(String relativePath);

@@ -3,7 +3,7 @@
                                    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.pandorabox.domain">
 	<class name="LayoutBehavior" table="layout">
-		<id name="id" column="layout_id">
+		<id name="layoutId" column="layout_id">
 			<generator class="increment" />
 		</id>
 		<property name="name" type="string"/>
