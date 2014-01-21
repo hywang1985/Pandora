@@ -3,10 +3,12 @@ package com.pandorabox.dao;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pandorabox.domain.Article;
 
 @Repository("articleDao")
+@Transactional
 public class BaseArticleDao extends BaseGenericDataAccessor<Article, Integer> implements
 		ArticleDao{
 

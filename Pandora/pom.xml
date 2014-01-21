@@ -10,6 +10,7 @@
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.springframework-version>4.0.0.RELEASE</org.springframework-version>
 		<org.hibernate-version>4.3.0.Final</org.hibernate-version>
+		<org.mysql.version>5.1.28</org.mysql.version>
 	</properties>
 	<name>PandoraBox</name>
 	<dependencies>
@@ -61,6 +62,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- MySQL -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${org.mysql.version}</version>
 		</dependency>
 		<!-- Hibernate -->
 		<dependency>
