@@ -1,5 +1,6 @@
 package com.pandorabox.domain.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pandorabox.domain.Article;
@@ -16,13 +17,13 @@ public class CommonArticle implements Article {
 	
 	private String musicURL;
 
-	private List<ImageDescriptor> images; 
+	private List<ImageDescriptor> images = new ArrayList<ImageDescriptor>(); 
 	
 	private String title;
 	
 	private String text;
 	
-	private List<Tag> tags;
+	private List<Tag> tags = new ArrayList<Tag>();
 
 	private User author;
 	

@@ -7,5 +7,9 @@
 			<generator class="increment" />
 		</id>
 		<property name="value"/>
+		<!-- 采用Table per subclass策略存每一个Tag的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.CommonTag" table="common_tag">
+			<key column="tag_id" />
+		</joined-subclass>
 	</class>
 </hibernate-mapping>

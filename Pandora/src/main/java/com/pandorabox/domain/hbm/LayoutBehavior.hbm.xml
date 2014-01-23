@@ -8,5 +8,10 @@
 		</id>
 		<property name="name" type="string"/>
 		<property name="relativeCSSPath" type="string"/>
+		
+		<!-- 采用Table per subclass策略存每一个LayoutBehavior的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.CommonLayoutDescriptor" table="common_layout_descriptor">
+			<key column="layout_id" />
+		</joined-subclass>
 	</class>
 </hibernate-mapping>

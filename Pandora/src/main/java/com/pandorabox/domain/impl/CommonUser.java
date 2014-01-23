@@ -1,5 +1,6 @@
 package com.pandorabox.domain.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pandorabox.domain.Article;
@@ -19,7 +20,7 @@ public class CommonUser implements User {
 	
 	private String email;
 	
-	private List<Article> articles;
+	private List<Article> articles = new ArrayList<Article>();
 
 	public String getPasswd() {
 		return passwd;

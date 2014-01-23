@@ -14,5 +14,9 @@
 			<index column="article_index" type="integer" />
 			<one-to-many class="Article" />
 		</list>
+		<!-- 采用Table per subclass策略存每一个User的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.CommonUser" table="common_user">
+			<key column="user_id" />
+		</joined-subclass>
 	</class>
 </hibernate-mapping>
