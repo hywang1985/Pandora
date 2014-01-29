@@ -9,7 +9,7 @@ import com.pandorabox.domain.LayoutBehavior;
 import com.pandorabox.domain.Tag;
 import com.pandorabox.domain.User;
 
-public class CommonArticle implements Article {
+public class BaseArticle implements Article {
 
 	private static final long serialVersionUID = 3078586399874526136L;
 	

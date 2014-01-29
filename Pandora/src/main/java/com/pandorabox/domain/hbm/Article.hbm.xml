@@ -12,7 +12,7 @@
 
 		<!--文章和图片是一对多单向关系 -->
 		<list name="images" cascade="all">
-			<key column="article_id" not-null="true" />
+			<key column="article_id"/>
 			<index column="image_index" type="integer" />
 			<one-to-many class="ImageDescriptor" />
 		</list>
@@ -33,7 +33,7 @@
 			unique="true" />
 	
 	<!-- 采用Table per subclass策略存每一个article的子类 -->
-		<joined-subclass name="com.pandorabox.domain.impl.CommonArticle" table="common_article">
+		<joined-subclass name="com.pandorabox.domain.impl.BaseArticle" table="base_article">
 			<key column="article_id" />
 		</joined-subclass>
 	</class>

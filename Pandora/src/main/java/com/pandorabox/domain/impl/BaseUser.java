@@ -6,7 +6,7 @@ import java.util.List;
 import com.pandorabox.domain.Article;
 import com.pandorabox.domain.User;
 
-public class CommonUser implements User {
+public class BaseUser implements User {
 
 	private static final long serialVersionUID = -484835266759517694L;
 

@@ -4,5 +4,5 @@ import com.pandorabox.domain.User;
 
 public interface UserDao extends GenericDataAccessor<User, Integer> {
 
-	public User getUserByName(String userName);
+	public User getUserByUserName(String userName);
 }

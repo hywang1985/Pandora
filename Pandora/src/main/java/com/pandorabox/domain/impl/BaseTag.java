@@ -2,7 +2,7 @@ package com.pandorabox.domain.impl;
 
 import com.pandorabox.domain.Tag;
 
-public class CommonTag implements Tag {
+public class BaseTag implements Tag {
 
 	private int tagId;
 	

@@ -2,7 +2,7 @@ package com.pandorabox.domain.impl;
 
 import com.pandorabox.domain.LayoutBehavior;
 
-public class CommonLayoutDescriptor implements LayoutBehavior {
+public class BaseLayoutDescriptor implements LayoutBehavior {
 
 	private static final long serialVersionUID = 4330446575229575054L;
 

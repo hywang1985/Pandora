@@ -14,11 +14,11 @@ import com.pandorabox.domain.ImageDescriptor;
 import com.pandorabox.domain.LayoutBehavior;
 import com.pandorabox.domain.Tag;
 import com.pandorabox.domain.User;
-import com.pandorabox.domain.impl.CommonArticle;
-import com.pandorabox.domain.impl.CommonImageDescriptor;
-import com.pandorabox.domain.impl.CommonLayoutDescriptor;
-import com.pandorabox.domain.impl.CommonTag;
-import com.pandorabox.domain.impl.CommonUser;
+import com.pandorabox.domain.impl.BaseArticle;
+import com.pandorabox.domain.impl.BaseImageDescriptor;
+import com.pandorabox.domain.impl.BaseLayoutDescriptor;
+import com.pandorabox.domain.impl.BaseTag;
+import com.pandorabox.domain.impl.BaseUser;
 
 public class BaseArticleDaoTest extends AbstractPandoraTransactionalTest {
 	
@@ -33,17 +33,18 @@ public class BaseArticleDaoTest extends AbstractPandoraTransactionalTest {
 	
 	@Test
 	public void addArtile(){
+		System.out.println("**************存储文章****************");
 		//创建用户
-		User user = new CommonUser();
+		User user = new BaseUser();
 		 user.setName("hywang");
 		 user.setEmail("jam_0917@sina.com");
 		 user.setPasswd("123456");
 		 //创建文章
-		Article article = new CommonArticle();
+		Article article = new BaseArticle();
 		article.setAuthor(user);
 		article.setMusicURL("https://sdfsfs.mp3");
 		//设置一个标签
-		Tag tag = new CommonTag();
+		Tag tag = new BaseTag();
 		tag.setValue("历史");
 		article.getTags().add(tag);
 		
@@ -51,7 +52,7 @@ public class BaseArticleDaoTest extends AbstractPandoraTransactionalTest {
 		article.setTitle("This is title");
 		
 		//创建一副图片
-		ImageDescriptor img = new CommonImageDescriptor();
+		ImageDescriptor img = new BaseImageDescriptor();
 		img.setName("pandora");
 		img.setBucketPath("PandoraBox");
 		img.setFileSecret("abcabc");
@@ -59,10 +60,17 @@ public class BaseArticleDaoTest extends AbstractPandoraTransactionalTest {
 		article.getImages().add(img);
 		
 		//创建一个布局描述
-		LayoutBehavior horizontal = new CommonLayoutDescriptor();
+		LayoutBehavior horizontal = new BaseLayoutDescriptor();
 		article.setLayoutBehavior(horizontal);
 		Integer id=articleDao.save(article);
-		System.out.println(id);
+		System.out.println("**************存储文章 "+id+" 成功！****************");
+		System.out.println();
+		System.out.println("**************查询已经存储的文章****************");
+		Article retrieved = articleDao.get(id);
+		Assert.assertNotNull("没有找到id是"+id+"的文章", retrieved);
+		Assert.assertNotNull("文章没有作者", retrieved.getAuthor());
+		Assert.assertNotNull("文章没有图片", retrieved.getImages().get(0));
+		Assert.assertNotNull("文章没有音乐", retrieved.getMusicURL());
 	}
 	
 }

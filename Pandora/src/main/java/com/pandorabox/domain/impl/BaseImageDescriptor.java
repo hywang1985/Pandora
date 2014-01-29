@@ -2,7 +2,7 @@ package com.pandorabox.domain.impl;
 
 import com.pandorabox.domain.ImageDescriptor;
 
-public class CommonImageDescriptor implements ImageDescriptor {
+public class BaseImageDescriptor implements ImageDescriptor {
 
 	private static final long serialVersionUID = 9184665947074587030L;
 
