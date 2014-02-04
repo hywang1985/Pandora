@@ -6,12 +6,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.pandorabox.AbstractPandoraTransactionalTest;
 import com.pandorabox.domain.ImageDescriptor;
 import com.pandorabox.domain.impl.BaseImageDescriptor;
 
 public class BaseImageDescriptorDaoTest extends
-		AbstractPandoraTransactionalTest {
+BasePandoraDaoTest {
 
 	private static String GET_IMAGE_BY_NAME = "from ImageDescriptor image where image.name like ?";
 	@Autowired

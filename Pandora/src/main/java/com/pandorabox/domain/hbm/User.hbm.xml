@@ -9,7 +9,7 @@
 		<property name="username" type="string" />
 		<property name="passwd" type="string" />
 		<property name="email" type="string"/>
-		<list name="articles" inverse="true" cascade="all" lazy="false">
+		<list name="articles" inverse="true" lazy="false">
 			<key column="article_id" not-null="true" />
 			<index column="article_index" type="integer" />
 			<one-to-many class="Article" />

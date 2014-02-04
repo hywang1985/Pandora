@@ -8,7 +8,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.pandorabox.AbstractPandoraTransactionalTest;
 import com.pandorabox.domain.Article;
 import com.pandorabox.domain.ImageDescriptor;
 import com.pandorabox.domain.LayoutBehavior;
@@ -20,7 +19,7 @@ import com.pandorabox.domain.impl.BaseLayoutDescriptor;
 import com.pandorabox.domain.impl.BaseTag;
 import com.pandorabox.domain.impl.BaseUser;
 
-public class BaseArticleDaoTest extends AbstractPandoraTransactionalTest {
+public class BaseArticleDaoTest extends BasePandoraDaoTest {
 	
 	@Autowired
 	private ArticleDao articleDao;

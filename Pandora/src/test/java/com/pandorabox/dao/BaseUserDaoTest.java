@@ -4,12 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.pandorabox.AbstractPandoraTransactionalTest;
 import com.pandorabox.domain.User;
 import com.pandorabox.domain.impl.BaseUser;
 
 
-public class BaseUserDaoTest extends AbstractPandoraTransactionalTest {
+public class BaseUserDaoTest extends BasePandoraDaoTest {
 
 	@Autowired
 	private UserDao userDao;

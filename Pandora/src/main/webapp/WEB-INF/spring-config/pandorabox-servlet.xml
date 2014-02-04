@@ -20,6 +20,11 @@
 		p:order="100" p:viewClass="org.springframework.web.servlet.view.JstlView"
 		p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
 	
+	<!-- 文件上传解析器-->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:defaultEncoding="utf-8" />
+	
 	<!-- 国际化 -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource"

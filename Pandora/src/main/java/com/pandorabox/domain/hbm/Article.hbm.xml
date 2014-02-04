@@ -11,14 +11,14 @@
 		<property name="text" type="string" />
 
 		<!--文章和图片是一对多单向关系 -->
-		<list name="images" cascade="all">
+		<list name="images" cascade="save-update">
 			<key column="article_id"/>
 			<index column="image_index" type="integer" />
 			<one-to-many class="ImageDescriptor" />
 		</list>
 
 		<!--文章和标签是多对多单向关系,通过关联表ArticleTags映射多对多的关系 -->
-		<list name="tags" table="ArticleTags" cascade="all">
+		<list name="tags" table="ArticleTags" cascade="save-update">
 			<key column="article_id " not-null="true" />
 			<index column="tag_index" type="integer" />
 			<many-to-many column="tag_id" class="Tag" />
@@ -26,10 +26,10 @@
 
 		<!--文章和用户是多对一双向关系 -->
 		<many-to-one name="author" class="User" lazy="false"
-			column="user_id" cascade="all">
+			column="user_id" cascade="save-update">
 		</many-to-one>
 		<!--与LayoutBehavior是11单向映射，增加unique变成“1-1” -->
-		<many-to-one name="layoutBehavior" column="layout_id" cascade="all"
+		<many-to-one name="layoutBehavior" column="layout_id" cascade="save-update"
 			unique="true" />
 	
 	<!-- 采用Table per subclass策略存每一个article的子类 -->
