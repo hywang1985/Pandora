@@ -29,7 +29,7 @@
 			column="user_id" cascade="save-update">
 		</many-to-one>
 		<!--与LayoutBehavior是11单向映射，增加unique变成“1-1” -->
-		<many-to-one name="layoutBehavior" column="layout_id" cascade="save-update"
+		<many-to-one name="layoutBehavior" column="layout_id" cascade="save-update" lazy="false"
 			unique="true" />
 	
 	<!-- 采用Table per subclass策略存每一个article的子类 -->

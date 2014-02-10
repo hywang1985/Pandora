@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>PandoraBox Create Page</title>
+</head>
+
+<body>
+<form method="post" action="localhost:8886/PandoraBox/article" enctype="multipart/form-data">
+  <table>
+    <tr>
+      <td>作者名：</td>
+      <td><input name="author" type="text" size="50" /></td>
+    </tr>
+    <tr>
+      <td>文章标题：</td>
+      <td><input name="title" type="text" size="50" /></td>
+    </tr>
+    <tr>
+      <td>文章内容：</td>
+      <td><textarea name="content" cols="55" rows="20"></textarea></td>
+    </tr>
+    <tr>
+      <td>照片：</td>
+      <td><input type="file" name="image" /></td>
+    </tr>
+    <tr>
+      <td colspan="2"><input type="submit" name="提交"/></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

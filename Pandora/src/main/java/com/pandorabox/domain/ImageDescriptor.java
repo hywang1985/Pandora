@@ -15,7 +15,7 @@ public interface ImageDescriptor extends Serializable{
 	public String getRelativePath();
 	public void setRelativePath(String relativePath);
 	
-	/**图片服务器上的根（Bucket）路径*/
+	/**图片存储空间的根（Bucket）路径*/
 	public String getBucketPath();
 	public void setBucketPath(String bucketPath);
 	
@@ -33,4 +33,9 @@ public interface ImageDescriptor extends Serializable{
 	 */
 	public String getFileSecret();
 	public void setFileSecret(String fileSecret);
+	
+	/**
+	 * 得到图片的URL
+	 */
+	public String getURL();
 }
