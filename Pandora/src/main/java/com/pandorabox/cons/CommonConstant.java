@@ -15,8 +15,6 @@ public class CommonConstant
     */
    public static final String LOGIN_TO_URL = "toUrl";
    
-   public static final String AUTHOR_KEY = "author";
-   
    public static final String ARTICLE_TITLE_KEY = "title";
    
    public static final String ARTICLE_CONTENT_KEY = "content";

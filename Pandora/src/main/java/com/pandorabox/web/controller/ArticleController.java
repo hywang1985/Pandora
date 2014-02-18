@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.Article;
 import com.pandorabox.domain.ImageDescriptor;
 import com.pandorabox.domain.User;
+import com.pandorabox.domain.impl.BaseArticle;
 import com.pandorabox.domain.impl.BaseImageDescriptor;
 import com.pandorabox.domain.impl.BaseUser;
 import com.pandorabox.service.ArticleService;
@@ -37,8 +39,10 @@ public class ArticleController extends BaseController {
 	/** 根目录 */
 	private static final String DIR_ROOT = "/";
 	
-	/**Bucket名称*/
+	/**Bucket名称,现在是硬编码,比较好的情况是采用配置的方式*/
 	private static final String BUCKET_NAME = "pandora001";
+	private static final String USER_NAME = "tester001";
+	private static final String USER_PWD = "tester001";
 	
 	@Autowired
 	ArticleService articleService;
@@ -77,37 +81,33 @@ public class ArticleController extends BaseController {
 
 	/** 新增单篇文章 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView addArticle(HttpServletRequest request, Article article) {
+	public ModelAndView addArticle(HttpServletRequest request,HttpServletResponse response) {
 		ModelAndView view = new ModelAndView();
-		User author = buildAuthor(request);
-		String title = request.getParameter(CommonConstant.ARTICLE_TITLE_KEY);
-		String content = request
-				.getParameter(CommonConstant.ARTICLE_CONTENT_KEY);
-		List<MultipartFile> requestImages = getRequestImages(request);
-		try {
-			List<ImageDescriptor> uploadedImages = handleImages(requestImages
-					.toArray(new MultipartFile[0]));
-			article.setAuthor(author);
-			article.setTitle(title);
-			article.setText(content);
-			article.getImages().addAll(uploadedImages);
-			articleService.addArticle(article);
-			view.addObject("article", article);
-			view.setViewName("showArticle");
-		} catch (IOException e) {
-			logger.error(e);
-		} catch (Exception e){
-			logger.error(e);
+		Article article = new BaseArticle();
+		User author = getSessionUser(request);
+		if(author!=null){
+			String title = request.getParameter(CommonConstant.ARTICLE_TITLE_KEY);
+			String content = request.getParameter(CommonConstant.ARTICLE_CONTENT_KEY);
+			List<MultipartFile> requestImages = getRequestImages(request);
+			try {
+				List<ImageDescriptor> uploadedImages = handleImages(requestImages
+						.toArray(new MultipartFile[0]));
+				article.setAuthor(author);
+				article.setTitle(title);
+				article.setText(content);
+				article.getImages().addAll(uploadedImages);
+				articleService.addArticle(article);
+				view.addObject("article", article);
+				view.setViewName("showArticle");
+			} catch (IOException e) {
+				logger.error(e);
+			} catch (Exception e){
+				logger.error(e);
+			}
 		}
 		return view;
 	}
 
-	private User buildAuthor(HttpServletRequest request) {
-		String authorName = request.getParameter(CommonConstant.AUTHOR_KEY);
-		User user = new BaseUser();
-		user.setUsername(authorName);
-		return user;
-	}
 
 	private List<MultipartFile> getRequestImages(HttpServletRequest request) {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -135,6 +135,10 @@ public class ArticleController extends BaseController {
 				uploadedImages = new ArrayList<ImageDescriptor>();
 			}
 			String relativePath = DIR_ROOT + image.getName();
+			upService.setBucketName(BUCKET_NAME);
+			upService.setUserName(USER_NAME);
+			upService.setPassword(USER_PWD);
+			upService.setDebug(true);
 			upService.writeFile(relativePath, image.getBytes(),
 					true);
 			ImageDescriptor imageDescriptor = new BaseImageDescriptor();
