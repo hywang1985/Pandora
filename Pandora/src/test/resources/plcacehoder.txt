@@ -1,2 +1,0 @@
-Git doesn't allow to commit the empty folder,so take this as a place holder.
-Please remove the file once new file(s) added to the folder. 

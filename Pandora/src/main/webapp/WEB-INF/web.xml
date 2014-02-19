@@ -14,12 +14,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/static/*</url-pattern>
-	</servlet-mapping>
-	
-	<!--Open session in view ,不关闭hibernate session-->
+	<!--Open session in view ,不关闭hibernate session -->
 	<filter>
 		<filter-name>hibernateFilter</filter-name>
 		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
@@ -31,9 +26,9 @@
 	<filter-mapping>
 		<filter-name>hibernateFilter</filter-name>
 		<url-pattern>*.html</url-pattern>
-	<!-- 设置字符编码集 -->
+		<!-- 设置字符编码集 -->
 	</filter-mapping>
-		<filter>
+	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
@@ -63,19 +58,20 @@
 		<filter-name>HiddenHttpMethodFilter</filter-name>
 		<servlet-name>pandorabox</servlet-name>
 	</filter-mapping>
-	
+
 	<servlet>
 		<servlet-name>pandorabox</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
-        	<param-name>contextConfigLocation</param-name>
-        	<param-value>/WEB-INF/spring-config/pandorabox-servlet.xml</param-value>
-    	</init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring-config/pandorabox-servlet.xml</param-value>
+		</init-param>
 		<load-on-startup>3</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>pandorabox</servlet-name>
-		<url-pattern>*.html</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
 </web-app>

@@ -23,7 +23,6 @@ import com.pandorabox.domain.ImageDescriptor;
 import com.pandorabox.domain.User;
 import com.pandorabox.domain.impl.BaseArticle;
 import com.pandorabox.domain.impl.BaseImageDescriptor;
-import com.pandorabox.domain.impl.BaseUser;
 import com.pandorabox.service.ArticleService;
 import com.pandorabox.service.upyun.UpYunService;
 

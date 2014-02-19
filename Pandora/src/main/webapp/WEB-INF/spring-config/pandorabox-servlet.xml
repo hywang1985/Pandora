@@ -7,29 +7,29 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
-	
+
 	<!-- 自动扫描com.pandorabox.web包下的@Controller标注的类控制器类 -->
 	<context:component-scan base-package="com.pandorabox.web" />
 
 	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
-	<mvc:annotation-driven/>
+	<mvc:annotation-driven />
 
 	<!-- 对模型视图名称的解析，在请求时模型视图名称添加前后缀 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
 		p:order="100" p:viewClass="org.springframework.web.servlet.view.JstlView"
 		p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
-	
-	<!-- 文件上传解析器-->
+
+	<!-- 文件上传解析器 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		p:defaultEncoding="utf-8" />
-	
+
 	<!-- 国际化 -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource"
 		p:basename="i18n/messages" />
-	
+
 	<!-- 定义数据转换器 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"
@@ -41,7 +41,12 @@
 		<bean
 			class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 		<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
-		<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+		<bean
+			class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
 	</util:list>
-
+	<!-- spring mvc对静态资源的访问 -->
+	<mvc:resources location="/static/image/" mapping="/image/**" />
+	<mvc:resources location="/static/js/" mapping="/js/**" />
+	<mvc:resources location="/static/style/" mapping="/style/**" />
+	<mvc:default-servlet-handler/>
 </beans>
