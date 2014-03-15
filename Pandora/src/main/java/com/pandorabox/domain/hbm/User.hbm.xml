@@ -10,8 +10,8 @@
 		<property name="name" type="string" />
 		<property name="passwd" type="string" />
 		<property name="email" type="string"/>
-		<list name="articles" inverse="true" lazy="false">
-			<key column="article_id" not-null="true" />
+		<list name="articles" inverse="true" table="article_list" lazy="false" >
+			<key column="user_id" not-null="true" />
 			<index column="article_index" type="integer" />
 			<one-to-many class="Article" />
 		</list>

@@ -3,6 +3,9 @@ package com.pandorabox.domain.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.pandorabox.domain.Article;
 import com.pandorabox.domain.User;
 
@@ -20,8 +23,10 @@ public class BaseUser implements User {
 	
 	private String email;
 	
+	@JsonBackReference
 	private List<Article> articles = new ArrayList<Article>();
 
+	@JsonIgnore
 	public String getPasswd() {
 		return passwd;
 	}
@@ -30,6 +35,7 @@ public class BaseUser implements User {
 		this.passwd = passwd;
 	}
 
+	@JsonIgnore
 	public String getName() {
 		return name;
 	}
@@ -37,7 +43,8 @@ public class BaseUser implements User {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+	@JsonIgnore
 	public String getEmail() {
 		return email;
 	}

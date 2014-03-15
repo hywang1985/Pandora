@@ -11,14 +11,14 @@
 		<property name="text" type="string" />
 
 		<!--文章和图片是一对多单向关系 -->
-		<list name="images" cascade="save-update">
+		<list name="images" cascade="save-update" lazy="false">
 			<key column="article_id"/>
 			<index column="image_index" type="integer" />
 			<one-to-many class="ImageDescriptor" />
 		</list>
 
 		<!--文章和标签是多对多单向关系,通过关联表ArticleTags映射多对多的关系 -->
-		<list name="tags" table="ArticleTags" cascade="save-update">
+		<list name="tags" table="ArticleTags" cascade="save-update" lazy="false">
 			<key column="article_id " not-null="true" />
 			<index column="tag_index" type="integer" />
 			<many-to-many column="tag_id" class="Tag" />

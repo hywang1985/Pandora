@@ -1,5 +1,7 @@
 package com.pandorabox.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,11 @@ public class BaseArticleService implements ArticleService {
 	public void removeArticle(int articleId) {
 		Article article = articleDao.get(articleId);
 		articleDao.remove(article);
+	}
+
+	@Override
+	public List<Article> getArticles() {
+		return articleDao.getArticles();
 	}
 
 }

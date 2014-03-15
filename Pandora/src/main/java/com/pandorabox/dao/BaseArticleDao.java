@@ -20,4 +20,9 @@ public class BaseArticleDao extends BaseGenericDataAccessor<Article, Integer> im
 	public List<Article> getByTitle(String articleTitle) {
 		return find(GET_ARTICLES_BY_TITLE, articleTitle);
 	}
+
+	@Override
+	public List<Article> getArticles() {
+		return loadAll();
+	}
 }

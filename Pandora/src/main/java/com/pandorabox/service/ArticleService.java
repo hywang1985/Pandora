@@ -3,6 +3,8 @@
  */
 package com.pandorabox.service;
 
+import java.util.List;
+
 import com.pandorabox.domain.Article;
 
 /**
@@ -15,5 +17,5 @@ public interface ArticleService {
 	
 	public void removeArticle(int articleId);
 	
-	
+	public List<Article> getArticles();
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -26,11 +27,12 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	/**
 	 * 通过反射获取子类确定的泛型类,构造方法完成后立刻执行
 	 */
+	@SuppressWarnings({ "unused", "unchecked" })
 	@PostConstruct
 	private void initlization(){
 		Type genType = getClass().getGenericSuperclass();
 		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-		entityClass = (Class) params[0];
+		entityClass = (Class<E>) params[0];
 	}
 	
 	public SessionFactory getSessionFactory() {
@@ -47,8 +49,15 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	 * @param id
 	 * @return 返回相应的持久化PO实例
 	 */
+	@SuppressWarnings("unchecked")
 	public E load(EID id) {
 		return (E)getSession().load(entityClass, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<E> loadAll(){
+		Criteria criteria = getSession().createCriteria(entityClass);
+		return criteria.list();
 	}
 
 	/**
@@ -57,6 +66,7 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	 * @param id
 	 * @return 返回相应的持久化PO实例
 	 */
+	@SuppressWarnings("unchecked")
 	public E get(EID id) {
 		return (E) getSession().get(entityClass, id);
 	}
@@ -67,6 +77,7 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	 * 
 	 * @param entity
 	 */
+	@SuppressWarnings("unchecked")
 	public EID save(E entity) {
 		 return (EID)getSession().save(entity);
 	}
@@ -95,7 +106,7 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	 * @param sql
 	 * @return 查询结果
 	 */
-	public List find(String hql) {
+	public List<?> find(String hql) {
 		return createQuery(hql).list();
 	}
 
@@ -106,7 +117,8 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	 * @param params
 	 * @return 查询结果
 	 */
-	public List find(String hql, Object... params) {
+	@SuppressWarnings("unchecked")
+	public List<E> find(String hql, Object... params) {
 		return createQuery(hql,params).list();
 	}
     

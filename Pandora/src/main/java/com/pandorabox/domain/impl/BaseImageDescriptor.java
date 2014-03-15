@@ -58,8 +58,8 @@ public class BaseImageDescriptor implements ImageDescriptor {
 
 	@Override
 	public String getURL() {
-		return this.bucketPath!=null?"http://" + this.bucketPath
-				+ ".b0.upaiyun.com":null;
+		return bucketPath!=null?"http://" + this.bucketPath
+				+ ".b0.upaiyun.com"+relativePath:null;
 	}
 
 }
