@@ -45,8 +45,9 @@
 			class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
 	</util:list>
 	<!-- spring mvc对静态资源的访问 -->
-	<mvc:resources location="/static/image/" mapping="/image/**" />
+	<mvc:resources location="/static/images/" mapping="/images/**" />
 	<mvc:resources location="/static/js/" mapping="/js/**" />
-	<mvc:resources location="/static/style/" mapping="/style/**" />
+	<mvc:resources location="/static/style/" mapping="/css/**" />
+	
 	<mvc:default-servlet-handler/>
 </beans>

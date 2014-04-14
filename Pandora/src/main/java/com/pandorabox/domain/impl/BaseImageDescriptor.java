@@ -1,5 +1,7 @@
 package com.pandorabox.domain.impl;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.pandorabox.domain.ImageDescriptor;
 
 public class BaseImageDescriptor implements ImageDescriptor {
@@ -16,6 +18,7 @@ public class BaseImageDescriptor implements ImageDescriptor {
 	
 	private String fileSecret;
 
+	@JsonIgnore
 	public String getRelativePath() {
 		return relativePath;
 	}
@@ -24,6 +27,7 @@ public class BaseImageDescriptor implements ImageDescriptor {
 		this.relativePath = relativePath;
 	}
 
+	@JsonIgnore
 	public String getBucketPath() {
 		return bucketPath;
 	}
@@ -32,6 +36,7 @@ public class BaseImageDescriptor implements ImageDescriptor {
 		this.bucketPath = bucketPath;
 	}
 
+	@JsonIgnore
 	public String getName() {
 		return name;
 	}
@@ -40,6 +45,7 @@ public class BaseImageDescriptor implements ImageDescriptor {
 		this.name = name;
 	}
 
+	@JsonIgnore
 	public String getFileSecret() {
 		return fileSecret;
 	}
