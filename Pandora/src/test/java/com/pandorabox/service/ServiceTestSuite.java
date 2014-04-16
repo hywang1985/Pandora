@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 /**服务层的测试套件*/
 @RunWith(Suite.class)
 @SuiteClasses({
-	BaseArticleServiceTest.class,
+	BaseArticleServiceTest.class
 })
 public class ServiceTestSuite {
 
