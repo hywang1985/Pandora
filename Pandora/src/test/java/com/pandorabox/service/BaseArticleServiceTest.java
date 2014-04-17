@@ -80,7 +80,7 @@ public class BaseArticleServiceTest extends BasePandoraServiceTest {
 	
 	@Test
 	public void testRemoveArticle(){
-//		articleService.removeArticle(1);
-//		articleService.removeArticle(2);
+		articleService.removeArticle(1);
+		articleService.removeArticle(2);
 	}
 }
