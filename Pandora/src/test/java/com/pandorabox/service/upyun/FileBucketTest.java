@@ -8,7 +8,7 @@ import com.pandorabox.service.BasePandoraServiceTest;
 
 /**
  * 文件类空间的Test
- * @deprecated 因为没有开通文件类空间，所以这个测试暂时不可用
+ * @deprecated 现在使用又拍云的表单API方式提交音乐
  */
 public class FileBucketTest extends BasePandoraServiceTest{
 

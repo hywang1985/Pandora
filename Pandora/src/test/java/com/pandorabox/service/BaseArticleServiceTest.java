@@ -62,10 +62,10 @@ public class BaseArticleServiceTest extends BasePandoraServiceTest {
 		image2.setFileSecret("bac");
 		image2.setName("sample.jpg");
 		image2.setRelativePath("/sample.jpg");
-		//创建垂直布局
+		//创建居中布局
 		LayoutBehavior layout2 = new BaseLayoutDescriptor();
-		layout2.setName(LayoutBehavior.VERTICAL_LAYOUT_NAME);
-		layout2.setRelativeCSSPath(LayoutBehavior.DEFAULT_VERTICAL_RELATIVE_CSS_PATH);
+		layout2.setName(LayoutBehavior.CENTER_LAYOUT_NAME);
+		layout2.setRelativeCSSPath(LayoutBehavior.DEFAULT_CENTER_RELATIVE_CSS_PATH);
 		//设置article的属性
 		article2.setMusicURL("http://douban.fm/");
 		article2.setTitle("詹姆斯有多牛逼");

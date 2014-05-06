@@ -10,4 +10,6 @@ public interface ArticleDao extends GenericDataAccessor<Article, Integer> {
 	public List<Article> getByTitle(String articleTitle);
 	
 	public List<Article> getArticles();
+	
+	public List<Article> getArticlesByPage(int start,int count);
 }

@@ -18,6 +18,7 @@ import com.pandorabox.service.upyun.UpYunService.PARAMS;
  * 
  * @see FileBucketTest.java <p>
  *      注意：直接使用部分图片处理功能后，将会丢弃原图保存处理后的图片
+ * @deprecated 现在使用又拍云的表单API方式提交图片
  */
 public class PicBucketTest extends BasePandoraServiceTest {
 

@@ -44,6 +44,24 @@
 		<bean
 			class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
 	</util:list>
+	
+	<!--异常统一处理-->
+	
+	<bean id="handlerExceptionResolver" class="com.pandorabox.exception.PandoraExceptionHandler" p:order="2" >
+    	<!-- from ExceptionHandler -->
+        <property name="ajaxErrorView" value="ajaxexception" />
+        
+        <!-- from SimpleMappingExceptionResolver -->
+        <property name="defaultErrorView" value="checked"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.RuntimeException" >
+                    unchecked
+                </prop>
+            </props>
+        </property>
+    </bean> 
+	
 	<!-- spring mvc对静态资源的访问 -->
 	<mvc:resources location="/static/images/" mapping="/images/**" />
 	<mvc:resources location="/static/js/" mapping="/js/**" />

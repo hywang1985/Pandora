@@ -35,7 +35,8 @@ public interface ImageDescriptor extends Serializable{
 	public void setFileSecret(String fileSecret);
 	
 	/**
-	 * 得到图片的URL
+	 * 图片的URL
 	 */
-	public String getURL();
+	public String getUrl();
+	public void setUrl(String url);
 }

@@ -1,58 +1,107 @@
 package com.pandorabox.web.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-import java.io.File;
-import java.io.FileInputStream;
-
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.pandorabox.cons.CommonConstant;
+import com.pandorabox.domain.LayoutBehavior;
 import com.pandorabox.domain.User;
 import com.pandorabox.domain.impl.BaseUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ArticleControllerTests extends AbstractContextControllerTests {
 
-	/** 上传到upyun的图片名 */
-	private static final String PIC_NAME = "sample.jpeg";
-
-	/** 本地待上传的测试文件 */
-	private static final java.net.URL SAMPLE_PIC_FILE = ArticleControllerTests.class
-			.getResource(PIC_NAME);
-
-	private MockMvc mockMvc;
-
-	@Before
-	public void setup() throws Exception {
-		this.mockMvc = webAppContextSetup(this.wac).build();
-	}
-
-	@Test
-	public void addArticle() throws Exception {
-
-		File image = new File(SAMPLE_PIC_FILE.toURI().getPath());
-		FileInputStream fis = new FileInputStream(image);
-	    byte[] bytes = new byte[fis.available()];
-	    fis.read(bytes);
-		MockMultipartFile file = new MockMultipartFile(PIC_NAME, PIC_NAME,
-				null, bytes);
-
-		User user = new BaseUser();
+	private static User user;
+	
+	@BeforeClass
+	public static void initUser(){
+		user = new BaseUser();
 		user.setName("hywang");
 		user.setUsername("kidbone1985");
 		user.setEmail("jam_0917@sina.com");
-
-		mockMvc.perform(fileUpload("/article").file(file)
-				.param(CommonConstant.ARTICLE_TITLE_KEY, "title")
-				.param(CommonConstant.ARTICLE_CONTENT_KEY, "content")
-				.sessionAttr(CommonConstant.USER_CONTEXT, user));
 	}
+	
+	
+	@Test
+	public void addArticles() throws Exception {
 
+		mockMvc.perform(
+				post("/article").accept(MediaType.APPLICATION_JSON).param(CommonConstant.ARTICLE_TAGS_KEY, "文艺")
+						.param(CommonConstant.ARTICLE_TITLE_KEY, "title1")
+						.param(CommonConstant.ARTICLE_CONTENT_KEY, "content")
+						.param(CommonConstant.ARTICLE_LAYOUT_KEY,
+								LayoutBehavior.HORIZONTAL_LAYOUT_NAME)
+						.param(CommonConstant.ARTICLE_COMMITTED_IMAGES_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/angle.jpg\",\"time\":1398511677,\"image-width\":1024,\"image-height\":768,\"image-frames\":1,\"image-type\":\"JPEG\"}")
+						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}")
+						.sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andDo(print());
+		
+		mockMvc.perform(
+				post("/article").accept(MediaType.APPLICATION_JSON).param(CommonConstant.ARTICLE_TAGS_KEY, "体育")
+						.param(CommonConstant.ARTICLE_TITLE_KEY, "title2")
+						.param(CommonConstant.ARTICLE_CONTENT_KEY, "content")
+						.param(CommonConstant.ARTICLE_LAYOUT_KEY,
+								LayoutBehavior.HORIZONTAL_LAYOUT_NAME)
+						.param(CommonConstant.ARTICLE_COMMITTED_IMAGES_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/angle.jpg\",\"time\":1398511677,\"image-width\":1024,\"image-height\":768,\"image-frames\":1,\"image-type\":\"JPEG\"}")
+						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}")
+						.sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andDo(print());
+		
+		mockMvc.perform(
+				post("/article").accept(MediaType.APPLICATION_JSON).param(CommonConstant.ARTICLE_TAGS_KEY, "影视")
+						.param(CommonConstant.ARTICLE_TITLE_KEY, "title3")
+						.param(CommonConstant.ARTICLE_CONTENT_KEY, "content")
+						.param(CommonConstant.ARTICLE_LAYOUT_KEY,
+								LayoutBehavior.HORIZONTAL_LAYOUT_NAME)
+						.param(CommonConstant.ARTICLE_COMMITTED_IMAGES_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/angle.jpg\",\"time\":1398511677,\"image-width\":1024,\"image-height\":768,\"image-frames\":1,\"image-type\":\"JPEG\"}")
+						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}")
+						.sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andDo(print());
+		
+		mockMvc.perform(
+				post("/article").accept(MediaType.APPLICATION_JSON).param(CommonConstant.ARTICLE_TAGS_KEY, "企业,篮球")
+						.param(CommonConstant.ARTICLE_TITLE_KEY, "title4")
+						.param(CommonConstant.ARTICLE_CONTENT_KEY, "content")
+						.param(CommonConstant.ARTICLE_LAYOUT_KEY,
+								LayoutBehavior.HORIZONTAL_LAYOUT_NAME)
+						.param(CommonConstant.ARTICLE_COMMITTED_IMAGES_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/angle.jpg\",\"time\":1398511677,\"image-width\":1024,\"image-height\":768,\"image-frames\":1,\"image-type\":\"JPEG\"}")
+						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
+								"{\"code\":200,\"message\":\"ok\",\"url\":\"\\/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}")
+						.sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andDo(print());
+	}
+	
+	@Test
+	public void loadArticlesByPage() throws Exception{
+		mockMvc.perform(
+				get("/article/dyload").header(CommonConstant.ARTICLE_START_INDEX_HEADER_NAME, 1).accept(MediaType.APPLICATION_JSON)
+						.sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andDo(print());
+	}
+	
+	@AfterClass
+	public static void postClass(){
+		user = null;
+	}
 }

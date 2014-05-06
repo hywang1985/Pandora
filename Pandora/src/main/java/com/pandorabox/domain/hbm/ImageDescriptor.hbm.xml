@@ -10,6 +10,7 @@
 		<property name="bucketPath" column="bucket_path" type="string" />
 		<property name="fileSecret" column="file_secret" type="string" />
 		<property name="name" type="string" />
+		<property name="url" type="string" />
 		<!-- 采用Table per subclass策略存每一个ImageDescriptor的子类 -->
 		<joined-subclass name="com.pandorabox.domain.impl.BaseImageDescriptor" table="base_image_descriptor">
 			<key column="imgdescriptor_id" />

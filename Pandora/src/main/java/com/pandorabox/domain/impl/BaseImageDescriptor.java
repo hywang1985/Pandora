@@ -17,6 +17,8 @@ public class BaseImageDescriptor implements ImageDescriptor {
 	private String name;
 	
 	private String fileSecret;
+	
+	private String url;
 
 	@JsonIgnore
 	public String getRelativePath() {
@@ -62,10 +64,13 @@ public class BaseImageDescriptor implements ImageDescriptor {
 		this.imageId = imageId;
 	}
 
-	@Override
-	public String getURL() {
-		return bucketPath!=null?"http://" + this.bucketPath
-				+ ".b0.upaiyun.com"+relativePath:null;
+	public String getUrl() {
+		return url;
 	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 
 }

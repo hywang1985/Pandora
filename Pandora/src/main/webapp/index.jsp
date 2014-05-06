@@ -1,4 +1,6 @@
-<!DOCTYPE HTML>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -104,26 +106,35 @@
     <dt>页面布局</dt>
     <dd>
       <ul class="cl">
-        <li class="left"><a href="#"><cite>文字居左</cite></a>文字居左</li>
-        <li class="align"><a href="#"><cite>文字居中</cite></a>文字居中</li>
+<!--         <li class="left"><a href="#"><cite>文字居左</cite></a>文字居左</li> -->
+					
+		<li class = "left"><input name="layout" type="radio" size="10"
+					value="horizontal" checked="checked" />文字居右</li>
+<!--         <li class="align"><a href="#"><cite>文字居中</cite></a>文字居中</li> -->
+        			
+        <li class="align"><input name="layout" type="radio" size="10" 
+        			value="center" />文字居中</li>
       </ul>
     </dd>
   </dl>
   <dl class="bg">
-    <dt><a href="#">+添加新图片</a>背景图</dt>
+    <dt><input type="file" name="file" class="addImage" multiple>背景图</dt>
     <dd>
       <ul class="cl">
-        <li><img src="images/u175.png"/><a href="#">删除</a></li>
-        <li><img src="images/u175.png"/><a href="#">删除</a></li>
-        <li><img src="images/u175.png"/><a href="#">删除</a></li>
+        <li descriptorId="1"><img src="images/u1.png"/><a href="#" class="delImg">删除</a></li>
+        <li descriptorId="2"><img src="images/u10.png"/><a href="#" class="delImg">删除</a></li>
+        <li descriptorId="3"><img src="images/u19.png"/><a href="#" class="delImg">删除</a></li>
       </ul>
     </dd>
   </dl>
   <dl class="music">
-    <dt>背景音乐</dt>
-    <dd>
-        <input type="text" name="musicurl" placeholder="输入音乐地址" class="long">
-    </dd>
+    <dt><a href="#">+添加音乐</a>背景音乐</dt>
+		<dd>
+			<ul class="cl">
+				<li><a href="#" class="del">删除</a><span>崔健</span><cite>►</cite>花房姑娘（5:23)</li>
+				<li><a href="#" class="del">删除</a><span>崔健</span>花房姑娘（5:23)</li>
+			</ul>
+		</dd>
   </dl>
 </div>
 

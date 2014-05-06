@@ -30,4 +30,9 @@ public class BaseArticleService implements ArticleService {
 		return articleDao.getArticles();
 	}
 
+	@Override
+	public List<Article> getArticlesByPage(int start, int count) {
+		return articleDao.getArticlesByPage(start, count);
+	}
+
 }

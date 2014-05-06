@@ -18,4 +18,6 @@ public interface ArticleService {
 	public void removeArticle(int articleId);
 	
 	public List<Article> getArticles();
+	
+	public List<Article> getArticlesByPage(int start,int count);
 }

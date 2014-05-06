@@ -120,11 +120,20 @@ $(document).ready(function () {
 	var $editTitle = $(".edit_title");
 	
 	
+	 //选中图片的预览功能	 
+	var uploadImgArr = [];
+	//此次操作需要删除的之前已经存在的图片
+	var deleteImgIds = [];  
 	
 	$('.edit').click(function () {
+		uploadImgArr.splice(0,uploadImgArr.length);
+		deleteImgIds.splice(0,deleteImgIds.length); 
 		$(".setting,.cpbottom").show();
 		$(".bar,.bottombar").hide();
 		
+		 $.each( $(".bg .cl li"), function(i, li){
+			 $(li).show();
+		 });
 		$shownTitle.hide();
 		
 		var contains_edit_title = $currentArticle.has(".edit_title").length;
@@ -186,4 +195,39 @@ $(document).ready(function () {
 		})
 	})
 
+	
+	
+	 $(".addImage").change(function(e){
+	  	 var files = e.target.files;
+	  	 for (var i = 0,f; f = files[i]; i++) {
+	  	  	 uploadImgArr.push(f);
+	  	  	 var reader = new FileReader();
+	  	  	 reader.onload = (function(file){
+	  	  		 return function(e) {
+	  	  		 var $image = $("<img/>").attr("src",this.result);
+	  	  	 		var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
+	  	  	 		$("<li/>").append($image).append($delLink).appendTo($(".bg .cl"));
+	  	  	 
+  			};
+	  	  	 		
+	  	  	})(f);
+	  	    reader.readAsDataURL(f);
+	  	 }
+	  });  
+	
+	 function onDelImg(){
+		 var $parent = $(this).parent();
+		 var currentIndex = $(".bg .cl li").index($parent);
+		 $.each( $(".bg .cl li"), function(i, li){
+			 if(currentIndex == i){
+				 if(li.descriptorId){ //已经存在的图片
+					 deleteImgIds.push(li); 
+				 }
+				 uploadImgArr= uploadImgArr.splice(i, 1);//从选中图片中移除
+				 $(li).hide(); //隐藏当前li元素
+			 }
+			});
+	 }
+	 
+	 $(".delImg").click(onDelImg);
 })

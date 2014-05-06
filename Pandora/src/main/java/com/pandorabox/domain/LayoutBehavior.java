@@ -10,11 +10,11 @@ public interface LayoutBehavior extends Serializable{
 	
 	String HORIZONTAL_LAYOUT_NAME = "Horizontal";
 	
-	String VERTICAL_LAYOUT_NAME = "Vertical";
+	String CENTER_LAYOUT_NAME = "Center";
 	
 	String DEFAULT_HORIZONTAL_RELATIVE_CSS_PATH = "Horizontal.css";
 	
-	String DEFAULT_VERTICAL_RELATIVE_CSS_PATH = "Vertical.css";
+	String DEFAULT_CENTER_RELATIVE_CSS_PATH = "Center.css";
 	
 	public int getLayoutId();
 	public void setLayoutId(int layoutId);
