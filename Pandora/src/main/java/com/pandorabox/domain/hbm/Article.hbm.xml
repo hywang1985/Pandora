@@ -6,15 +6,22 @@
 		<id name="articleId" column="article_id">
 			<generator class="increment" />
 		</id>
-		<property name="musicURL" column="music_url" type="string" />
+		<property name="currentMusic" column="current_music" type="string" />
 		<property name="title" type="string" />
-		<property name="text" type="string" />
+		<property name="text" type="text" />
 
 		<!--文章和图片是一对多单向关系 -->
 		<list name="images" cascade="save-update" lazy="false">
 			<key column="article_id"/>
 			<index column="image_index" type="integer" />
 			<one-to-many class="ImageDescriptor" />
+		</list>
+		
+		<!--文章和文件(音乐)是一对多单向关系 -->
+		<list name="files" cascade="save-update" lazy="false">
+			<key column="article_id"/>
+			<index column="file_index" type="integer" />
+			<one-to-many class="FileDescriptor" />
 		</list>
 
 		<!--文章和标签是多对多单向关系,通过关联表ArticleTags映射多对多的关系 -->

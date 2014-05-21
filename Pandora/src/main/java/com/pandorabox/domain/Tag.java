@@ -12,6 +12,5 @@ public interface Tag extends Serializable{
 	public void setTagId(int tagId);
 	
 	public void setValue(String value);
-	
 	public String getValue();
 }

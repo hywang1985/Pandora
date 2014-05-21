@@ -59,6 +59,17 @@
 		<servlet-name>pandorabox</servlet-name>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>HttpPutFormContentFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+	</filter>
+
+	<!--解决Put的时候得不能通过request.getParameter获得到参数的问题-->
+	<filter-mapping>
+    	<filter-name>HttpPutFormContentFilter</filter-name>
+    	<servlet-name>pandorabox</servlet-name>
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>pandorabox</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

@@ -24,8 +24,8 @@ a:hover{color:#FFFF99;}
 .header h2 { float: left; margin-right: 10px; width: 160px; height: 44px; border-right: 1px solid #444; text-align: center; }
 .header .classify i,.header .classify em { font-style: normal; font-size: 10px; margin-left: 2px;}
 .header .classify strong { font-weight: normal; }
-.header a.add { display: block; float: right; margin-right: 10px; width: 120px; height: 44px; background: #004fd1; border: 1px solid #004fd1; text-align: center; }
-	.header a.add s { float:left; font-style: normal; text-decoration: none; font-size: 24px; margin:0 -2px 0 10px; }
+.header a.addArticle { display: block; float: right; margin-right: 10px; width: 120px; height: 44px; background: #004fd1; border: 1px solid #004fd1; text-align: center; }
+	.header a.addArticle s { float:left; font-style: normal; text-decoration: none; font-size: 24px; margin:0 -2px 0 10px; }
 .header .icon { float: right; }
 	.header .icon a { overflow: hidden; float:left; margin: 20px 8px 20px 0; background: #eee; width: 8px; height: 8px; text-indent: -999px; border-radius: 8px; }
 	.header .icon a:hover,.header .icon a.cur { background: #FFFF99;}
@@ -90,9 +90,8 @@ background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0
 .music li { padding-left:14px; padding-right: 4px; border-bottom: 1px dotted #444; font-size: 12px; }
 .music li:hover { background: #444;}
 .music li cite { float: left;  margin-left: -14px; font-style: normal; }
-.music li a.del,.music li span { float: right;}
+.music li a.delMsc,.music li span { float: right;}
 .music li a { margin-left: 16px; }
-.music form { margin:10px 14px;}
 .music input { background: #444; border: none; margin-right: 10px; padding: 0 4px; color: #fff;}
 .music input.long { width: 160px;}
 .music input.low { width: 60px; }
@@ -108,3 +107,8 @@ background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0
 .confirm dl dt { font-weight: 700; padding-bottom: 10px; }
 .confirm dl dd { font-size: 12px;}
 .confirm .foot { text-align: right; }
+
+#dataForm { display: none;}
+.addImage,.addMusic { display: none;overflow:hidden;height:0px;}
+.uploadImgBtn {background-image:url(../images/addImage_32.ico); height: 32px; width: 32px;}
+.uploadMusicBtn {background-image:url(../images/addMusic_32.ico); height: 32px; width: 32px;}

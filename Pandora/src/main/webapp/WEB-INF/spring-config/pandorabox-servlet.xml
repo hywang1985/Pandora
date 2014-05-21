@@ -46,10 +46,10 @@
 	</util:list>
 	
 	<!--异常统一处理-->
-	
 	<bean id="handlerExceptionResolver" class="com.pandorabox.exception.PandoraExceptionHandler" p:order="2" >
     	<!-- from ExceptionHandler -->
         <property name="ajaxErrorView" value="ajaxexception" />
+        <property name="ajaxShowTechMessage" value="true"/>
         
         <!-- from SimpleMappingExceptionResolver -->
         <property name="defaultErrorView" value="checked"/>

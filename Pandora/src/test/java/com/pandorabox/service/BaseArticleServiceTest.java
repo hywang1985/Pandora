@@ -41,7 +41,7 @@ public class BaseArticleServiceTest extends BasePandoraServiceTest {
 		//创建水平布局
 		LayoutBehavior layout = new BaseLayoutDescriptor();
 		//设置article的属性
-		article1.setMusicURL("http://douban.fm/");
+		article1.setCurrentMusic("http://douban.fm/");
 		article1.setTitle("梵高和他的向日葵");
 		article1.setText("梵高是一个有才的，神经质的画家。");
 		article1.setAuthor(user);
@@ -67,7 +67,7 @@ public class BaseArticleServiceTest extends BasePandoraServiceTest {
 		layout2.setName(LayoutBehavior.CENTER_LAYOUT_NAME);
 		layout2.setRelativeCSSPath(LayoutBehavior.DEFAULT_CENTER_RELATIVE_CSS_PATH);
 		//设置article的属性
-		article2.setMusicURL("http://douban.fm/");
+		article2.setCurrentMusic("http://douban.fm/");
 		article2.setTitle("詹姆斯有多牛逼");
 		article2.setText("詹姆斯单场61分达成，全力詹出现");
 		article2.setAuthor(user);

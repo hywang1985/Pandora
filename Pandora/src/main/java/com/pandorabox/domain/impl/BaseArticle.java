@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pandorabox.domain.Article;
+import com.pandorabox.domain.FileDescriptor;
 import com.pandorabox.domain.ImageDescriptor;
 import com.pandorabox.domain.LayoutBehavior;
 import com.pandorabox.domain.Tag;
@@ -15,9 +16,11 @@ public class BaseArticle implements Article {
 	
 	private int articleId;
 	
-	private String musicURL;
+	private String currentMusic;
 
 	private List<ImageDescriptor> images = new ArrayList<ImageDescriptor>(); 
+	
+	private List<FileDescriptor> files = new ArrayList<FileDescriptor>(); 
 	
 	private String title;
 	
@@ -29,13 +32,6 @@ public class BaseArticle implements Article {
 	
 	private LayoutBehavior layoutBehavior;
 
-	public String getMusicURL() {
-		return musicURL;
-	}
-
-	public void setMusicURL(String musicURL) {
-		this.musicURL = musicURL;
-	}
 
 	public List<ImageDescriptor> getImages() {
 		return images;
@@ -91,6 +87,24 @@ public class BaseArticle implements Article {
 
 	public void setArticleId(int articleId) {
 		this.articleId = articleId;
+	}
+
+	@Override
+	public List<FileDescriptor> getFiles() {
+		return files;
+	}
+
+	@Override
+	public void setFiles(List<FileDescriptor> files) {
+		this.files = files;
+	}
+
+	public String getCurrentMusic() {
+		return currentMusic;
+	}
+
+	public void setCurrentMusic(String currentMusic) {
+		this.currentMusic = currentMusic;
 	}
 
 }

@@ -14,6 +14,8 @@ import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import com.pandorabox.cons.CommonConstant;
+
 /**
  * 用来构建往又拍云传送文件或图片的请求， 由于请求需要许多参数，所以Builder采用 Builder Pattern
  */
@@ -73,26 +75,9 @@ public class UpYunRequestBuilder {
 	
 	private static final String HTTP_REQUEST_URI_KEY = "uri";
 	
-	private static final String BUCKET_OPERATOR_KEY = "bucket_operator";
-	
-	private static final String BUCKET_OPERATOR_PWD_KEY= "operator_passwd";
-	
 	private Map<String, Object> requestOptions = new HashMap<String, Object>();
 	
-	private static Map<String,Map<String,String>> bucketAuthorizations = new HashMap<String,Map<String,String>>();
-
 	
-	
-	static {
-		Map<String, String> bucketEntry1 = new HashMap<String,String>();
-		bucketEntry1.put(BUCKET_OPERATOR_KEY, "tester001");
-		bucketEntry1.put(BUCKET_OPERATOR_PWD_KEY, DigestUtils.md5Hex("tester001"));
-		Map<String, String> bucketEntry2 = new HashMap<String,String>();
-		bucketEntry2.put(BUCKET_OPERATOR_KEY, "pmusicadmin");
-		bucketEntry2.put(BUCKET_OPERATOR_PWD_KEY, DigestUtils.md5Hex("Music123"));
-		bucketAuthorizations.put("pandora001", bucketEntry1);
-		bucketAuthorizations.put("pandora002", bucketEntry2);
-	}
 	public UpYunRequestBuilder setDomain(String domain){
 		this.domain = domain;
 		return this;
@@ -320,8 +305,8 @@ public class UpYunRequestBuilder {
 	 * */
 	public final UpYunRestRequest buildHttpRestRequest(){
 		String bucket = (String) requestOptions.get(BUCKET_KEY);
-		String bucketOperator = bucketAuthorizations.get(bucket).get(BUCKET_OPERATOR_KEY);
-		String bucketOperatorPwd = bucketAuthorizations.get(bucket).get(BUCKET_OPERATOR_PWD_KEY);
+		String bucketOperator = CommonConstant.bucketAuthorizations.get(bucket).get(CommonConstant.BUCKET_OPERATOR_KEY);
+		String bucketOperatorPwd = CommonConstant.bucketAuthorizations.get(bucket).get(CommonConstant.BUCKET_OPERATOR_MD5_PWD_KEY);
 		String uri = (String) requestOptions.get(HTTP_REQUEST_URI_KEY);
 		String httpMethodName = (String) requestOptions.get(HTTP_METHOD_NAME_KEY);
 		int httpRequestContentLength = (Integer) requestOptions.get(HTTP_REQUEST_CONTENT_LENGTH_KEY);

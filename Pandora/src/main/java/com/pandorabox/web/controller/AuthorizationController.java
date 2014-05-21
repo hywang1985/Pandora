@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.User;
-import com.pandorabox.exception.NoUserException;
+import com.pandorabox.domain.impl.BaseUser;
 import com.pandorabox.service.upyun.UpYunFormRequest;
 import com.pandorabox.service.upyun.UpYunRequestBuilder;
 import com.pandorabox.service.upyun.UpYunRestRequest;
@@ -35,6 +35,7 @@ public class AuthorizationController extends BaseController {
 
 		private EBucketType(String bucket,String apiFormSecret) {
 			this.bucket = bucket;
+			this.apiFormSecret = apiFormSecret;
 		}
 
 	}
@@ -74,25 +75,23 @@ public class AuthorizationController extends BaseController {
 	public Object getFormApiOptions(HttpServletRequest request,
 			HttpServletResponse response) {
 		UpYunFormRequest formRequest = null;
-		try {
-			String bucketType = request.getHeader(CommonConstant.HTTP_BUCKET_TYPE_HEADER_NAME);
-			String bucket = EBucketType.valueOf(bucketType.toUpperCase()).bucket;
-			String formApiSecret = EBucketType.valueOf(bucketType.toUpperCase()).apiFormSecret;
-			User user = getSessionUser(request);
-			if(user==null){
-				throw new NoUserException();
-			}
-			String userName = user.getUsername();
-			formRequest = new UpYunRequestBuilder()
-			.setFormApiSecret(formApiSecret).setBucket(bucket)
-			.setDomain(CommonConstant.DEFAULT_UPYUN_DOMAIN)
-			.setExpiration(new Date().getTime() + 600)
-			.setSaveKey("/"+userName+CommonConstant.COMMON_SAVE_KEY).buildFormRequest();
-		} catch (Exception e) {
-			logger.error(e);
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			throw new RuntimeException(e);
-		} 
+		String bucketType = request
+				.getHeader(CommonConstant.HTTP_BUCKET_TYPE_HEADER_NAME);
+		String bucket = EBucketType.valueOf(bucketType.toUpperCase()).bucket;
+		String formApiSecret = EBucketType.valueOf(bucketType.toUpperCase()).apiFormSecret;
+		User user = getSessionUser(request);
+		if (user == null) {
+			user= new BaseUser();
+			user.setUsername("fakeUser");
+			//throw new NoUserException();
+		}
+		String userName = user.getUsername();
+		formRequest = new UpYunRequestBuilder().setFormApiSecret(formApiSecret)
+				.setBucket(bucket)
+				.setDomain(CommonConstant.DEFAULT_UPYUN_DOMAIN)
+				.setExpiration(new Date().getTime() + 600)
+				.setSaveKey("/" + userName + CommonConstant.COMMON_SAVE_KEY)
+				.buildFormRequest();
 		JSONObject options = JSONObject.fromObject(formRequest);
 		return options;
 	}

@@ -13,11 +13,15 @@ import com.pandorabox.domain.Article;
  */
 public interface ArticleService {
 
-	public void addArticle(Article article);
+	public int addArticle(Article article);
 	
 	public void removeArticle(int articleId);
 	
+	public void updateArticle(Article article);
+	
 	public List<Article> getArticles();
+	
+	public Article getArticleById(int articleId);
 	
 	public List<Article> getArticlesByPage(int start,int count);
 }

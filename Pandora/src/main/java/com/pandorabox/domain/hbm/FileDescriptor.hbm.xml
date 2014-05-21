@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.pandorabox.domain">
+	<class name="FileDescriptor" table="file_descriptor">
+		<id name="fileId" column="filedescriptor_id">
+			<generator class="increment" />
+		</id>
+		<property name="relativePath" column="relative_path" type="string" />
+		<property name="bucketPath" column="bucket_path" type="string" />
+		<property name="name" type="string" />
+		<property name="url" type="string" />
+		<property name="selected" type="boolean"/>
+		<!-- 采用Table per subclass策略存每一个FileDescriptor的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.BaseFileDescriptor" table="base_file_descriptor">
+			<key column="filedescriptor_id" />
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

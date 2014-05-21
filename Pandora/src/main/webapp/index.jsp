@@ -32,7 +32,7 @@
       <h2>Pandora</h2>
       <a href="#" class="classify"><strong>艺术</strong><em>▼</em><i style="display: none">▲</i></a>
       <div class="icon"><a href="#" class="cur">1</a><a href="#">2</a><a href="#">3</a></div>
-      <a href="#" class="add"><s>+</s>创造一页内容</a> </div>
+      <a href="#" class="addArticle"><s>+</s>创造一页内容</a> </div>
     <div class="selectbox">
       <div class="body">
         <div class="item"><a href="#">全部</a><a href="#">艺术</a><a href="#">交互设计</a><a href="#">动漫</a><a href="#">历史</a><a href="#">怀旧</a><a href="#">文化</a><a href="#">体育</a><a href="#">工业</a><a href="#">建筑设计</a><a href="#">时代</a><a href="#">旅行</a><a href="#">新奇</a><a href="#">创意</a></div>
@@ -42,13 +42,11 @@
   </div>
 </div>
 
-<!--负责提交文章的修改/新增的表单-->
-<form action="" method="post" enctype="multipart/form-data">
 <!--这是所有文章列表-->
 <ul class="article_container">
   <!--第一篇文章-->
   <li>
-    <div class="article">
+    <div class="article" aid="1">
       <div class="wrapbg"> <img src="images/u1.png" alt="梵高 . 星月夜"/> </div>
       <h1 class="shown_title">梵高 . 星月夜</h1>
       <div class="inner">
@@ -61,7 +59,7 @@
   </li>
   <!--第二篇文章-->
   <li>
-    <div class="article">
+    <div class="article" aid="2">
       <div class="wrapbg"> <img src="images/u10.png" alt="光影 . 光之教堂"/> </div>
       <h1 class="shown_title">光之教堂</h1>
       <div class="inner">
@@ -77,7 +75,7 @@
   </li>
   <!--第三篇文章-->
   <li>
-    <div class="article">
+    <div class="article" aid="3">
       <div class="wrapbg"> <img src="images/u19.png" alt="三鹰市立动画美术馆"/> </div>
       <h1 class="shown_title">三鹰市立动画美术馆</h1>
       <div class="inner">
@@ -118,7 +116,8 @@
     </dd>
   </dl>
   <dl class="bg">
-    <dt><input type="file" name="file" class="addImage" multiple>背景图</dt>
+ 	 <input type="file" name="file" class="addImage" multiple />
+    <dt><button class="uploadImgBtn" ></button></dt>
     <dd>
       <ul class="cl">
         <li descriptorId="1"><img src="images/u1.png"/><a href="#" class="delImg">删除</a></li>
@@ -128,16 +127,20 @@
     </dd>
   </dl>
   <dl class="music">
-    <dt><a href="#">+添加音乐</a>背景音乐</dt>
+  	<input type="file" name="file" class="addMusic">
+     <dt><button class="uploadMusicBtn" ></button></dt>
 		<dd>
 			<ul class="cl">
-				<li><a href="#" class="del">删除</a><span>崔健</span><cite>►</cite>花房姑娘（5:23)</li>
-				<li><a href="#" class="del">删除</a><span>崔健</span>花房姑娘（5:23)</li>
+				<li><a href="#" class="delMsc">删除</a><cite><img src="images/play16.ico"></cite>花房姑娘(5.36MB)</li>
+				<li><a href="#" class="delMsc">删除</a>花房姑娘(2.87MB)</li>
 			</ul>
 		</dd>
   </dl>
 </div>
 
+<!--负责提交文章的修改/新增的表单-->
+<form method="post" enctype="multipart/form-data" id="dataForm">
+		<input type="submit" value="submit" class="hidden_submit" />
 </form>
 <div class="confirm">
   <dl>

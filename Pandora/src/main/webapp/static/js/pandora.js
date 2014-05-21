@@ -4,6 +4,9 @@ $(document).ready(function () {
 	var $keEditor;
 	var $keContainer;
 	
+	//当前文章的操作，POST/GET/PUT/DELETE其中一种
+	var articleOperation = "POST";
+	
 	//计算inner的高度
 	confSize();
 	$(window).resize(function () {
@@ -115,7 +118,7 @@ $(document).ready(function () {
 		return false;
 	});
 	//显示文章标题
-	var $shownTitle ;
+	var $shownTitle;
 	//可编辑文章标题
 	var $editTitle = $(".edit_title");
 	
@@ -124,14 +127,19 @@ $(document).ready(function () {
 	var uploadImgArr = [];
 	//此次操作需要删除的之前已经存在的图片
 	var deleteImgIds = [];  
-	
+	 //选中的音乐	 
+	var uploadMusicArr = [];
+	//此次操作需要删除的之前已经存在的图片
+	var deleteMusicIds = []; 
+	//编辑文章
 	$('.edit').click(function () {
+		articleOperation = "PUT";
 		uploadImgArr.splice(0,uploadImgArr.length);
 		deleteImgIds.splice(0,deleteImgIds.length); 
 		$(".setting,.cpbottom").show();
 		$(".bar,.bottombar").hide();
-		
-		 $.each( $(".bg .cl li"), function(i, li){
+		//hywang 需要将当前文章的音乐和图片分别读到.bg和.music里
+		$.each( $(".bg .cl li"), function(i, li){
 			 $(li).show();
 		 });
 		$shownTitle.hide();
@@ -157,8 +165,43 @@ $(document).ready(function () {
 
 		return false;
 	})
+	
+	//新建文章
+	$(".addArticle").click(function () {
+		articleOperation = "POST";
+		uploadImgArr.splice(0,uploadImgArr.length);
+		deleteImgIds.splice(0,deleteImgIds.length); 
+		$(".setting,.cpbottom").show();
+		$(".bar,.bottombar").hide();
+		$shownTitle.hide();
+		$(".bg .cl").empty();
+		$(".music .cl").empty();
+		
+		var contains_edit_title = $currentArticle.has(".edit_title").length;
+		var contains_keditor= $currentArticle.has(".keditor").length;
+		var contains_kecontainer=$currentArticle.has(".ke-container").length;
+		if( !contains_edit_title && !contains_keditor && !contains_kecontainer){
+			//$currentArticle.append($editTitle).append($(".keditor"));
+			$currentArticle.append($editTitle);
+			//$currentArticle.append($editTitle).append($keEditor);
+		}
+		if(!$keEditor){
+			 createEditor();
+		}
+		$editTitle.val("").show().select();
+		
+		
+		$currentArticle.find(".inner").fadeOut(500, function () {
+			$keEditor.html("");
+			$keContainer.fadeIn(1500);
+		});
 
-	$('.cpbottom .cancel').click(function () {
+		return false;
+	})
+
+	$('.cpbottom .cancel').click(hideElements);
+	
+	function hideElements() {
 		$(".cpbottom,.setting,.cp").hide();
 		$editTitle.hide();
 		$shownTitle.show();
@@ -167,7 +210,7 @@ $(document).ready(function () {
 			$(".bar,.bottombar").show();
 		});
 		return false;
-	})
+	}
 
 	$('.del').click(function () {
 		$(".confirm").show();
@@ -215,13 +258,45 @@ $(document).ready(function () {
 	  	 }
 	  });  
 	
+	 $(".addMusic").change(function(e){
+	  	 var files = e.target.files;
+	  	 for (var i = 0,f; f = files[i]; i++) {
+	  		uploadMusicArr.push(f);
+	  	  	 var reader = new FileReader();
+	  	  	 reader.onload = (function(file){
+	  	  		 return function(e) {
+	  	  	 		var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
+	  	  	 		var size= new Number(file.size/1000000);
+	  	  	 		$("<li/>").text(file.name+"("+size.toPrecision(3)+"MB)").append($delLink).appendTo($(".music .cl"));
+	  	  	 
+  			};
+	  	  	 		
+	  	  	})(f);
+	  	    reader.readAsDataURL(f);
+	  	 }
+	  }); 
+	 
+	 function onDelMusic(){
+		 var $parent = $(this).parent();
+		 var currentIndex = $(".music .cl li").index($parent);
+		 $.each( $(".music .cl li"), function(i, li){
+			 if(currentIndex == i){
+				 if(li.descriptorId){ //已经存在的音乐
+					 deleteMusicIds.push(li.descriptorId); 
+				 }
+				 uploadMusicArr= uploadMusicArr.splice(i, 1);//从选中图片中移除
+				 $(li).hide(); //隐藏当前li元素
+			 }
+			});
+	 }
+	
 	 function onDelImg(){
 		 var $parent = $(this).parent();
 		 var currentIndex = $(".bg .cl li").index($parent);
 		 $.each( $(".bg .cl li"), function(i, li){
 			 if(currentIndex == i){
 				 if(li.descriptorId){ //已经存在的图片
-					 deleteImgIds.push(li); 
+					 deleteImgIds.push(li.descriptorId); 
 				 }
 				 uploadImgArr= uploadImgArr.splice(i, 1);//从选中图片中移除
 				 $(li).hide(); //隐藏当前li元素
@@ -229,5 +304,158 @@ $(document).ready(function () {
 			});
 	 }
 	 
+	
+	 //用来请求授权的对象
+	 function AuthorizationHelper(bucketType,url){
+		 this.bucketType = bucketType;
+		 this.url = url;
+		 this.askAuthorization = function(successCallback,errorCallback){
+				$.ajax({
+					 type: "POST",
+					 url: this.url,
+					 headers:{
+						"bucket_type": this.bucketType
+						},		
+				 success: successCallback,
+				 error: errorCallback
+			});
+		};
+	 }
+	 
+	 var submittedImages = [];
+	 var submittedMusics = [];
+	//上传文件
+	 function uploadFile(requestOptions,fileArray,htmlForm,uploadedRecords,successCallback) {
+		var j = 0;
+		isUpload = false;
+	 	var url = requestOptions.requestURL;
+		var signature = requestOptions.signature;
+		var policy= requestOptions.policy;
+		function upload() {
+	         if (fileArray.length > 0 && !isUpload) {
+	             var file = fileArray[j];
+	             var xhr = new XMLHttpRequest();
+	             if (xhr.upload) {
+	                 // 文件上传成功或是失败
+	                 xhr.onreadystatechange = function(e) {
+	                     if (xhr.readyState == 4) {
+	                         if (xhr.readyState==4 && xhr.status==200) {
+	                             isUpload = true;
+	                             uploadedRecords.push(xhr.responseText); //记录已经上传成功的文件信息
+	                         } else {
+	                             alert( file.name + "上传失败");
+	                         }
+	                         //上传成功（或者失败）后，如果还有文件没传，则再次调用upload函数
+	                         if (j < fileArray.length - 1) {
+	                             j++;
+	                             isUpload = false;
+	                             upload();
+	                             
+	                          
+	                         }else{ //如果传完文件，执行上传成功后的函数
+	                        	successCallback();
+	                         }
+	                     }
+	                 };
+	                 var formdata = new FormData(htmlForm);
+	                 formdata.append("signature",signature);
+	                 formdata.append("policy",policy);
+	                 formdata.append("file",file);
+	                 // 开始上传
+	                 xhr.open("POST", url, true);
+	                 xhr.send(formdata);
+	             }
+	         }
+	     }
+	     	upload();
+	 }
+	 
+	
 	 $(".delImg").click(onDelImg);
+	 
+	 $(".delMsc").click(onDelMusic);
+	 
+	 $(".uploadImgBtn").click(function(){
+		 $(".addImage").click();
+	 });
+		
+	 $(".uploadMusicBtn").click(function(){
+		 $(".addMusic").click();
+	  });
+	 
+		$('.cpbottom .submit').click(function () {
+			var imagesFormData,musicsFormData;
+			var $imgForm = $("#dataForm").clone();
+			var $musicForm = $imgForm.clone();
+			var imgformAuthorizationHelper = new AuthorizationHelper("image","authorization/form");
+			if(uploadImgArr.length>0){ //如果有图片需要上传
+				imgformAuthorizationHelper.askAuthorization(function(requestOptions, textStatus, jqXHR){ //申请图片空间授权
+					uploadFile(requestOptions,uploadImgArr,$imgForm[0],submittedImages, //上传图片
+							function(){
+						if(uploadMusicArr.length>0){ //如果有音乐需要上传
+							imgformAuthorizationHelper.bucketType = "file";
+							imgformAuthorizationHelper.askAuthorization(function(requestOptions, textStatus, jqXHR){ //2.1申请文件空间授权
+								uploadFile(requestOptions,uploadMusicArr,$imgForm[0],submittedMusics, //上传音乐
+										submitToPandora);
+							});
+						}else { //如果没有音乐要上传
+							submitToPandora();
+						}
+					});
+				},
+				function(jqXHR, textStatus, errorThrown){
+					var exceptionInfo = JSON.parse(jqXHR.responseText);
+					alert("code: "+exceptionInfo.code+"message: "+ exceptionInfo.message);
+				});
+			}else if(uploadMusicArr.length>0){ //如果只有音乐需要上传
+				imgformAuthorizationHelper.bucketType = "file";
+				imgformAuthorizationHelper.askAuthorization(function(requestOptions, textStatus, jqXHR){ //2.1申请文件空间授权
+					uploadFile(requestOptions,uploadMusicArr,$imgForm[0],submittedMusics, //上传音乐
+							submitToPandora);
+				});
+			}else{ //
+				submitToPandora();
+			}
+				
+			
+		});
+		
+		//如果所有文件传完，则向潘多拉服务器提交文件更新信息   
+		function submitToPandora(){
+			url = "article";
+			var result="修改文章";
+			if(articleOperation=="PUT"){
+				var aid=$currentArticle.attr("aid"); //当前文章的ID
+				url = url+"/"+aid;
+			}else if(articleOperation=="POST"){
+				result="创建文章";
+			}
+			var currentLayout = $("input[name='layout']").val();
+			var tags = "文艺，历史";
+			$.ajax({
+				type: articleOperation,
+				url: url,
+				data: {
+					"addedImgs":JSON.stringify(submittedImages),
+					"delImgs":JSON.stringify(deleteImgIds),
+					"title":$editTitle.val(),
+					"content":$keEditor.html(),
+					"addedMscs": JSON.stringify(submittedMusics),
+					"musicSelected": 1, //hywang
+					"delMscs":JSON.stringify(deleteMusicIds),
+					"layout":currentLayout,
+					"tags":tags
+				},
+//			 traditional:true,
+				// contentType: "application/json",
+				success: function(responseText, textStatus, jqXHR){
+					hideElements();
+					alert(result+responseText.URL+": "+responseText.status);
+				},
+				error: function(jqXHR, responseText, errorThrown){
+					alert(textStatus);
+				}
+			});
+		}
+		
 })

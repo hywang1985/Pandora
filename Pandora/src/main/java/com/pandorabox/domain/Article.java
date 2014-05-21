@@ -4,14 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Article用来表示一篇文章，根据网站的原型设计，一篇文章应该包含如下的属性
- * 一条音乐
- * 若干图片
- * 一个题目
- * 一个正文
- * 所属的标签
- * 文章的作者
- * 文章的布局参数
+ * Article用来表示一篇文章
  * @author hywang
  */
 public interface Article extends Serializable{
@@ -20,10 +13,10 @@ public interface Article extends Serializable{
 	public void setArticleId(int articleId);
 	
 	/**
-	 * 文章的音乐URL
+	 * 文章当前选中的音乐URL
 	 */
-	public String getMusicURL(); 
-	public void setMusicURL(String musicURL);
+	public String getCurrentMusic(); 
+	public void setCurrentMusic(String musicURL);
 	
 	/**
 	 * 文章的所有图片
@@ -31,6 +24,13 @@ public interface Article extends Serializable{
 	 */
 	public List<ImageDescriptor> getImages(); 
 	public void setImages(List<ImageDescriptor> images); 
+	
+	/**
+	 * 文章的所有文件(音乐)
+	 * @see FileDescriptor
+	 */
+	public List<FileDescriptor> getFiles(); 
+	public void setFiles(List<FileDescriptor> files); 
 	
 	/**
 	 * 文章的标题 

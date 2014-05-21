@@ -10,11 +10,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pandorabox.domain.Article;
+import com.pandorabox.domain.FileDescriptor;
 import com.pandorabox.domain.ImageDescriptor;
 import com.pandorabox.domain.LayoutBehavior;
 import com.pandorabox.domain.Tag;
 import com.pandorabox.domain.User;
 import com.pandorabox.domain.impl.BaseArticle;
+import com.pandorabox.domain.impl.BaseFileDescriptor;
 import com.pandorabox.domain.impl.BaseImageDescriptor;
 import com.pandorabox.domain.impl.BaseLayoutDescriptor;
 import com.pandorabox.domain.impl.BaseTag;
@@ -42,7 +44,7 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 		 //创建第一篇文章
 		Article article1 = new BaseArticle();
 		article1.setAuthor(user);
-		article1.setMusicURL("https://sdfsfs.mp3");
+		article1.setCurrentMusic("https://sdfsfs.mp3");
 		//设置一个标签
 		Tag tag1 = new BaseTag();
 		tag1.setValue("历史");
@@ -59,6 +61,23 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 		img1.setRelativePath("pathaaaa");
 		article1.getImages().add(img1);
 		
+		// 创建第一首歌，作为选中歌曲
+		FileDescriptor fd1 = new BaseFileDescriptor();
+		fd1.setName("lalaaa");
+		fd1.setBucketPath("PandoraBox");
+		fd1.setRelativePath("pathaaaa");
+		fd1.setUrl("https://sdfsfs.mp3");
+		fd1.setSelected(true);
+		article1.getFiles().add(fd1);
+
+		// 创建第二首歌
+		FileDescriptor fd2 = new BaseFileDescriptor();
+		fd2.setName("lalaaa");
+		fd2.setBucketPath("PandoraBox");
+		fd2.setRelativePath("pathaaaa");
+		fd2.setUrl("https://aaaa.mp3");
+		article1.getFiles().add(fd2);
+		
 		//创建一个布局描述
 		LayoutBehavior horizontal1 = new BaseLayoutDescriptor();
 		article1.setLayoutBehavior(horizontal1);
@@ -66,7 +85,7 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 		 //创建第二篇文章
 		Article article2 = new BaseArticle();
 		article2.setAuthor(user);
-		article2.setMusicURL("https://sdfsfs.mp3");
+		article2.setCurrentMusic("https://sdfsfs.mp3");
 		//设置一个标签
 		Tag tag2 = new BaseTag();
 		tag2.setValue("文艺");
@@ -90,7 +109,7 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 		 //创建第三篇文章
 		Article article3 = new BaseArticle();
 		article3.setAuthor(user);
-		article3.setMusicURL("https://sdfsfs.mp3");
+		article3.setCurrentMusic("https://sdfsfs.mp3");
 		//设置一个标签
 		Tag tag3 = new BaseTag();
 		tag3.setValue("体育");
@@ -114,7 +133,7 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 		 //创建第四篇文章
 		Article article4 = new BaseArticle();
 		article4.setAuthor(user);
-		article4.setMusicURL("https://sdfsfs.mp3");
+		article4.setCurrentMusic("https://sdfsfs.mp3");
 		//设置一个标签
 		Tag tag4 = new BaseTag();
 		tag4.setValue("电影");
@@ -154,7 +173,7 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 			Assert.assertNotNull("没有找到id是"+id+"的文章", retrieved);
 			Assert.assertNotNull("文章没有作者", retrieved.getAuthor());
 			Assert.assertNotNull("文章没有图片", retrieved.getImages().get(0));
-			Assert.assertNotNull("文章没有音乐", retrieved.getMusicURL());
+			Assert.assertNotNull("文章没有音乐", retrieved.getCurrentMusic());
 		}
 		
 	}

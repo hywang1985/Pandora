@@ -2,7 +2,7 @@ package com.pandorabox.exception;
 
 public enum ExceptionInfo {
 	DEFAULT(500,"An error has occurred"),
-	NO_USER(NoUserException.class, 700, "No user exist in session");
+	NO_USER(NoUserException.class, 700, "No user exist in the session");
 
 	public static int DEFAULT_CODE = 500;
 	private Class clazz;

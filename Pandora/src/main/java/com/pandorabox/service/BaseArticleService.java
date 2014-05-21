@@ -15,8 +15,8 @@ public class BaseArticleService implements ArticleService {
 	private ArticleDao articleDao;
 	
 	@Override
-	public void addArticle(Article article) {
-		articleDao.save(article);
+	public int addArticle(Article article) {
+		return articleDao.save(article);
 	}
 
 	@Override
@@ -33,6 +33,16 @@ public class BaseArticleService implements ArticleService {
 	@Override
 	public List<Article> getArticlesByPage(int start, int count) {
 		return articleDao.getArticlesByPage(start, count);
+	}
+
+	@Override
+	public void updateArticle(Article article) {
+		articleDao.update(article);
+	}
+
+	@Override
+	public Article getArticleById(int articleId) {
+		return articleDao.get(articleId);
 	}
 
 }
