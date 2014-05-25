@@ -1,13 +1,12 @@
 package com.pandorabox.web.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -17,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.JsonPathExpectationsHelper;
 
 import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.LayoutBehavior;
@@ -33,7 +31,7 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	public static void initUser(){
 		user = new BaseUser();
 		user.setName("hywang");
-		user.setUsername("kidbone1985");
+		user.setUsername("fakeUser");
 		user.setEmail("jam_0917@sina.com");
 	}
 	
@@ -43,21 +41,21 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 		JSONArray addedImages = new JSONArray();
 		JSONObject img1 = new JSONObject();
 		JSONObject img2 = new JSONObject();
-		img1.put("url", "/angle.jpg");
-		img1.put("time", "1398511699");
-		img1.put("message", "OK");
-		img1.put("sign", "b0caf896238ec85bf3e3e14de80299bf");
-		img1.put("code", "200");
-		img1.put("image-width", "1024");
-		img1.put("image-height", "768");
-		img1.put("image-frames", "1");
-		img1.put("image-type", "JPEG");
-		img2.put("url", "/castle.jpg");
+		img1.put("url", "/fakeUser/castle.jpg");
+		img2.put("url", "/fakeUser/angle.jpg");
+		img2.put("time", "1398511699");
+		img2.put("message", "OK");
+		img2.put("sign", "b0caf896238ec85bf3e3e14de80299bf");
+		img2.put("code", "200");
+		img2.put("image-width", "1024");
+		img2.put("image-height", "768");
+		img2.put("image-frames", "1");
+		img2.put("image-type", "JPEG");
 		addedImages.add(img1);
 		addedImages.add(img2);
 		JSONArray addedMusics = new JSONArray();
-		JSONObject music1 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
-		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
+		JSONObject music1 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
+		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
 		addedMusics.add(music1);
 		addedMusics.add(music2);
 		mockMvc.perform(
@@ -70,10 +68,10 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 								addedImages.toString())
 						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
 								addedMusics.toString())
-						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1")
+						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1").accept(MediaType.APPLICATION_JSON)
 						.sessionAttr(CommonConstant.USER_CONTEXT, user))
-				.andExpect(content().string(
-						"{\"status\":\"OK\",\"URL\":\"/article/1\"}"))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
 		
 		mockMvc.perform(
@@ -86,10 +84,10 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 								addedImages.toString())
 						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
 								addedMusics.toString())
-						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1")
+						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1").accept(MediaType.APPLICATION_JSON)
 						.sessionAttr(CommonConstant.USER_CONTEXT, user))
-				.andExpect(content().string(
-						"{\"status\":\"OK\",\"URL\":\"/article/2\"}"))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
 		
 		mockMvc.perform(
@@ -102,10 +100,10 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 								addedImages.toString())
 						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
 								addedMusics.toString())
-						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1")
+						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1").accept(MediaType.APPLICATION_JSON)
 						.sessionAttr(CommonConstant.USER_CONTEXT, user))
-				.andExpect(content().string(
-						"{\"status\":\"OK\",\"URL\":\"/article/3\"}"))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
 		
 		mockMvc.perform(
@@ -118,10 +116,10 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 								addedImages.toString())
 						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
 								addedMusics.toString())
-						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1")
+						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1").accept(MediaType.APPLICATION_JSON)
 						.sessionAttr(CommonConstant.USER_CONTEXT, user))
-				.andExpect(content().string(
-						"{\"status\":\"OK\",\"URL\":\"/article/4\"}"))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
 	}
 	
@@ -130,16 +128,16 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 		JSONArray addedImages = new JSONArray();
 		JSONObject img1 = new JSONObject();
 		JSONObject img2 = new JSONObject();
-		img1.put("url", "/angle.jpg");
-		img2.put("url", "/castle.jpg");
+		img1.put("url", "/fakeUser/angle.jpg");
+		img2.put("url", "/fakeUser/castle.jpg");
 		addedImages.add(img1);
 		addedImages.add(img2);
 		JSONArray delImages = new JSONArray();
 		delImages.add(1);
 		delImages.add(2);
 		JSONArray addedMusics = new JSONArray();
-		JSONObject music1 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/aa.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
-		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/bb.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
+		JSONObject music1 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/aa.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
+		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/bb.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
 		addedMusics.add(music1);
 		addedMusics.add(music2);
 		JSONArray deleteedMusics = new JSONArray();

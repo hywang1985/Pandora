@@ -6,7 +6,7 @@
 		<id name="articleId" column="article_id">
 			<generator class="increment" />
 		</id>
-		<property name="currentMusic" column="current_music" type="string" />
+		<property name="pickedMusicIndex" column="picked_music" type="integer" />
 		<property name="title" type="string" />
 		<property name="text" type="text" />
 
@@ -35,9 +35,10 @@
 		<many-to-one name="author" class="User" lazy="false"
 			column="user_id" cascade="save-update">
 		</many-to-one>
-		<!--与LayoutBehavior是11单向映射，增加unique变成“1-1” -->
-		<many-to-one name="layoutBehavior" column="layout_id" cascade="save-update" lazy="false"
-			unique="true" />
+		<!--与LayoutBehavior是多对一的关系-->
+		<many-to-one name="layoutBehavior" class="LayoutBehavior" lazy="false"
+			column="layout_id" cascade="save-update">
+		</many-to-one>
 	
 	<!-- 采用Table per subclass策略存每一个article的子类 -->
 		<joined-subclass name="com.pandorabox.domain.impl.BaseArticle" table="base_article">

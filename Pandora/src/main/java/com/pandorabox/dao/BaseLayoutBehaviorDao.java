@@ -2,8 +2,11 @@ package com.pandorabox.dao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.pandorabox.domain.LayoutBehavior;
 
+@Repository("layoutDao")
 public class BaseLayoutBehaviorDao extends BaseGenericDataAccessor<LayoutBehavior, Integer>
 		implements LayoutBehaviorDao {
 

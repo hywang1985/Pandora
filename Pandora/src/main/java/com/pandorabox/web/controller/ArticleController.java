@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ import com.pandorabox.domain.impl.BaseTag;
 import com.pandorabox.domain.impl.BaseUser;
 import com.pandorabox.exception.PandoraException;
 import com.pandorabox.service.ArticleService;
+import com.pandorabox.service.LayoutService;
 import com.pandorabox.service.upyun.UpYunService;
 
 @Controller
@@ -46,10 +48,15 @@ import com.pandorabox.service.upyun.UpYunService;
 public class ArticleController extends BaseController {
 
 	@Autowired
-	ArticleService articleService;
+	private ArticleService articleService;
 
 	@Autowired
-	UpYunService upService;
+	private UpYunService upService;
+	
+	@Autowired 
+	private LayoutService layoutService;
+	
+	private static Pattern filePattern = Pattern.compile("^/\\w*/");
 
 	// /** 显示单篇文章 */
 	// @RequestMapping(value = "/{id}")
@@ -108,10 +115,10 @@ public class ArticleController extends BaseController {
 	 * */
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Object addArticle(HttpServletRequest request,
+	public  Map<String,Object> addArticle(HttpServletRequest request,
 			HttpServletResponse response) {
-		JSONObject result = new JSONObject();
-		result.put("status", "FAIL");
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_FAIL);
 		Article article = null;
 		LayoutBehavior layoutBehavior = null;
 		try {
@@ -159,37 +166,37 @@ public class ArticleController extends BaseController {
 						.getParameter(CommonConstant.ARTICLE_LAYOUT_KEY);
 
 				if (articleLayout != null && !"".equals(articleLayout)) {
-					if (LayoutBehavior.HORIZONTAL_LAYOUT_NAME
-							.equalsIgnoreCase(articleLayout)) {
+					layoutBehavior = layoutService.getLayoutByName(articleLayout);
+					if(layoutBehavior==null){
 						layoutBehavior = new BaseLayoutDescriptor();
-						article.setLayoutBehavior(layoutBehavior);
-					} else {
-						layoutBehavior = new BaseLayoutDescriptor();
-						layoutBehavior
-								.setName(LayoutBehavior.CENTER_LAYOUT_NAME);
-						layoutBehavior
-								.setRelativeCSSPath(LayoutBehavior.DEFAULT_CENTER_RELATIVE_CSS_PATH);
+						layoutBehavior.setName(articleLayout);
 					}
+					article.setLayoutBehavior(layoutBehavior);
 				}
+				
 				article.setAuthor(author);
 				article.setTitle(title);
 				article.setText(content);
-				article.getImages().addAll(uploadedImages);
-				article.getFiles().addAll(uploadedMusics);
-				// 处理选中音乐参数
-				String musicSelectedIndex = request
-						.getParameter(CommonConstant.MUSIC_SELECTED_INDEX_KEY);
-				setMusicSelected(article, uploadedMusics, musicSelectedIndex);
-				article.setLayoutBehavior(layoutBehavior);
+				if(uploadedImages!=null){
+					article.getImages().addAll(uploadedImages);
+				}
+				if(uploadedMusics!=null){
+					article.getFiles().addAll(uploadedMusics);
+					// 处理选中音乐参数
+					String musicSelectedIndex = request
+							.getParameter(CommonConstant.MUSIC_SELECTED_INDEX_KEY);
+					setMusicSelected(article, uploadedMusics, musicSelectedIndex);
+				}
 				author.getArticles().add(article);
 				int id = articleService.addArticle(article);
-				result.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
-				result.put("URL", "/article/" + id);
+				resultMap.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
+				resultMap.put("URL", "/article/" + id);
+				resultMap.put("data",article);
 			}
 		} catch (Exception e) {
 			throw new PandoraException(e);
 		}
-		return result;
+		return resultMap;
 	}
 
 
@@ -202,7 +209,7 @@ public class ArticleController extends BaseController {
 				if( Integer.parseInt(musicSelectedIndex)==i){
 					FileDescriptor music = article.getFiles().get(i);
 					music.setSelected(true);
-					article.setCurrentMusic(music.getUrl());
+					article.setPickedMusicIndex(i);
 					break;
 				}
 			}
@@ -330,18 +337,12 @@ public class ArticleController extends BaseController {
 						.getParameter(CommonConstant.ARTICLE_LAYOUT_KEY);
 
 				if (articleLayout != null && !"".equals(articleLayout)) {
-
-					if (LayoutBehavior.HORIZONTAL_LAYOUT_NAME
-							.equalsIgnoreCase(articleLayout)) {
+					layoutBehavior = layoutService.getLayoutByName(articleLayout);
+					if(layoutBehavior==null){
 						layoutBehavior = new BaseLayoutDescriptor();
-						article.setLayoutBehavior(layoutBehavior);
-					} else {
-						layoutBehavior = new BaseLayoutDescriptor();
-						layoutBehavior
-								.setName(LayoutBehavior.CENTER_LAYOUT_NAME);
-						layoutBehavior
-								.setRelativeCSSPath(LayoutBehavior.DEFAULT_CENTER_RELATIVE_CSS_PATH);
+						layoutBehavior.setName(articleLayout);
 					}
+					article.setLayoutBehavior(layoutBehavior);
 				}
 				article.setTitle(title);
 				article.setText(content);
@@ -355,9 +356,6 @@ public class ArticleController extends BaseController {
 							.getParameter(CommonConstant.MUSIC_SELECTED_INDEX_KEY);
 					setMusicSelected(article, uploadedMusics,
 							musicSelectedIndex);
-				}
-				if (layoutBehavior != null) {
-					article.setLayoutBehavior(layoutBehavior);
 				}
 				articleService.updateArticle(article);
 				result.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
@@ -415,8 +413,12 @@ public class ArticleController extends BaseController {
 		Iterator it = imagesInfos.iterator();
 		if(!isDelete){
 			while(it.hasNext()){
+				String name = null;
 				JSONObject info = JSONObject.fromObject(it.next());
 				String relativeUrl = info.getString(CommonConstant.URL_KEY);
+				//从类似于/user/abc.pic这样的路径下通过正则表达式找到文件名abc.pic
+				name = filePattern.split(relativeUrl)[1];
+				
 				switch (fileType) {
 				case FILE:
 					if (handledResult == null) {
@@ -424,7 +426,7 @@ public class ArticleController extends BaseController {
 					}
 					
 					FileDescriptor musicDescriptor = new BaseFileDescriptor();
-					// imageDescriptor.setName(image.getName());
+					musicDescriptor.setName(name);
 					musicDescriptor.setBucketPath(CommonConstant.IMG_BUCKET_NAME);
 					musicDescriptor.setRelativePath(relativeUrl);
 					String musicFullUrl = CommonConstant.HTTP+CommonConstant.FILE_BUCKET_NAME+CommonConstant.DEFAULT_UPYUN_DOMAIN_SUFFIX+relativeUrl;
@@ -438,7 +440,7 @@ public class ArticleController extends BaseController {
 						handledResult = new ArrayList<ImageDescriptor>();
 					}
 					ImageDescriptor imageDescriptor = new BaseImageDescriptor();
-					// imageDescriptor.setName(image.getName());
+					imageDescriptor.setName(name);
 					imageDescriptor.setBucketPath(CommonConstant.IMG_BUCKET_NAME);
 					imageDescriptor.setRelativePath(relativeUrl);
 					String imageFullUrl = CommonConstant.HTTPS+CommonConstant.IMG_BUCKET_NAME+CommonConstant.DEFAULT_UPYUN_DOMAIN_SUFFIX+relativeUrl;

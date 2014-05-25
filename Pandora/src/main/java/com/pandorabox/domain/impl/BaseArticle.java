@@ -16,7 +16,7 @@ public class BaseArticle implements Article {
 	
 	private int articleId;
 	
-	private String currentMusic;
+	private int pickedMusicIndex;
 
 	private List<ImageDescriptor> images = new ArrayList<ImageDescriptor>(); 
 	
@@ -99,12 +99,12 @@ public class BaseArticle implements Article {
 		this.files = files;
 	}
 
-	public String getCurrentMusic() {
-		return currentMusic;
+	public int getPickedMusicIndex() {
+		return pickedMusicIndex;
 	}
 
-	public void setCurrentMusic(String currentMusic) {
-		this.currentMusic = currentMusic;
+	public void setPickedMusicIndex(int pickedMusicIndex) {
+		this.pickedMusicIndex = pickedMusicIndex;
 	}
 
 }

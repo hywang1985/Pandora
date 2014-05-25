@@ -3,7 +3,89 @@ $(document).ready(function () {
 	var $Kint; //Keditor插件
 	var $keEditor;
 	var $keContainer;
+	var pageStartIndex = 2; //下一页的开始索引
+	var musicPicked = 0; //当前文章播放的音乐 hywang
+	//音乐播放器
+	var musicPlayer = new Audio();
 	
+	$(".bottombar a.music").click(function(){
+		if(musicPlayer.paused){
+			musicPlayer.play();
+		}else{
+			musicPlayer.pause();
+		}
+	});
+	//初始化文章节点
+	ajaxLoad();
+	//动态加载文章
+	function ajaxLoad(){
+		$.ajax({
+			 url: "article/dyload",
+			 dataType:"json",
+			 headers:{
+				"startIndex": pageStartIndex
+				},		
+		 success: function(responseText, textStatus, jqXHR){
+			 if(responseText.status=="OK"){
+				 var articles = responseText.data;
+				 for ( var i = 0; i < articles.length; i++) {
+					var articleData = articles[i];
+					//创建文章
+					createArticle(articleData);
+					//当前选中的artilce元素
+					showCurrentArticle();
+				}
+				 pageStartIndex = pageStartIndex+2;
+			 }else{
+				 alert(textStratus);
+			 }
+		 },
+		 error: function(jqXHR, textStatus, errorThrown){
+			 var exceptionInfo = JSON.parse(jqXHR.responseText);
+			alert("code: "+exceptionInfo.code+"message: "+ exceptionInfo.message);
+		 }
+	});
+	}
+	
+	//创建文章节点
+	function createArticle(articleData){
+		var $articleContainer = $("ul.article_container");
+		var $articleLi = $("<li>");
+		//main
+		var $articleMain = $("<div>").attr("aid",articleData.articleId).addClass("article");
+		//处理图片
+		var $displayImgContainer = $("<div>");
+		var $hiddenImgContainer = $("<div>").css("display","none").addClass("ownedImgs");
+		for ( var i = 0; i < articleData.images.length; i++) {
+			var img = articleData.images[i];
+			var $img = $("<img>").attr("src",img.url);
+			if(i==0){
+				$displayImgContainer.addClass("wrapbg").append($img).appendTo($articleMain);
+			}
+			var $image = $("<img/>").attr("src",img.src);
+	  	 	var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
+	  	 	$("<li/>").append($image).append($delLink).appendTo($hiddenImgContainer);
+			}
+		$articleMain.append($displayImgContainer);
+		$articleMain.append($hiddenImgContainer);
+		//处理标题
+		$("<h1>").addClass("shown_title").text(articleData.title).appendTo($articleMain);
+		//处理正文
+		$("<div>").addClass("inner").html(articleData.text).appendTo($articleMain);
+		//处理音乐
+		var $musicContainer = $("<div>").css("display","none").addClass("ownedMusics");
+		for ( var i = 0; i < articleData.files.length; i++) {
+			var music = articleData.files[i];
+			var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
+			var $li = $("<li/>").text(music.name+"("+3.23+"MB)").append($delLink);
+			if(i==articleData.pickedMusicIndex){
+				$("<cite>").append($("<img>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($li);
+			}
+			$li.appendTo($musicContainer);
+		}
+		$articleMain.append($musicContainer);
+		$articleLi.append($articleMain).appendTo($articleContainer);
+	}
 	//当前文章的操作，POST/GET/PUT/DELETE其中一种
 	var articleOperation = "POST";
 	
@@ -20,8 +102,6 @@ $(document).ready(function () {
 	//默认只展示第一篇文章
 	var currentArticleIndex =0;
 	
-	//当前选中的artilce元素
-	showCurrentArticle();
 	var $currentArticle;
 	function confSize() {
 		var h = $('.article').height() - $(".article h1").height() - 80;
@@ -74,6 +154,7 @@ $(document).ready(function () {
 			if(currentArticleIndex > $(".article").size()-1){
 			  //ajax加载新的文章
 			  console.log("currentIndex: "+currentArticleIndex+" articles_count:"+$(".article").size());
+			  ajaxLoad();
 			  alert("ajax loading...");	
 			}else{
 				showCurrentArticle();
@@ -396,10 +477,10 @@ $(document).ready(function () {
 							imgformAuthorizationHelper.bucketType = "file";
 							imgformAuthorizationHelper.askAuthorization(function(requestOptions, textStatus, jqXHR){ //2.1申请文件空间授权
 								uploadFile(requestOptions,uploadMusicArr,$imgForm[0],submittedMusics, //上传音乐
-										submitToPandora);
+										submitToPandora(postSubmit,errorCallback));
 							});
 						}else { //如果没有音乐要上传
-							submitToPandora();
+							submitToPandora(postSubmit,errorCallback);
 						}
 					});
 				},
@@ -411,17 +492,30 @@ $(document).ready(function () {
 				imgformAuthorizationHelper.bucketType = "file";
 				imgformAuthorizationHelper.askAuthorization(function(requestOptions, textStatus, jqXHR){ //2.1申请文件空间授权
 					uploadFile(requestOptions,uploadMusicArr,$imgForm[0],submittedMusics, //上传音乐
-							submitToPandora);
+							submitToPandora(postSubmit,errorCallback));
 				});
 			}else{ //
-				submitToPandora();
+				submitToPandora(postSubmit,errorCallback);
 			}
 				
 			
 		});
 		
+		function postSubmit(responseText, textStatus, jqXHR){
+			hideElements();
+			alert(responseText.URL+": "+responseText.status);
+			if(articleOperation=="POST"){
+				createArticle(responseText.data);
+				showCurrentArticle();
+			}
+		}
+		
+		function errorCallback(jqXHR, responseText, errorThrown){
+			alert(errorThrown);
+		}
+		
 		//如果所有文件传完，则向潘多拉服务器提交文件更新信息   
-		function submitToPandora(){
+		function submitToPandora(successCallback,errorCallback){
 			url = "article";
 			var result="修改文章";
 			if(articleOperation=="PUT"){
@@ -435,25 +529,23 @@ $(document).ready(function () {
 			$.ajax({
 				type: articleOperation,
 				url: url,
+				dataType: "json",
 				data: {
 					"addedImgs":JSON.stringify(submittedImages),
 					"delImgs":JSON.stringify(deleteImgIds),
 					"title":$editTitle.val(),
 					"content":$keEditor.html(),
 					"addedMscs": JSON.stringify(submittedMusics),
-					"musicSelected": 1, //hywang
+					"musicSelected": musicPicked,
 					"delMscs":JSON.stringify(deleteMusicIds),
 					"layout":currentLayout,
 					"tags":tags
 				},
-//			 traditional:true,
-				// contentType: "application/json",
 				success: function(responseText, textStatus, jqXHR){
-					hideElements();
-					alert(result+responseText.URL+": "+responseText.status);
+					successCallback(responseText, textStatus, jqXHR);
 				},
 				error: function(jqXHR, responseText, errorThrown){
-					alert(textStatus);
+					errorCallback(jqXHR, responseText, errorThrown);
 				}
 			});
 		}

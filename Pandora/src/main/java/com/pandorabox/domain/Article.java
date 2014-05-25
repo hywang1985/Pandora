@@ -15,8 +15,8 @@ public interface Article extends Serializable{
 	/**
 	 * 文章当前选中的音乐URL
 	 */
-	public String getCurrentMusic(); 
-	public void setCurrentMusic(String musicURL);
+	public int getPickedMusicIndex();
+	public void setPickedMusicIndex(int index);
 	
 	/**
 	 * 文章的所有图片
