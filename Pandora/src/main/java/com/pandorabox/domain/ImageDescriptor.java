@@ -39,4 +39,6 @@ public interface ImageDescriptor extends Serializable{
 	 */
 	public String getUrl();
 	public void setUrl(String url);
+	
+	public String getSnapshotUrl();
 }

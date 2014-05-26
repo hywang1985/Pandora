@@ -1,7 +1,9 @@
 package com.pandorabox.domain.impl;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
+import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.ImageDescriptor;
 
 public class BaseImageDescriptor implements ImageDescriptor {
@@ -70,6 +72,12 @@ public class BaseImageDescriptor implements ImageDescriptor {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@Override
+	@JsonProperty
+	public String getSnapshotUrl() {
+		return url+CommonConstant.IMAGE_SNAPSHOT_SUFFIX;
 	}
 
 

@@ -85,6 +85,8 @@ public class CommonConstant {
 	
 	public static final String STATUS_FAIL = "FAIL";
 	
+	public static final String IMAGE_SNAPSHOT_SUFFIX="!snapshot";
+	
 	public static Map<String,Map<String,String>> bucketAuthorizations = new HashMap<String,Map<String,String>>();
 	
 	

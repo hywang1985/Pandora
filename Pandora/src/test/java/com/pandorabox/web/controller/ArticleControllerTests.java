@@ -106,6 +106,9 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
 		
+		//第四篇文章要在测试中删除，相应的删除图片，为了不影响前三个数据，这理图片设置成别的，需要真的上传一下DeathGod和Griffin两张图片
+		img1.put("url", "/fakeUser/DeathGod.jpg");
+		img2.put("url", "/fakeUser/Griffin_wallpaper.jpg");
 		mockMvc.perform(
 				post("/article").param(CommonConstant.ARTICLE_TAGS_KEY, "企业,篮球")
 						.param(CommonConstant.ARTICLE_TITLE_KEY, "title4")
@@ -133,8 +136,9 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 		addedImages.add(img1);
 		addedImages.add(img2);
 		JSONArray delImages = new JSONArray();
-		delImages.add(1);
-		delImages.add(2);
+		//不需要真的删除已经上传好的这两张图片
+		//		delImages.add(1);
+		//		delImages.add(2);
 		JSONArray addedMusics = new JSONArray();
 		JSONObject music1 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/aa.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
 		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/bb.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
@@ -181,11 +185,11 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	public void deleterticle() throws Exception {
 
 		mockMvc.perform(
-				delete("/article/2")
+				delete("/article/4")
 						.sessionAttr(CommonConstant.USER_CONTEXT, user))
 				.andExpect(
 						content().string(
-								"{\"status\":\"OK\",\"deleted\":2}"))
+								"{\"status\":\"OK\",\"deleted\":4}"))
 				.andDo(print());
 	}
 	
