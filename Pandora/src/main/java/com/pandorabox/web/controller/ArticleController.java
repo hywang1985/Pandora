@@ -452,7 +452,7 @@ public class ArticleController extends BaseController {
 			}
 		}else{
 			while(it.hasNext()){
-				Integer descriptorId = (Integer) it.next();
+				Integer descriptorId = Integer.parseInt((String)it.next());
 				if (handledResult == null) {
 					handledResult = new ArrayList<Integer>();
 				}

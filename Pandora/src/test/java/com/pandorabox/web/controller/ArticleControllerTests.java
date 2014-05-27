@@ -137,15 +137,15 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 		addedImages.add(img2);
 		JSONArray delImages = new JSONArray();
 		//不需要真的删除已经上传好的这两张图片
-		//		delImages.add(1);
-		//		delImages.add(2);
+		//		delImages.add("1");
+		//		delImages.add("2");
 		JSONArray addedMusics = new JSONArray();
 		JSONObject music1 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/aa.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
 		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/bb.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
 		addedMusics.add(music1);
 		addedMusics.add(music2);
 		JSONArray deleteedMusics = new JSONArray();
-		deleteedMusics.add(1);
+		deleteedMusics.add("1");
 		mockMvc.perform(
 				put("/article/1")
 						.param(CommonConstant.ARTICLE_TAGS_KEY, "文艺,法克")
