@@ -12,9 +12,13 @@
 	<!-- 配置数据源参数 -->
 	<context:property-placeholder location="classpath:/conf/datasource.properties" />
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close" p:driverClassName="${datasource.driverClassName}"
-		p:url="${datasource.url}" p:username="${datasource.username}"
-		p:password="${datasource.password}" />
+		destroy-method="close" p:driverClassName="${testDB.driverClassName}"
+		p:url="${testDB.url}" p:username="${testDB.username}"
+		p:password="${testDB.password}" />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
 
 	<!-- 配置Hibernate4,Spring Hibernate4集成没有hibernateTemplate和DaoSupport，只用SessionFactory -->
 	<bean id="sessionFactory"
@@ -24,8 +28,8 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<!-- 网站上线运行，此设置应为none -->
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- 第一次跑测试用例的时候调成create，测试驱动开发 -->
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 			</props>
 		</property>
 	</bean>

@@ -122,9 +122,6 @@
     <dt><button class="uploadImgBtn" ></button></dt>
     <dd>
       <ul class="cl">
-        <li descriptorId="1"><img src="images/u1.png"/><a href="#" class="delImg">删除</a></li>
-        <li descriptorId="2"><img src="images/u10.png"/><a href="#" class="delImg">删除</a></li>
-        <li descriptorId="3"><img src="images/u19.png"/><a href="#" class="delImg">删除</a></li>
       </ul>
     </dd>
   </dl>
@@ -133,8 +130,6 @@
      <dt><button class="uploadMusicBtn" ></button></dt>
 		<dd>
 			<ul class="cl">
-				<li><a href="#" class="delMsc">删除</a><cite><img src="images/play16.ico"></cite>花房姑娘(5.36MB)</li>
-				<li><a href="#" class="delMsc">删除</a>花房姑娘(2.87MB)</li>
 			</ul>
 		</dd>
   </dl>

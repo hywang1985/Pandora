@@ -12,7 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @ContextConfiguration({
 		"file:src/main/webapp/WEB-INF/spring-config/pandorabox-servlet.xml",
-		"file:src/main/webapp/WEB-INF/spring-config/applicationContext.xml" })
+		"classpath:applicationContext.xml" })
 public class AbstractContextControllerTests {
 
 	protected MockMvc mockMvc;

@@ -8,6 +8,10 @@ $(document).ready(function () {
 	var pandoraSubmitter = new pandoraSubmitter();
 	var isCreate = false; //是否是新建文章
 	var aid; //当前文章的ID
+	//默认展示第一篇文章
+	var currentArticleIndex =0;
+	//当前文章
+	var $currentArticle;
 	//音乐播放器
 	var musicPlayer = new Audio();
 	
@@ -33,16 +37,24 @@ $(document).ready(function () {
 			 if(responseText.status=="OK"){
 				 var articles = responseText.data;
 				 if(articles.length==0){
-					 currentArticleIndex--;
+					 if(hasArticle()){
+						 currentArticleIndex--;
+					 }
 					 alert("No articles any more");
+					 //如果之前就没有文章，也没新加载出文章
+					 if(!hasArticle()){
+						 var tempArticle = {};
+						 $currentArticle = createArticle(tempArticle, true);
+					 }
+				 }else{
+					 for ( var i = 0; i < articles.length; i++) {
+						 var articleData = articles[i];
+						 //创建文章
+						 createArticle(articleData);
+						 //当前选中的artilce元素
+					 }
 				 }
 				 
-				 for ( var i = 0; i < articles.length; i++) {
-					var articleData = articles[i];
-					//创建文章
-					createArticle(articleData);
-					//当前选中的artilce元素
-				}
 				 showCurrentArticle();
 				 pageStartIndex = pageStartIndex+3;
 			 }else{
@@ -56,44 +68,55 @@ $(document).ready(function () {
 	});
 	}
 	
+	function hasArticle(){
+		return $("ul.article_container > li").length>0;
+	}
+	
 	//创建文章节点
-	function createArticle(articleData){
+	function createArticle(articleData,isNew){
 		var $articleContainer = $("ul.article_container");
-		var $articleLi = $("<li/>").attr("descriptorid",articleData.imageId);
+		var $articleLi = isNew? $("<li/>"): $("<li/>").attr("descriptorid",articleData.imageId);
+		
 		//main
 		var $articleMain = $("<div/>").attr("aid",articleData.articleId).addClass("article");
-		//处理图片
+		
 		var $displayImgContainer = $("<div/>");
 		var $hiddenImgContainer = $("<div/>").css("display","none").addClass("ownedImgs");
-		for ( var i = 0; i < articleData.images.length; i++) {
-			var img = articleData.images[i];
-			if(i==0){
-				var $img = $("<img/>").attr("src",img.url);
-				$displayImgContainer.addClass("wrapbg").append($img).appendTo($articleMain);
-			}
-			var $image = $("<img/>").attr("src",img.snapshotUrl);
-	  	 	var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
-	  	 	$("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink).appendTo($hiddenImgContainer);
-			}
-		$articleMain.append($displayImgContainer);
-		$articleMain.append($hiddenImgContainer);
 		//处理标题
 		$("<h1/>").addClass("shown_title").text(articleData.title).appendTo($articleMain);
 		//处理正文
 		$("<div/>").addClass("inner").html(articleData.text).appendTo($articleMain);
-		//处理音乐
+		
 		var $musicContainer = $("<div/>").css("display","none").addClass("ownedMusics");
-		for ( var i = 0; i < articleData.files.length; i++) {
-			var music = articleData.files[i];
-			var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
-			var $musicLi = $("<li/>").attr("descriptorid",music.fileId).attr("url",music.url).text(music.name+"("+3.23+"MB)").append($delLink);
-			if(i==articleData.pickedMusicIndex){
-				$("<cite/>").append($("<img/>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
+		if(!isNew){
+			//处理图片
+			for ( var i = 0; i < articleData.images.length; i++) {
+				var img = articleData.images[i];
+				if(i==0){
+					var $img = $("<img/>").attr("src",img.url);
+					$displayImgContainer.addClass("wrapbg").append($img).appendTo($articleMain);
+				}
+				var $image = $("<img/>").attr("src",img.snapshotUrl);
+				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
+				$("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink).appendTo($hiddenImgContainer);
 			}
-			$musicLi.appendTo($musicContainer);
+			//处理音乐
+			for ( var i = 0; i < articleData.files.length; i++) {
+				var music = articleData.files[i];
+				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
+				var $musicLi = $("<li/>").attr("descriptorid",music.fileId).attr("url",music.url).text(music.name+"("+3.23+"MB)").append($delLink);
+				if(i==articleData.pickedMusicIndex){
+					$("<cite/>").append($("<img/>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
+				}
+				$musicLi.appendTo($musicContainer);
+			}
 		}
+		$articleMain.append($displayImgContainer);
+		$articleMain.append($hiddenImgContainer);
+		
 		$articleMain.append($musicContainer);
 		$articleLi.append($articleMain).appendTo($articleContainer);
+		return $articleLi;
 	}
 	
 	//计算inner的高度
@@ -106,10 +129,6 @@ $(document).ready(function () {
 			$Kint = K;
 		});
 	$(".keditor").hide();
-	//默认展示第一篇文章
-	var currentArticleIndex =0;
-	
-	var $currentArticle;
 	function confSize() {
 		var h = $('.article').height() - $(".article h1").height() - 80;
 		$(".article .inner").css("height", h);
@@ -280,18 +299,20 @@ $(document).ready(function () {
 		deleteImgIds.splice(0,deleteImgIds.length); 
 		$(".setting,.cpbottom").show();
 		$(".bar,.bottombar").hide();
-		$shownTitle.hide();
+		
 		$(".bg .cl").empty();
 		$(".music .cl").empty();
 		
-		var contains_edit_title = $currentArticle.has(".edit_title").length;
-		var contains_keditor= $currentArticle.has(".keditor").length;
-		var contains_kecontainer=$currentArticle.has(".ke-container").length;
-		if( !contains_edit_title && !contains_keditor && !contains_kecontainer){
-			//$currentArticle.append($editTitle).append($(".keditor"));
-			$currentArticle.append($editTitle);
-			//$currentArticle.append($editTitle).append($keEditor);
-		}
+			$shownTitle.hide();
+			var contains_edit_title = $currentArticle.has(".edit_title").length;
+			var contains_keditor= $currentArticle.has(".keditor").length;
+			var contains_kecontainer=$currentArticle.has(".ke-container").length;
+			if( !contains_edit_title && !contains_keditor && !contains_kecontainer){
+				//$currentArticle.append($editTitle).append($(".keditor"));
+				$currentArticle.append($editTitle);
+				//$currentArticle.append($editTitle).append($keEditor);
+			}
+		
 		if(!$keEditor){
 			 createEditor();
 		}

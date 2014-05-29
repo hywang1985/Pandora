@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author hywang
  * */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:src/main/webapp/WEB-INF/spring-config/applicationContext.xml")
+@ContextConfiguration("classpath:applicationContext.xml")
 public class BasePandoraServiceTest {
 
 }
