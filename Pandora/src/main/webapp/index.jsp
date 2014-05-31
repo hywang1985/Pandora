@@ -14,7 +14,7 @@
 <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
 <link href="css/layout.css" rel="stylesheet" type="text/css" />
 <link href="css/vertical.css" rel="stylesheet" type="text/css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 <!--KindEditor-->
 <script charset="utf-8" src="js/kindeditor-all-min.js"></script>
 <script charset="utf-8" src="js/lang/zh_CN.js"></script>
@@ -48,8 +48,6 @@
 <!--   <li> -->
 <!--     <div class="article" aid="1"> -->
 <!--       <div class="wrapbg"> <img src="images/u1.png" alt="梵高 . 星月夜"/> </div> -->
-<!--       <div class="wrapbg" style="display:none"> <img src="images/u10.png" /> </div> -->
-<!--       <div class="wrapbg" style="display:none"> <img src="images/u19.png" /> </div> -->
 <!--       <h1 class="shown_title">梵高 . 星月夜</h1> -->
 <!--       <div class="inner"> -->
 <!--         <p><b>这位易激动而富于神经质的艺术家，在其短暂一生中留下大量的杰作。他的艺术，是心灵的表现。他曾说：“作画我并不谋求准确，我要更有力地表现我自己”，他并不关注于客观物象的再现，而注重表现对事物的感受。亨利·福西隆在论述凡高时说道：“他是他时代中最热情和最抒情的画家。……对他来说，一切事物都具有表情、迫切性和吸引力。一切形式、一切面容都具有一种惊人的诗意”，“他感到大自然生命中具有一种神秘的升华，他希望将它捕捉。这一切对他意味着是一个充满狂热和甜蜜的谜，他希望他的艺术能将其吞没一切的热情传达给人类” (奥夫沙罗夫编《凡高论》，1987年，第95页)。</b></p> -->

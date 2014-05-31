@@ -7,6 +7,8 @@ $(document).ready(function () {
 	var musicPicked = 0; //当前文章播放的音乐 hywang
 	var pandoraSubmitter = new pandoraSubmitter();
 	var isCreate = false; //是否是新建文章
+	//创建文章的layout
+	var currentLayout;
 	var aid; //当前文章的ID
 	//默认展示第一篇文章
 	var currentArticleIndex =0;
@@ -14,12 +16,17 @@ $(document).ready(function () {
 	var $currentArticle;
 	//音乐播放器
 	var musicPlayer = new Audio();
+	//是否播放音乐,默认为true
+	var play = true;
+	musicPlayer.loop = "loop";
 	
 	$(".bottombar a.music").click(function(){
-		if(musicPlayer.paused){
+		if(!play){
 			musicPlayer.play();
+			play = true;
 		}else{
 			musicPlayer.pause();
+			play = false;
 		}
 		return false;
 	});
@@ -41,10 +48,9 @@ $(document).ready(function () {
 						 currentArticleIndex--;
 					 }
 					 alert("No articles any more");
-					 //如果之前就没有文章，也没新加载出文章
+					 //如果之前就没有文章，也没新加载出文章hywang
 					 if(!hasArticle()){
-						 var tempArticle = {};
-						 $currentArticle = createArticle(tempArticle, true);
+						alert("No records at all!");
 					 }
 				 }else{
 					 for ( var i = 0; i < articles.length; i++) {
@@ -73,32 +79,26 @@ $(document).ready(function () {
 	}
 	
 	//创建文章节点
-	function createArticle(articleData,isNew){
+	function createArticle(articleData){
 		var $articleContainer = $("ul.article_container");
-		var $articleLi = isNew? $("<li/>"): $("<li/>").attr("descriptorid",articleData.imageId);
-		
+		var $articleLi = $("<li/>");
 		//main
-		var $articleMain = $("<div/>").attr("aid",articleData.articleId).addClass("article");
+		var $articleMain = $("<div/>").addClass("article").attr("aid",articleData.articleId);
 		
 		var $displayImgContainer = $("<div/>");
 		var $hiddenImgContainer = $("<div/>").css("display","none").addClass("ownedImgs");
-		//处理标题
-		$("<h1/>").addClass("shown_title").text(articleData.title).appendTo($articleMain);
-		//处理正文
-		$("<div/>").addClass("inner").html(articleData.text).appendTo($articleMain);
-		
 		var $musicContainer = $("<div/>").css("display","none").addClass("ownedMusics");
-		if(!isNew){
 			//处理图片
 			for ( var i = 0; i < articleData.images.length; i++) {
 				var img = articleData.images[i];
+				var ic;
 				if(i==0){
 					var $img = $("<img/>").attr("src",img.url);
-					$displayImgContainer.addClass("wrapbg").append($img).appendTo($articleMain);
+					ic = $displayImgContainer.addClass("wrapbg").append($img);
 				}
 				var $image = $("<img/>").attr("src",img.snapshotUrl);
 				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
-				$("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink).appendTo($hiddenImgContainer);
+				$hiddenImgContainer.append($("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink));
 			}
 			//处理音乐
 			for ( var i = 0; i < articleData.files.length; i++) {
@@ -108,15 +108,23 @@ $(document).ready(function () {
 				if(i==articleData.pickedMusicIndex){
 					$("<cite/>").append($("<img/>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
 				}
-				$musicLi.appendTo($musicContainer);
+				$musicContainer.append($musicLi);
 			}
-		}
+		
+		//处理标题
+		$articleMain.append($("<h1/>").addClass("shown_title").text(articleData.title));
+		//处理正文
+		$articleMain.append($("<div/>").addClass("inner").html(articleData.text));
+		
 		$articleMain.append($displayImgContainer);
 		$articleMain.append($hiddenImgContainer);
 		
 		$articleMain.append($musicContainer);
-		$articleLi.append($articleMain).appendTo($articleContainer);
-		return $articleLi;
+		if(ic){
+			$articleMain.prepend(ic);
+		}
+		$articleLi.append($articleMain);
+		$articleContainer.append($articleLi);
 	}
 	
 	//计算inner的高度
@@ -154,12 +162,23 @@ $(document).ready(function () {
 				$(element).show(function(){
 					$currentArticle = $(".article").eq(currentArticleIndex);
 					 aid = $currentArticle.attr("aid");
-					//设置音乐播放器的音轨，并且播放
-					musicPlayer.pause();
-					musicPlayer.src= $currentArticle.find(".ownedMusics .pickedMusic").parent().attr("url");
-					if(!musicPlayer.paused){
-						musicPlayer.play();
+					var $pickedMusicCite=$currentArticle.find(".ownedMusics .pickedMusic");
+					if($pickedMusicCite){
+						var $pickedMusicLi = $pickedMusicCite.parent();
+						if($pickedMusicLi){
+							var url=$pickedMusicLi.attr("url");
+							if(url){
+								musicPlayer.src = url;
+							}else{
+								musicPlayer.src=  "";
+							}
+						}
 					}
+					
+					//设置音乐播放器的音轨，根据播放状态播放
+					 if(play){
+						 musicPlayer.play();
+					 }
 					$shownTitle = $currentArticle.find(".shown_title");
 				});
 			
@@ -180,8 +199,6 @@ $(document).ready(function () {
 				showCurrentArticle();
 			}else if(currentArticleIndex == 0){
 				showCurrentArticle();
-				alert("No articles any more.");
-				console.log("No articles any more.");	
 			}
 		
 		} else if (event.keyCode == 39) { //判断当event.keyCode 为39时（即键）
@@ -257,15 +274,16 @@ $(document).ready(function () {
 		var $containedImgs = $currentArticle.find(".ownedImgs > li");
 		var $containedMusics = $currentArticle.find(".ownedMusics > li");
 		var $cpImgContainer = $(".bg .cl");
-		var $imgsToEdit=$(".bg .cl li");
+//		var $imgsToEdit=$(".bg .cl li");
 		var $cpMusicContainer = $(".music .cl");
-		var $musicsToEdit=$(".music .cl li");
+//		var $musicsToEdit=$(".music .cl li");
 		//清空待编辑的图片，需要将当前文章的图片读到.bg里，同理music
-		$imgsToEdit.remove();
-		$cpImgContainer.append($containedImgs);
-		$musicsToEdit.remove();
-		$cpMusicContainer.append($containedMusics);
-		$.each( $imgsToEdit, function(i, li){
+//		$imgsToEdit.remove();
+		$cpImgContainer.empty().append($containedImgs);
+//		$musicsToEdit.remove();
+		var $imgsToEdit=$(".bg .cl li");
+		$cpMusicContainer.empty().append($containedMusics);
+		$.each($imgsToEdit, function(i, li){
 			 $(li).show();
 		 });
 		$shownTitle.hide();
@@ -327,13 +345,16 @@ $(document).ready(function () {
 		return false;
 	})
 
-	$('.cpbottom .cancel').click(hideElements);
+	$('.cpbottom .cancel').click(function(){
+		hideElements();
+		restoreEditItems();
+		return false;
+	});
 	
 	function hideElements() {
 		$(".cpbottom,.setting,.cp").hide();
 		$editTitle.hide();
 		$shownTitle.show();
-		restoreEditItems();
 		var $editImgs=$(".bg .cl").find("li");
 		var $editMusics = $(".music .cl").find("li");
 		$(".ke-container").hide(function () {
@@ -532,6 +553,7 @@ $(document).ready(function () {
 	 
 		$('.cpbottom .submit').click(function () {
 			var imagesFormData,musicsFormData;
+			currentLayout = $("input[name='layout']").val();
 			var $imgForm = $("#dataForm").clone();
 			var $musicForm = $imgForm.clone();
 			var postExecution = isCreate? pandoraSubmitter.postAdd:pandoraSubmitter.postUpdate;
@@ -573,7 +595,6 @@ $(document).ready(function () {
 		//如果所有文件传完，则向潘多拉服务器提交文件更新信息   
 		function pandoraSubmitter(){
 //			this.url = "article";
-			this.currentLayout = $("input[name='layout']").val();
 			this.tags = "文艺，历史"; //hywang
 			this.postAdd = function(){
 				$.ajax({
@@ -588,20 +609,23 @@ $(document).ready(function () {
 						"addedMscs": JSON.stringify(submittedMusics),
 						"musicSelected": musicPicked,
 						"delMscs":JSON.stringify(deleteMusicIds),
-						"layout":this.currentLayout,
+						"layout":currentLayout,
 						"tags":this.tags
 					},
 					success: function postSubmit(responseText, textStatus, jqXHR){
 						hideElements();
-						createArticle(responseText.data);
+						createArticle(responseText["data"]);
 						articleNumber = $("ul.article_container > li").length;
 						currentArticleIndex = articleNumber-1;
 						showCurrentArticle();
-						restoreEditItems();
 					},
 					error: function errorCallback(jqXHR, responseText, errorThrown){
 						alert(errorThrown);
+					},
+					complete: function(){
+						isCreate = false;
 					}
+					
 				});
 			}
 			
@@ -618,11 +642,48 @@ $(document).ready(function () {
 						"addedMscs": JSON.stringify(submittedMusics),
 						"musicSelected": musicPicked,
 						"delMscs":JSON.stringify(deleteMusicIds),
-						"layout":this.currentLayout,
+						"layout":currentLayout,
 						"tags":this.tags
 					},
 					success: function postSubmit(responseText, textStatus, jqXHR){
+						//在客户端同步更新后的数据
+						$currentArticle.find(".inner").html($keEditor.html());
+						$shownTitle.text($editTitle.val());
+						//清空缓存
+						var $imgContainer = $currentArticle.find(".ownedImgs");
+						$imgContainer.empty();
+						var $mscContainer = $currentArticle.find(".ownedMusics");
+						$mscContainer.empty();
+						//处理图片
+						var updatedImgs = responseText["imgs"];
+						if(updatedImgs){
+							for ( var i = 0; i < updatedImgs.length; i++) {
+								var img = updatedImgs[i];
+								if(i==0){
+									var $img = $("<img/>").attr("src",img.url);
+									$currentArticle.find(".wrapbg").append($img);
+								}
+								var $image = $("<img/>").attr("src",img.snapshotUrl);
+								var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
+								$imgContainer.append($("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink));
+							}
+						}
+						//处理音乐
+						var updateMscs = responseText["mscs"];
+						if(updateMscs){
+							for ( var i = 0; i < updateMscs.length; i++) {
+								var music = updateMscs[i];
+								var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
+								var $musicLi = $("<li/>").attr("descriptorid",music.fileId).attr("url",music.url).text(music.name+"("+3.23+"MB)").append($delLink);
+								if(music.selected){
+									$("<cite/>").append($("<img/>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
+								}
+								$mscContainer.append($musicLi);
+							}
+						}
+						//刷新视图
 						hideElements();
+						showCurrentArticle();
 					},
 					error: function errorCallback(jqXHR, responseText, errorThrown){
 						alert(errorThrown);

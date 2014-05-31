@@ -297,7 +297,7 @@ public class ArticleController extends BaseController {
 				upService.setUserName(fileOperator);
 				upService.setPassword(fileOperatorPwd);
 
-				if (deletedImages != null) {
+				if (deleteddMusics != null) {
 					for (int toDelete : deleteddMusics) {
 						while (existFiless.hasNext()) {
 							FileDescriptor file = existFiless.next();
@@ -360,6 +360,8 @@ public class ArticleController extends BaseController {
 				articleService.updateArticle(article);
 				result.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
 				result.put("URL", "/article/" + id);
+				result.put("imgs", article.getImages());
+				result.put("mscs", article.getFiles());
 			}
 		} catch (Exception e) {
 			throw new PandoraException(e);
