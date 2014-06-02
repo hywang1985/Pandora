@@ -144,8 +144,8 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/bb.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
 		addedMusics.add(music1);
 		addedMusics.add(music2);
-		JSONArray deleteedMusics = new JSONArray();
-		deleteedMusics.add("1");
+		JSONArray deletedMusics = new JSONArray();
+		deletedMusics.add("1");
 		mockMvc.perform(
 				put("/article/1")
 						.param(CommonConstant.ARTICLE_TAGS_KEY, "文艺,法克")
@@ -161,12 +161,10 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
 								addedMusics.toString())
 						.param(CommonConstant.ARTICLE_DELETED_MUSIC_KEY,
-								deleteedMusics.toString())
+								deletedMusics.toString())
 						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1")
 						.sessionAttr(CommonConstant.USER_CONTEXT, user))
-				.andExpect(
-						content().string(
-								"{\"status\":\"OK\",\"URL\":\"/article/1\"}"))
+				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
 	}
 	
