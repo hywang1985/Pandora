@@ -25,7 +25,7 @@
 		</list>
 
 		<!--文章和标签是多对多单向关系,通过关联表ArticleTags映射多对多的关系 -->
-		<list name="tags" table="ArticleTags" cascade="save-update" lazy="false">
+		<list name="tags" table="article_tags" cascade="save-update" lazy="false">
 			<key column="article_id " not-null="true" />
 			<index column="tag_index" type="integer" />
 			<many-to-many column="tag_id" class="Tag" />

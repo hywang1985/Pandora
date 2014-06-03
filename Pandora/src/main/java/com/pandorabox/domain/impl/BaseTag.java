@@ -4,6 +4,8 @@ import com.pandorabox.domain.Tag;
 
 public class BaseTag implements Tag {
 
+	private static final long serialVersionUID = -4059212636105734659L;
+
 	private int tagId;
 	
 	private String value;

@@ -7,6 +7,7 @@ $(document).ready(function () {
 	var musicPicked = 0; //当前文章播放的音乐 hywang
 	var pandoraSubmitter = new pandoraSubmitter();
 	var isCreate = false; //是否是新建文章
+	var $fakeArticle; //如果没有文章，会生成一个仿造文章
 	//创建文章的layout
 	var currentLayout;
 	var aid; //当前文章的ID
@@ -47,9 +48,11 @@ $(document).ready(function () {
 					 if(hasArticle()){
 						 currentArticleIndex--;
 					 }
-					 alert("No articles any more");
-					 //如果之前就没有文章，也没新加载出文章hywang
+					 alert("No more articles!");
+					 //如果之前就没有文章，也没新加载出文章hywang,创建一篇空文章
 					 if(!hasArticle()){
+						var fakeData = {"title":"","text":""};
+						createArticle(fakeData,true);
 						alert("No records at all!");
 					 }
 				 }else{
@@ -79,15 +82,17 @@ $(document).ready(function () {
 	}
 	
 	//创建文章节点
-	function createArticle(articleData){
+	function createArticle(articleData,isFake){
 		var $articleContainer = $("ul.article_container");
 		var $articleLi = $("<li/>");
 		//main
-		var $articleMain = $("<div/>").addClass("article").attr("aid",articleData.articleId);
+		
+		var $articleMain = isFake?$("<div/>").addClass("article"):$("<div/>").addClass("article").attr("aid",articleData.articleId);
 		
 		var $displayImgContainer = $("<div/>");
 		var $hiddenImgContainer = $("<div/>").css("display","none").addClass("ownedImgs");
 		var $musicContainer = $("<div/>").css("display","none").addClass("ownedMusics");
+		if(!isFake){
 			//处理图片
 			for ( var i = 0; i < articleData.images.length; i++) {
 				var img = articleData.images[i];
@@ -110,13 +115,16 @@ $(document).ready(function () {
 				}
 				$musicContainer.append($musicLi);
 			}
+		}
 		
 		//处理标题
 		$articleMain.append($("<h1/>").addClass("shown_title").text(articleData.title));
 		//处理正文
 		$articleMain.append($("<div/>").addClass("inner").html(articleData.text));
 		
-		$articleMain.append($displayImgContainer);
+		if(!isFake){
+			$articleMain.append($displayImgContainer);
+		}
 		$articleMain.append($hiddenImgContainer);
 		
 		$articleMain.append($musicContainer);
@@ -124,7 +132,16 @@ $(document).ready(function () {
 			$articleMain.prepend(ic);
 		}
 		$articleLi.append($articleMain);
-		$articleContainer.append($articleLi);
+		if(isFake){ //如果当前创建的是FAKE
+			$fakeArticle = $articleLi;
+			$articleContainer.append($fakeArticle);
+		}else if($fakeArticle){ //如果当前创建的不是FAKE，但是有FAKE存在，置空FAKE并且替换DOM元素
+			$fakeArticle.replaceWith($articleLi);
+			$fakeArticle = null;
+			//$articleContainer.append($articleLi);
+		}else{
+			$articleContainer.append($articleLi);
+		}
 	}
 	
 	//计算inner的高度
@@ -255,8 +272,6 @@ $(document).ready(function () {
 	var $shownTitle;
 	//可编辑文章标题
 	var $editTitle = $(".edit_title");
-	
-	
 	 //选中图片的预览功能	 
 	var uploadImgArr = [];
 	//此次操作需要删除的之前已经存在的图片
@@ -265,10 +280,11 @@ $(document).ready(function () {
 	var uploadMusicArr = [];
 	//此次操作需要删除的之前已经存在的图片
 	var deleteMusicIds = []; 
+	var submittedImages = [];
+	var submittedMusics = [];
 	//编辑文章
 	$('.edit').click(function () {
-		uploadImgArr.splice(0,uploadImgArr.length);
-		deleteImgIds.splice(0,deleteImgIds.length); 
+		clearSubmitDataCache();
 		$(".setting,.cpbottom").show();
 		$(".bar,.bottombar").hide();
 		var $containedImgs = $currentArticle.find(".ownedImgs > li");
@@ -313,8 +329,7 @@ $(document).ready(function () {
 	//新建文章
 	$(".addArticle").click(function () {
 		isCreate = true;
-		uploadImgArr.splice(0,uploadImgArr.length);
-		deleteImgIds.splice(0,deleteImgIds.length); 
+		clearSubmitDataCache();
 		$(".setting,.cpbottom").show();
 		$(".bar,.bottombar").hide();
 		
@@ -401,7 +416,14 @@ $(document).ready(function () {
 		})
 	})
 
-	
+	function clearSubmitDataCache(){
+		uploadImgArr.splice(0,uploadImgArr.length);
+		deleteImgIds.splice(0,deleteImgIds.length); 
+		uploadMusicArr.splice(0,uploadMusicArr.length);
+		deleteMusicIds.splice(0,deleteMusicIds.length);
+		submittedImages.splice(0,submittedImages.length);
+		submittedMusics.splice(0,submittedMusics.length);
+	}
 	
 	 $(".addImage").change(function(e){
 	  	 var files = e.target.files;
@@ -489,8 +511,6 @@ $(document).ready(function () {
 		};
 	 }
 	 
-	 var submittedImages = [];
-	 var submittedMusics = [];
 	//上传文件
 	 function uploadFile(requestOptions,fileArray,htmlForm,uploadedRecords,successCallback) {
 		var j = 0;
@@ -697,7 +717,7 @@ $(document).ready(function () {
 					url: "article/"+aid,
 					success: function postSubmit(responseText, textStatus, jqXHR){
 						$(".confirm").hide(function(){
-							$currentArticle.remove();
+							$currentArticle.parent().remove();
 							if(currentArticleIndex==0){
 								currentArticleIndex = currentArticleIndex+1;
 							}else{
