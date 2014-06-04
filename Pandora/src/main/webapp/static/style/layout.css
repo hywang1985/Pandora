@@ -33,7 +33,7 @@ a:hover{color:#FFFF99;}
 .wrapbg { position: fixed; width: 100%; height: 100%; background: #dae0e8; left: 0; z-index:-1}
 	.wrapbg img { display:block; min-width: 100%; min-height: 100%; top: 0; left: 0; right: 0; bottom: 0; margin: auto; }
 
-.article { overflow: hidden; position: absolute; background:#000; background:rgba(0,0,0,0.8); filter:alpha(opacity=80); padding: 30px; }
+.article { overflow: auto; position: absolute; background:#000; background:rgba(0,0,0,0.8); filter:alpha(opacity=80); padding: 30px; }
 	.article h1 { font-size: 20px; font-weight: 700; color: #FFFF99; margin-bottom: 20px; }
 	.article .edit_title{font-size: 20px; font-weight: 700; margin-bottom: 20px;}
 	.article .inner { overflow-y: auto; }
