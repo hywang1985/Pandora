@@ -337,6 +337,7 @@ $(document).ready(function () {
 		$currentArticle.find(".inner").fadeOut(500, function () {
 			$editTitle.val($shownTitle.text()).fadeIn(1500);
 			$keEditor.html($currentArticle.find(".inner").html());
+			$keContainer = $(".ke-container");
 			$keContainer.fadeIn(1500);
 		});
 
