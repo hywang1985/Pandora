@@ -49,7 +49,6 @@ background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0
 .bottombar span { float: left; }
 	.bottombar a.icon { float:left; display: block; overflow: hidden; width: 44px; height: 44px; text-indent: -999px; background-position: 50% 50%; background-repeat: no-repeat; background-size:18px 18px;}
 	.bottombar a.like { background-image: url(../images/like.png);}
-	.bottombar a.like:hover,.bottombar span a.likeon { background-image: url(../images/like_on.png)}
 	.bottombar a.talk { background-image:url(../images/talk.png); }
 	.bottombar a.share { background-image:url(../images/share.png); }
 	.bottombar a.music { background-image:url(../images/music.png); }
@@ -112,3 +111,4 @@ background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0
 .addImage,.addMusic { display: none;overflow:hidden;height:0px;}
 .uploadImgBtn {background-image:url(../images/addImage_32.ico); height: 32px; width: 32px;}
 .uploadMusicBtn {background-image:url(../images/addMusic_32.ico); height: 32px; width: 32px;}
+

@@ -21,6 +21,9 @@ $(document).ready(function () {
 	var play = true;
 	musicPlayer.loop = "loop";
 	
+	//隐藏editor对应的textarea
+	$(".keditor").hide();
+	
 	$(".bottombar a.music").click(function(){
 		if(!play){
 			musicPlayer.play();
@@ -31,8 +34,10 @@ $(document).ready(function () {
 		}
 		return false;
 	});
+	
 	//初始化文章节点
 	ajaxLoad();
+	
 	//动态加载文章
 	function ajaxLoad(){
 		$.ajax({
@@ -74,7 +79,7 @@ $(document).ready(function () {
 			 var exceptionInfo = JSON.parse(jqXHR.responseText);
 			alert("code: "+exceptionInfo.code+"message: "+ exceptionInfo.message);
 		 }
-	});
+		});
 	}
 	
 	function hasArticle(){
@@ -86,13 +91,13 @@ $(document).ready(function () {
 		var $articleContainer = $("ul.article_container");
 		var $articleLi = $("<li/>");
 		//main
-		
 		var $articleMain = isFake?$("<div/>").addClass("article"):$("<div/>").addClass("article").attr("aid",articleData.articleId);
-		
 		var $displayImgContainer = $("<div/>");
 		var $hiddenImgContainer = $("<div/>").css("display","none").addClass("ownedImgs");
 		var $musicContainer = $("<div/>").css("display","none").addClass("ownedMusics");
+		
 		if(!isFake){
+			
 			//处理图片
 			for ( var i = 0; i < articleData.images.length; i++) {
 				var img = articleData.images[i];
@@ -105,11 +110,13 @@ $(document).ready(function () {
 				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
 				$hiddenImgContainer.append($("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink));
 			}
+			
 			//处理音乐
 			for ( var i = 0; i < articleData.files.length; i++) {
 				var music = articleData.files[i];
 				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
 				var $musicLi = $("<li/>").attr("descriptorid",music.fileId).attr("url",music.url).text(music.name+"("+3.23+"MB)").append($delLink);
+				
 				if(i==articleData.pickedMusicIndex){
 					$("<cite/>").append($("<img/>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
 				}
@@ -128,17 +135,21 @@ $(document).ready(function () {
 		$articleMain.append($hiddenImgContainer);
 		
 		$articleMain.append($musicContainer);
+		
 		if(ic){
 			$articleMain.prepend(ic);
 		}
 		$articleLi.append($articleMain);
 		if(isFake){ //如果当前创建的是FAKE
+			
 			$fakeArticle = $articleLi;
 			$articleContainer.append($fakeArticle);
+		
 		}else if($fakeArticle){ //如果当前创建的不是FAKE，但是有FAKE存在，置空FAKE并且替换DOM元素
+			
 			$fakeArticle.replaceWith($articleLi);
 			$fakeArticle = null;
-			//$articleContainer.append($articleLi);
+		
 		}else{
 			$articleContainer.append($articleLi);
 		}
@@ -146,14 +157,16 @@ $(document).ready(function () {
 	
 	//计算inner的高度
 	confSize();
+	
 	$(window).resize(function () {
 		confSize();
 	});
+	
 	//初始化Editor相关
 	KindEditor.ready(function (K) {
 			$Kint = K;
 		});
-	$(".keditor").hide();
+	
 	function confSize() {
 		var h = $('.article').height() - $(".article h1").height() - 80;
 		$(".article .inner").css("height", h);
@@ -161,10 +174,21 @@ $(document).ready(function () {
 	
 	function createEditor() {
 		//设置KindEditor参数并初始化
+		var editorWidth;
+		var editorHeight;
+		
+		if($currentArticle){
+			editorWidth = $currentArticle.width()+"px";
+			editorHeight = $currentArticle.height()-$(".cpbottom cl").height()+"px";
+		}
 		var options = {
-			width : '38%',
-			height: '700px'
+			minWidth: "100px",
+			width : editorWidth,
+			height: editorHeight,
+			items: ["fontname","fontsize","|","forecolor","hilitecolor","bold","italic","underline","removeformat","|","justifyleft","justifycenter","justifyright",
+        "justifyfull","insertorderedlist","insertunorderedlist","|","emoticons","link","|","fullscreen"]
 		};
+		
 		$(".ke-container").hide();
 		$keEditor = $Kint.create('textarea[name="content"]', options);
 		$keContainer = $(".ke-container");
@@ -237,10 +261,10 @@ $(document).ready(function () {
 		$('.selectbox').css('display', 'block');
 		$(this).find('i').css({
 			display : ''
-		})
+		});
 		$(this).find('em').css({
 			display : 'none'
-		})
+		});
 		//替换下拉选中后的字体
 		$('.selectbox .item a').click(function (event) {
 			/* Act on the event */
@@ -251,10 +275,10 @@ $(document).ready(function () {
 			});
 			$('.classify').find('em').css({
 				display : ''
-			})
+			});
 			$('.classify').find('i').css({
 				display : 'none'
-			})
+			});
 			return false;
 		});
 		return false;
@@ -262,7 +286,7 @@ $(document).ready(function () {
 		$('.selectbox').css('display', 'none');
 		$(this).find('em').css({
 			display : ''
-		})
+		});
 		$(this).find('i').css({
 			display : 'none'
 		});
@@ -290,13 +314,8 @@ $(document).ready(function () {
 		var $containedImgs = $currentArticle.find(".ownedImgs > li");
 		var $containedMusics = $currentArticle.find(".ownedMusics > li");
 		var $cpImgContainer = $(".bg .cl");
-//		var $imgsToEdit=$(".bg .cl li");
 		var $cpMusicContainer = $(".music .cl");
-//		var $musicsToEdit=$(".music .cl li");
-		//清空待编辑的图片，需要将当前文章的图片读到.bg里，同理music
-//		$imgsToEdit.remove();
 		$cpImgContainer.empty().append($containedImgs);
-//		$musicsToEdit.remove();
 		var $imgsToEdit=$(".bg .cl li");
 		$cpMusicContainer.empty().append($containedMusics);
 		$.each($imgsToEdit, function(i, li){
@@ -308,23 +327,20 @@ $(document).ready(function () {
 		var contains_keditor= $currentArticle.has(".keditor").length;
 		var contains_kecontainer=$currentArticle.has(".ke-container").length;
 		if( !contains_edit_title && !contains_keditor && !contains_kecontainer){
-			//$currentArticle.append($editTitle).append($(".keditor"));
 			$currentArticle.append($editTitle);
-			//$currentArticle.append($editTitle).append($keEditor);
 		}
 		if(!$keEditor){
 			 createEditor();
 		}
-		$editTitle.val($shownTitle.text()).show();
-		
 		
 		$currentArticle.find(".inner").fadeOut(500, function () {
+			$editTitle.val($shownTitle.text()).fadeIn(1500);
 			$keEditor.html($currentArticle.find(".inner").html());
 			$keContainer.fadeIn(1500);
 		});
 
 		return false;
-	})
+	});
 	
 	//新建文章
 	$(".addArticle").click(function () {
@@ -358,7 +374,7 @@ $(document).ready(function () {
 		});
 
 		return false;
-	})
+	});
 
 	$('.cpbottom .cancel').click(function(){
 		hideElements();
@@ -369,11 +385,11 @@ $(document).ready(function () {
 	function hideElements() {
 		$(".cpbottom,.setting,.cp").hide();
 		$editTitle.hide();
-		$shownTitle.show();
 		var $editImgs=$(".bg .cl").find("li");
 		var $editMusics = $(".music .cl").find("li");
-		$(".ke-container").hide(function () {
+		$(".ke-container").fadeOut(function () {
 			$currentArticle.find(".inner").fadeIn(1500);
+			$shownTitle.fadeIn(1500);
 			$(".bar,.bottombar").show();
 		});
 		return false;
@@ -388,33 +404,33 @@ $(document).ready(function () {
 	$('.del').click(function () {
 		$(".confirm").show();
 		return false;
-	})
+	});
 	
 	$(".pnr").click(function(){
 		pandoraSubmitter.postDelete();
-	})
+	});
 	
 	$(".pnc").click(function(){
 		$(".confirm").hide();
-	})
+	});
 
 	$(".setting").toggle(function () {
 		$(".cp").show();
 		$(this).find('em').css({
 			display : ''
-		})
+		});
 		$(this).find('i').css({
 			display : 'none'
-		})
+		});
 	}, function () {
 		$(".cp").hide();
 		$(this).find('em').css({
 			display : ''
-		})
+		});
 		$(this).find('i').css({
 			display : 'none'
-		})
-	})
+		});
+	});
 
 	function clearSubmitDataCache(){
 		uploadImgArr.splice(0,uploadImgArr.length);
@@ -647,7 +663,7 @@ $(document).ready(function () {
 					}
 					
 				});
-			}
+			};
 			
 			this.postUpdate = function(){
 				$.ajax({
@@ -709,7 +725,7 @@ $(document).ready(function () {
 						alert(errorThrown);
 					}
 				});
-			}
+			};
 		
 			this.postDelete = function(){
 				$.ajax({
@@ -730,7 +746,7 @@ $(document).ready(function () {
 						alert(errorThrown);
 					}
 				});
-			}
+			};
 		}
 		
-})
+});
