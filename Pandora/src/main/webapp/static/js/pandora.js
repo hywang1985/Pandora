@@ -185,6 +185,7 @@ $(document).ready(function () {
 			minWidth: "100px",
 			width : editorWidth,
 			height: editorHeight,
+			shadowMode: false,
 			items: ["fontname","fontsize","|","forecolor","hilitecolor","bold","italic","underline","removeformat","|","justifyleft","justifycenter","justifyright",
         "justifyfull","insertorderedlist","insertunorderedlist","|","emoticons","link","|","fullscreen"]
 		};
