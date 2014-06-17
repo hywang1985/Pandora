@@ -9,12 +9,53 @@
 	<!-- 扫描com.pandorabox.dao包下所有标注@Repository的DAO组件 -->
 	<context:component-scan base-package="com.pandorabox.dao" />
 
-	<!-- 配置数据源参数 -->
+	<!-- 配置数据源参数
 	<context:property-placeholder location="classpath:/conf/datasource.properties" />
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close" p:driverClassName="${datasource.driverClassName}"
-		p:url="${datasource.url}" p:username="${datasource.username}"
-		p:password="${datasource.password}" />
+		destroy-method="close" 
+		p:driverClassName="${datasource.driverClassName}"
+		p:url="${datasource.url}" 
+		p:username="${datasource.username}"
+		p:password="${datasource.password}" /> -->
+		
+	 <!-- 配置c3p0数据源 -->
+	<context:property-placeholder location="classpath:/conf/datasource.properties" />
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="jdbcUrl" value="${datasource.url}" />
+        <property name="driverClass" value="${datasource.driverClassName}" />
+        <property name="user" value="${datasource.username}" />
+        <property name="password" value="${datasource.password}" />
+        <!--连接池中保留的最大连接数。Default: 15 -->
+        <property name="maxPoolSize" value="100" />
+        <!--连接池中保留的最小连接数。-->
+        <property name="minPoolSize" value="1" />
+        <!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+        <property name="initialPoolSize" value="10" />
+        <!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+        <property name="maxIdleTime" value="30" />
+        <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+        <property name="acquireIncrement" value="5" />
+        <!--JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements
+          属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。
+          如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0-->
+        <property name="maxStatements" value="0" />
+         
+        <!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+        <property name="idleConnectionTestPeriod" value="60" />
+         
+        <!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+        <property name="acquireRetryAttempts" value="30" />
+        
+        <!--获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效
+          保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试
+          获取连接失败后该数据源将申明已断开并永久关闭。Default: false-->
+        <property name="breakAfterAcquireFailure" value="true" />
+         
+        <!--因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的
+          时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable
+          等方法来提升连接测试的性能。Default: false -->
+        <property name="testConnectionOnCheckout"  value="false" />        
+    </bean>
 
 	<!-- 配置Hibernate4,Spring Hibernate4集成没有hibernateTemplate和DaoSupport，只用SessionFactory -->
 	<bean id="sessionFactory"
@@ -23,7 +64,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<!-- 网站上线运行，此设置应为none -->
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>

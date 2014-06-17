@@ -116,6 +116,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${org.hibernate-version}</version>
 		</dependency>
+		<!--C3P0-->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
 		<!-- Log4j -->
 		<dependency>
 			<groupId>log4j</groupId>

@@ -24,6 +24,9 @@ $(document).ready(function () {
 	//隐藏editor对应的textarea
 	$(".keditor").hide();
 	
+	var $navigator=$("#navigator"); //hywang
+
+	
 	$(".bottombar a.music").click(function(){
 		if(!play){
 			musicPlayer.play();

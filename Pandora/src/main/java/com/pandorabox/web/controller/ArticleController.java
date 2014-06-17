@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +58,8 @@ public class ArticleController extends BaseController {
 	private LayoutService layoutService;
 	
 	private static Pattern filePattern = Pattern.compile("^/\\w*/");
+	
+	private static Logger logger = Logger.getLogger(ArticleController.class);
 
 	// /** 显示单篇文章 */
 	// @RequestMapping(value = "/{id}")
@@ -76,6 +79,7 @@ public class ArticleController extends BaseController {
 	@RequestMapping(value = "/dyload", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,Object> loadArticle(HttpServletRequest request) {
+		logger.info("Loading articles");
 		String startIndex = request.getHeader(CommonConstant.ARTICLE_START_INDEX_HEADER_NAME);
 		Map<String, Object> articles = new HashMap<String, Object>(CommonConstant.ARTICLE_LOAD_COUNT);
 		articles.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);

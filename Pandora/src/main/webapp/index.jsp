@@ -22,7 +22,7 @@
 </head>
 
 <body>
-<div class="bar">
+<div class="bar" id="navigator">
   <div class="body"><SCRIPT LANGUAGE="JavaScript">
       <!--
           
