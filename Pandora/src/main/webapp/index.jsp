@@ -4,12 +4,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Pandora</title>
+<title>Ransanity</title>
+<meta property="wb:webmaster" content="d1eb041d8f189029" />
 <meta name="keywords" content="艺术、交互设计、动漫、历史、怀旧、文化、体育、工业、建筑设计、时代、旅行、新奇、创意" />
-<meta name="description" content="Pandora是集艺术、交互设计、动漫、历史、怀旧、文化、体育、工业、建筑设计、时代、旅行、新奇、创意为一体的结合站。" />
-<meta name="author" content="fanzjgw@163.com" />
+<meta name="description" content="燃悦读为你提供侵入灵魂的阅读体验。" />
+<meta name="author" content="hywang@ransanity.com" />
 <meta name="build" content="2013-4-30" />
-<meta name="copyright" content="Pandora" />
+<meta name="copyright" content="Ransanity" />
 <meta name="robots" content="all" />
 <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
 <link href="css/layout.css" rel="stylesheet" type="text/css" />
@@ -18,10 +19,22 @@
 <!--KindEditor-->
 <script charset="utf-8" src="js/kindeditor-all-min.js"></script>
 <script charset="utf-8" src="js/lang/zh_CN.js"></script>
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=90749187" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="js/pandora.js" ></script>
 </head>
 
 <body>
+<script>
+
+	//自定义分享内容时的APPKEY
+	var jiathis_config = {
+		appkey : {
+			"tsina" : "90749187"
+		}
+	};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1397804146285506" charset="utf-8"></script>
+<!-- JiaThis Button END -->
 <div class="bar" id="navigator">
   <div class="body"><SCRIPT LANGUAGE="JavaScript">
       <!--
@@ -29,7 +42,7 @@
       //-->
       </SCRIPT>
     <div class="header">
-      <h2>Pandora</h2>
+      <h2>Ransanity</h2>
       <a href="#" class="classify"><strong>艺术</strong><em>▼</em><i style="display: none">▲</i></a>
       <div class="icon"><a href="#" class="cur">1</a><a href="#">2</a><a href="#">3</a></div>
       <a href="#" class="addArticle"><s>+</s>创造一页内容</a> </div>
@@ -57,41 +70,26 @@
 <!--       </div> -->
 <!--     </div> -->
 <!--   </li> -->
-  <!--第二篇文章-->
-<!--   <li> -->
-<!--     <div class="article" aid="2"> -->
-<!--       <div class="wrapbg"> <img src="images/u10.png" alt="光影 . 光之教堂"/> </div> -->
-<!--       <h1 class="shown_title">光之教堂</h1> -->
-<!--       <div class="inner"> -->
-<!--         <p>光之教堂是安藤忠雄“教堂三部曲”（风之教堂、水之教堂、光之教堂）中最　为著名的一座。 -->
-<!--           光之教堂位于大阪城郊茨木市北春日丘一片住宅区的一角，是现有一个木结构教堂和牧师住宅的独立式扩建。没有一个显而易见的入口，只有门前一个不太显眼的门牌。进入它的主体前，必须先经过一条小小的长廊。这其实只是一个面积颇小的教堂，大约113平米，能容纳约100人，但当人置身其中，自然会感受到它所散发出的神圣与严庄。随后，你会听到由自己双脚与木地板接触时所发出的声响。 -->
-<!--           光之教堂的魅力不在于外部，而是在里面，那就像朗香教堂一样的光影交叠</p> -->
-<!--         <p>所带来的震撼力。然而朗香带来的是宁静，光教堂带来的却是强烈震动。光之教堂的区位远不如前两者那般得天独厚，也没有太大的预算。但是，这丝毫没有局限了安藤忠雄的想象世界。</p> -->
-<!--         <p>坚实厚硬的清水混凝土绝对的围合，创造出一片黑暗空间，让进去的人瞬间感觉到与外界的隔绝，而阳光便从墙体的水平垂直交错开口里泄进来，那便是著名的“光之十字”——神圣，清澈，纯净，震撼。</p> -->
-<!--         <p>光之教堂[2]度横贯的墙体构成，长方体中嵌入三个直径5.9米的球体。这道独立的墙把空间分割成礼拜堂和入口部分。透过毛玻璃拱顶，人们能感觉到天空、阳光和绿树。教堂内部的光线是定向性的，而不同于廊道中均匀分布的光线。教堂内部的地面愈往牧师讲台方向愈呈阶梯状下降。前方是一面十字形分割的墙壁，嵌入了玻璃，以这里射入的光线显现出光的十字架。由于考虑了预算与材料之感，地板和椅子均采用低成本的脚手架木板。</p> -->
-<!--         光之教堂由混凝土作墙壁，除了那个置身于墙壁中的大十字架外，并没有放置任何多余的装饰物。安藤忠雄说，他的墙不用挂画，因为有太阳这位画家为他作画。 -->
-<!--         教堂里只有一段向下的斜路，没有阶梯；最重要的是，信徒的座位位置高于圣坛，这有别于大部分的教堂（圣坛都会位于高台之上，庄严而冷酷地俯视着信徒），此乃打破了传统的教堂建筑，亦反映了世界上每个人 </div> -->
-<!--     </div> -->
-<!--   </li> -->
-  <!--第三篇文章-->
-<!--   <li> -->
-<!--     <div class="article" aid="3"> -->
-<!--       <div class="wrapbg"> <img src="images/u19.png" alt="三鹰市立动画美术馆"/> </div> -->
-<!--       <h1 class="shown_title">三鹰市立动画美术馆</h1> -->
-<!--       <div class="inner"> -->
-<!--         <p>为50亿日元兴建，占地面积约4000平方米[1]。自2001年10月开馆至今，慕名而来的游客源源不绝。该馆地处东京卫星城三鹰，在“三鹰之森”的掩映中若隐若现。每天还没开馆，就已经有人站在门口等候。</p> -->
-<!--         进馆的第一个著名环节就是走“假门”——龙猫守护的城堡岗亭。游客在这里和龙猫隔窗相望，但无法进入。真正的入口在另一侧，需要持票入场。票做得非常精美，是一联三张胶片的样子，胶片上的图像多种多样，有动画场景、人物造型等等。 -->
-<!--         三鹰市立动画美术馆内景物 -->
-<!--         <p>进入馆内首先注意到的就是中央大厅，其手工琥珀吊灯、彩绘玻璃和螺旋木质楼梯以及整个圆形空间对阳光的巧妙利用，让你看得瞠目结舌。一楼馆内第一个房间就是右手边的土星剧院，专放外面看不到的吉卜力短片，每次都是人头攒动。</p> -->
-<!--         <p>二楼的“TriHawks”房间是专放画册和童书的阅览室，所有藏书都由美术馆精心选择，诱人得很。但更强的是同一层的“Grandpas?Room”——祖父的房间。这个按照艺术家工作室设计的地方，到处贴满吉卜力动画片的原画、手稿、分镜草图，屋顶吊着飞机模型、翼龙玩具和船钩，绳子上挂着小小的童衬，书架上塞满《世界航空机大系》之类的书，棕色的书桌、梯子，不知藏了什么的木箱，琳琅满目的小玩艺，还有手摇放映机让大家亲自体验动画放映法。</p> -->
-<!--         <p>三楼有著名的龙猫巴士屋，不过“大人”们只能眼睁睁看小朋友在毛茸茸的龙猫车厢里钻来钻去。名为“MammaAluto”的商店（出自《红猪》，意为“妈妈快救我”）则是吉卜力馆内人口密度最大的地方，小小50平方米的店足足有100人挤进挤出，因为这里只卖馆外买不到的东西。 -->
-<!--           最后，走过铁笼旋梯、来到顶层草坪，就会看到《天空之城》里的机械兵了。</p> -->
-<!--         <p>不过最后要说明的是，吉卜力美术馆可不是随便就能进的地方，即使对日本本国人来说，门票也要提前1个月预订，海外游客更要提前3个月预订。此外为了保证每个游人的完美体验，美术馆的“限量”政策非常严格，每周开放六天，每天只接待2400人，分成4组，而且室内禁止摄影。</p> -->
-<!--       </div> -->
-<!--     </div> -->
-<!--   </li> -->
+  
 </ul>
-<div class="bottombar cl"> <span> <a href="#" class="icon like likeon">喜欢</a> <a href="#" class="icon talk">讨论</a> <a href="#" class="icon share">分享</a> <a href="#" class="icon music">音乐</a> </span> <cite><a href="#" class="icon edit">编辑</a><a href="#" class="icon del">× 删除</a>By wbrover</cite> </div>
+<div class="bottombar cl"> 
+	<span> 
+		<a href="#" class="icon like likeon">喜欢</a> 
+		<a href="#" class="icon music">音乐</a> </span> 
+				<cite>
+					<a href="#" class="icon edit">编辑</a>
+					<a href="#" class="icon del">× 删除</a>By wbrover
+				</cite>
+		<a href="#" class="icon talk">讨论</a> <a href="#" class="icon share">分享</a> 
+<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style_24x24">
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_tqq"></a>
+		<a class="jiathis_button_weixin"></a>
+<!-- 		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a> -->
+</div>
+<!-- JiaThis Button END -->
+	</div>
 <div class="cpbottom cl"> <a href="#" class="cancel">取消</a> <a href="#" class="submit">确定</a> </div>
 <div class="setting">页面设置<em>▼</em><i style="display: none">▲</i></div>
 

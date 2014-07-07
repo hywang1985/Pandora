@@ -36,6 +36,15 @@ public class BaseController {
 				user);
 	}
 	
+	/**
+	 * 删除session中的用户对象
+	 * @param request
+	 * @param user
+	 */
+	protected void removeSessionUser(HttpServletRequest request) {
+		request.getSession().removeAttribute(CommonConstant.USER_CONTEXT);
+	}
+	
 
 	/**
 	 * 获取基于应用程序的url绝对路径

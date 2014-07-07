@@ -13,6 +13,8 @@ public class CommonConstant {
 	 * 用户对象放到Session中的键名称
 	 */
 	public static final String USER_CONTEXT = "USER_CONTEXT";
+	
+	public static final String USER_KEY = "user";
 
 	/**
 	 * 将登录前的URL放到Session中的键名称
@@ -86,6 +88,10 @@ public class CommonConstant {
 	public static final String STATUS_FAIL = "FAIL";
 	
 	public static final String IMAGE_SNAPSHOT_SUFFIX="!snapshot";
+	
+	public static final String WEBO_UID_KEY = "weibo_uid";
+	
+	public static final String SCREEN_NAME_KEY = "screen_name";
 	
 	public static Map<String,Map<String,String>> bucketAuthorizations = new HashMap<String,Map<String,String>>();
 	

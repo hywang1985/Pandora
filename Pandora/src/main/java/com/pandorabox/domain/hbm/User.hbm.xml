@@ -6,6 +6,7 @@
 		<id name="userId" column="user_id">
 			<generator class="increment" />
 		</id>
+		<property name="weiboUid" type="integer" column="weibo_uid"></property>
 		<property name="username" type="string" />
 		<property name="name" type="string" />
 		<property name="passwd" type="string" />

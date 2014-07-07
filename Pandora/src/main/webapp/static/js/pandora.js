@@ -23,9 +23,34 @@ $(document).ready(function () {
 	
 	//隐藏editor对应的textarea
 	$(".keditor").hide();
-	
+	//隐藏分享面板
+	var $sharePanel=$(".jiathis_style_24x24");
+	$sharePanel.hide();
 	var $navigator=$("#navigator"); //hywang
 
+	//分享按钮
+	$(".share").click(function(){
+		return false;
+	});
+	var isSharePanelHoving=false;
+	$sharePanel.mouseleave(function(){
+		 $(this).hide();
+		 isSharePanelHoving = false;
+	}).mouseenter(function(){
+		isSharePanelHoving = true;
+	});
+	$(".share").hover(function(){
+	    timer = setTimeout(function(){
+	    	$sharePanel.show();
+	    },700);
+	},function(){
+		setTimeout(function(){
+			if(!isSharePanelHoving){
+				$sharePanel.hide();
+			}
+		},1100);
+	    clearTimeout(timer);
+	});
 	
 	$(".bottombar a.music").click(function(){
 		if(!play){
@@ -37,6 +62,22 @@ $(document).ready(function () {
 		}
 		return false;
 	});
+	
+//	//微博连接组件
+//		WB2.anyWhere(function(W){
+//		W.widget.connectButton({
+//			id: "wb_connect_btn",	
+//			type:"5,2",
+//			callback : {
+//				login:function(o){	//登录后的回调函数
+//					alert("login: "+o.screen_name);
+//				},
+//				logout:function(){	//退出后的回调函数
+//					alert('logout');
+//				}
+//			}
+//		});
+//	});
 	
 	//初始化文章节点
 	ajaxLoad();
@@ -106,12 +147,12 @@ $(document).ready(function () {
 				var img = articleData.images[i];
 				var ic;
 				if(i==0){
-					var $img = $("<img/>").attr("src",img.url);
+					var $img = $("<img/>").attr("src",img.url).attr("imageId",img.imageId);
 					ic = $displayImgContainer.addClass("wrapbg").append($img);
 				}
 				var $image = $("<img/>").attr("src",img.snapshotUrl);
 				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
-				$hiddenImgContainer.append($("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink));
+				$hiddenImgContainer.append($("<li/>").attr("descriptorid",img.imageId).attr("url",img.url).append($image).append($delLink));
 			}
 			
 			//处理音乐
@@ -207,6 +248,7 @@ $(document).ready(function () {
 				$(element).show(function(){
 					$currentArticle = $(".article").eq(currentArticleIndex);
 					 aid = $currentArticle.attr("aid");
+					 //设置当前文章需要播放的音乐的URL
 					var $pickedMusicCite=$currentArticle.find(".ownedMusics .pickedMusic");
 					if($pickedMusicCite){
 						var $pickedMusicLi = $pickedMusicCite.parent();
@@ -225,6 +267,9 @@ $(document).ready(function () {
 						 musicPlayer.play();
 					 }
 					$shownTitle = $currentArticle.find(".shown_title");
+					
+					//当前文章的背景图进行轮播效果
+					playImages(3000,5000,1);
 				});
 			
 			}else{
@@ -232,6 +277,45 @@ $(document).ready(function () {
 			}
         });
 	}
+	
+	//播放图片的函数
+	function playImages(timeout,speed,index){
+		
+		var $wrapbg=$currentArticle.find(".wrapbg");
+		var $bgImg = $wrapbg.find("img");
+		var $containedImgs = $currentArticle.find(".ownedImgs > li");
+		var imgNum = $containedImgs.length;
+		
+		if(imgNum>1){
+			
+			$wrapbg.fadeOut(speed,function(){
+				
+				setTimeout(function(){
+					//找到下一个图片
+					if($bgImg){
+						var prevImgId = $bgImg.attr("imageId");
+						$.each($containedImgs, function(i, li){
+							var	nextIndex = (imgNum-1)==index?0:index+1;
+							var imgId = $(li).attr("descriptorId");
+							var imgUrl = $(li).attr("url");
+							if(i==index){
+								if(imgId!=prevImgId){
+									$bgImg.attr("imageId",imgId);
+									$bgImg.attr("src",imgUrl);
+									$wrapbg.fadeIn(speed,function(){
+										playImages(timeout,speed,nextIndex);
+									});
+								}
+							}else{
+								return true;
+							}
+						});
+						
+					}
+				}, timeout);
+			});
+		}
+	}; 
 
 	//Slider效果
 	$(document).keydown(function (event) {
@@ -349,37 +433,92 @@ $(document).ready(function () {
 	
 	//新建文章
 	$(".addArticle").click(function () {
-		isCreate = true;
-		clearSubmitDataCache();
-		$(".setting,.cpbottom").show();
-		$(".bar,.bottombar").hide();
-		
-		$(".bg .cl").empty();
-		$(".music .cl").empty();
-		
-			$shownTitle.hide();
-			var contains_edit_title = $currentArticle.has(".edit_title").length;
-			var contains_keditor= $currentArticle.has(".keditor").length;
-			var contains_kecontainer=$currentArticle.has(".ke-container").length;
-			if( !contains_edit_title && !contains_keditor && !contains_kecontainer){
-				//$currentArticle.append($editTitle).append($(".keditor"));
-				$currentArticle.append($editTitle);
-				//$currentArticle.append($editTitle).append($keEditor);
+		//如果登陆了，可以创建，否则转入登陆流程
+		if(WB2.checkLogin()){
+			
+			isCreate = true;
+			clearSubmitDataCache();
+			$(".setting,.cpbottom").show();
+			$(".bar,.bottombar").hide();
+			
+			$(".bg .cl").empty();
+			$(".music .cl").empty();
+			
+				$shownTitle.hide();
+				var contains_edit_title = $currentArticle.has(".edit_title").length;
+				var contains_keditor= $currentArticle.has(".keditor").length;
+				var contains_kecontainer=$currentArticle.has(".ke-container").length;
+				if( !contains_edit_title && !contains_keditor && !contains_kecontainer){
+					//$currentArticle.append($editTitle).append($(".keditor"));
+					$currentArticle.append($editTitle);
+					//$currentArticle.append($editTitle).append($keEditor);
+				}
+			
+			if(!$keEditor){
+				 createEditor();
 			}
-		
-		if(!$keEditor){
-			 createEditor();
-		}
-		$editTitle.val("").show().select();
-		
-		
-		$currentArticle.find(".inner").fadeOut(500, function () {
-			$keEditor.html("");
-			$keContainer.fadeIn(1500);
-		});
+			$editTitle.val("").show().select();
+			
+			
+			$currentArticle.find(".inner").fadeOut(500, function () {
+				$keEditor.html("");
+				$keContainer.fadeIn(1500);
+			});
 
+		}else{
+//			location.href = "user/wblogin";
+//			WB2.login(function(o){
+//				console.log(o);
+//				});
+			WB2_Login();
+		}
 		return false;
 	});
+	
+	//微博登陆
+	function WB2_Login(){
+		WB2.login(function(){
+			/***授权成功后回调***/
+			getWbUserData(function(o){
+				/***o是/users/show.json接口返回的json对象***/
+				//alert(o.screen_name);
+				alert(o.screen_name);
+				console.log(o);
+//				self.location="http://9iu.org/qqlogin?qqsid="+o.screen_name;
+			});
+		});
+	}
+
+	function getWbUserData(callback) {
+	    WB2.anyWhere(function (W) {
+	        /***获取授权用户id***/
+	        W.parseCMD("/account/get_uid.json", function (sResult, bStatus) {
+	            if (!!bStatus) {
+			/**请求uid成功后调用以获取用户数据**/
+	                getData(W, sResult);
+	            }else{
+				/*** 这里只是简单处理出错***/
+					alert("授权失败或错误");
+				}
+	        }, {}, {
+	            method: 'GET'
+	        });
+	    });
+		/***请求用户数据，并执行回调***/
+	    function getData(W, User) {
+	        W.parseCMD("/users/show.json", function (sResult, bStatus) {
+	            if (!!bStatus && !!callback) {
+	                callback.call(this,sResult);
+	            }
+	        },
+	        {
+	            'uid': User.uid
+	        },
+	        {
+	            method: 'GET'
+	        });
+	    }
+	};
 
 	$('.cpbottom .cancel').click(function(){
 		hideElements();
@@ -698,15 +837,26 @@ $(document).ready(function () {
 						//处理图片
 						var updatedImgs = responseText["imgs"];
 						if(updatedImgs){
+							var $wrapbg=$currentArticle.find(".wrapbg");
 							for ( var i = 0; i < updatedImgs.length; i++) {
 								var img = updatedImgs[i];
 								if(i==0){
-									var $img = $("<img/>").attr("src",img.url);
-									$currentArticle.find(".wrapbg").append($img);
+									var $img = $("<img/>").attr("src",img.url).attr("imageId",img.imageId);
+									var $bgImg=$wrapbg.find("img");
+									//如果已经有占位背景图，删除该图
+									if($bgImg.length>0){
+										$bgImg.remove();
+									}
+									//更新操作之后，保证有背景图
+									if($wrapbg.length==0){
+										$wrapbg = $("<div/>").addClass("wrapbg");
+										$currentArticle.prepend($wrapbg);
+									}
+										$wrapbg.append($img);
 								}
 								var $image = $("<img/>").attr("src",img.snapshotUrl);
 								var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
-								$imgContainer.append($("<li/>").attr("descriptorid",img.imageId).append($image).append($delLink));
+								$imgContainer.append($("<li/>").attr("descriptorid",img.imageId).attr("url",img.url).append($image).append($delLink));
 							}
 						}
 						//处理音乐

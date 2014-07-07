@@ -12,6 +12,9 @@ public interface User extends Serializable{
 	
 	public int getUserId();
 	public void setUserId(int userId);
+	
+	public int getWeiboUid();
+	public void setWeiboUid(int weiboUid);
 	/**
 	 * 用户名
 	 */

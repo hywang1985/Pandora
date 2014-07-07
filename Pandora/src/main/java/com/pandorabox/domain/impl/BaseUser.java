@@ -15,6 +15,8 @@ public class BaseUser implements User {
 
 	private int userId;
 	
+	private int weiboUid;
+	
 	private String username;
 	
 	private String passwd;
@@ -78,5 +80,14 @@ public class BaseUser implements User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public int getWeiboUid() {
+		return weiboUid;
+	}
+
+	public void setWeiboUid(int weiboUid) {
+		this.weiboUid = weiboUid;
+	}
+
 
 }
