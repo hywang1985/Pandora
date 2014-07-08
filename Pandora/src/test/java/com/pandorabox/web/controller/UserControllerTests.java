@@ -24,10 +24,6 @@ public class UserControllerTests extends AbstractContextControllerTests {
 
 	private static User user;
 	
-//	private static final String WEIBO_UID = "123456";
-//	
-//	private static final String SCREEN_NAME = "聒噪的hywang";
-//	
 	private static final String WEIBO_USER_STRING = "{\"id\":1144243765,\"idstr\":\"1144243765\",\"class\":1,\"screen_name\":\"聒噪的hywang\"}";
 	
 	private static MockHttpSession mockSession;
