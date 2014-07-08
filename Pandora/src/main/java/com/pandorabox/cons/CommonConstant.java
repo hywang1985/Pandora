@@ -89,7 +89,9 @@ public class CommonConstant {
 	
 	public static final String IMAGE_SNAPSHOT_SUFFIX="!snapshot";
 	
-	public static final String WEBO_UID_KEY = "weibo_uid";
+	public static final String WEIBO_USER_KEY = "weibo_user";
+
+	public static final String WEIBO_UID_KEY = "id";
 	
 	public static final String SCREEN_NAME_KEY = "screen_name";
 	

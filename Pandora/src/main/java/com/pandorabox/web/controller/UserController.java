@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +32,11 @@ public class UserController extends BaseController {
 		resultMap.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_FAIL);
 		//通过weibo uid寻找已经绑定的user，如果不存在，创建新的user
 		try{
-			String StringWeboUid = request.getParameter(CommonConstant.WEBO_UID_KEY);
+			String StringWeiboUser = request.getParameter(CommonConstant.WEIBO_USER_KEY);
+			JSONObject weiboUserJSONObject = JSONObject.fromObject(StringWeiboUser);
+			String StringWeboUid = weiboUserJSONObject.getString(CommonConstant.WEIBO_UID_KEY);
 			Integer weiboUid = (StringWeboUid==null || "".equals(StringWeboUid))?null:Integer.parseInt(StringWeboUid);
-			String screenName = request.getParameter(CommonConstant.SCREEN_NAME_KEY);
+			String screenName = weiboUserJSONObject.getString(CommonConstant.SCREEN_NAME_KEY);
 			User user = userService.bindWeiboUser(weiboUid, screenName);
 			//放user到session,以便调用
 			setSessionUser(request, user);
