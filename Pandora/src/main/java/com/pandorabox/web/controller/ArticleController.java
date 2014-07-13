@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.PropertyFilter;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.pandorabox.common.EFileType;
 import com.pandorabox.cons.CommonConstant;
@@ -61,19 +64,26 @@ public class ArticleController extends BaseController {
 	
 	private static Logger logger = Logger.getLogger(ArticleController.class);
 
-	// /** 显示单篇文章 */
-	// @RequestMapping(value = "/{id}")
-	// public ModelAndView showArticle(@PathVariable int id,
-	// HttpServletRequest request, HttpServletResponse response) {
-	// return new ModelAndView();
-	// }
-	//
-	// /** 　列表显示所有文章　 */
-	// @RequestMapping
-	// public ModelAndView listArticle(HttpServletRequest request,
-	// HttpServletResponse response) {
-	// return new ModelAndView();
-	// }
+	 /** 显示单篇文章 */
+	 @RequestMapping(value = "/{id}")
+	 public ModelAndView showArticle(@PathVariable int id,
+	 HttpServletRequest request, HttpServletResponse response) {
+		 Article article = articleService.getArticleById(id);
+		 ModelAndView mav = new ModelAndView();
+		 mav.setViewName("ran");
+		 JsonConfig config = new JsonConfig();
+	     config.setJsonPropertyFilter(new PropertyFilter() {
+	        public boolean apply(Object source, String name, Object value) {
+	              if ("author".equals(name)) {
+	                  return true;
+	              }
+	              return false;
+	           }
+	       });
+		 JSONObject articleData = JSONObject.fromObject(article,config);
+		mav.addObject("article", articleData);
+		 return  mav;
+	 }
 
 	/** 动态加载文章,返回JSON, ajax交互用 */
 	@RequestMapping(value = "/dyload", method = RequestMethod.GET)
@@ -93,7 +103,48 @@ public class ArticleController extends BaseController {
 		return articles;
 	}
 	
+	/** 加载前几篇文章,返回JSON, ajax交互用 */
+	@RequestMapping(value = "/dyload/previous", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> loadPreviousArticles(HttpServletRequest request) {
+		logger.info("Loading articles");
+		String startId = request.getHeader(CommonConstant.START_ARTICLE_ID_HEADER_NAME);
+		Map<String, Object> articles = new HashMap<String, Object>(CommonConstant.ARTICLE_LOAD_COUNT);
+		articles.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
+		try{
+			List<Article> previousArticles = articleService.getPreviousArticles(Integer.parseInt(startId), CommonConstant.ARTICLE_LOAD_COUNT);
+			articles.put("data", previousArticles);
+		} catch (Exception e) {
+			articles.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_FAIL);
+			throw new PandoraException(e);
+		}
+		return articles;
+	}
 	
+	/** 加载后几篇文章,返回JSON, ajax交互用 */
+	@RequestMapping(value = "/dyload/next", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> loadNextArticles(HttpServletRequest request) {
+		logger.info("Loading articles");
+		String startId = request.getHeader(CommonConstant.START_ARTICLE_ID_HEADER_NAME);
+		Map<String, Object> articles = new HashMap<String, Object>(CommonConstant.ARTICLE_LOAD_COUNT);
+		articles.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
+		try{
+			List<Article> nextArticles = null;
+			if(startId==null || "".equals(startId)){
+				nextArticles = articleService.getArticlesByPage(0, CommonConstant.ARTICLE_LOAD_COUNT);
+			}else{
+				nextArticles = articleService.getNextArticles(Integer.parseInt(startId), CommonConstant.ARTICLE_LOAD_COUNT);
+			}
+			if(nextArticles!=null){
+				articles.put("data", nextArticles);
+			}
+		} catch (Exception e) {
+			articles.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_FAIL);
+			throw new PandoraException(e);
+		}
+		return articles;
+	}
 	
 	 
 	 private boolean containsTag(Article article,String tagValue){
@@ -107,12 +158,6 @@ public class ArticleController extends BaseController {
 		 return found;
 	 }
 
-	// /** 删除单篇文章 */
-	// @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	// public ModelAndView deleteArticle(@PathVariable int id,
-	// HttpServletRequest request, HttpServletResponse response) {
-	// return new ModelAndView();
-	// }
 
 	/** 新增单篇文章,REST JSON Service
 	 * @throws IOException 
@@ -435,7 +480,7 @@ public class ArticleController extends BaseController {
 					musicDescriptor.setName(name);
 					musicDescriptor.setBucketPath(CommonConstant.IMG_BUCKET_NAME);
 					musicDescriptor.setRelativePath(relativeUrl);
-					String musicFullUrl = CommonConstant.HTTP+CommonConstant.FILE_BUCKET_NAME+CommonConstant.DEFAULT_UPYUN_DOMAIN_SUFFIX+relativeUrl;
+					String musicFullUrl = CommonConstant.HTTP+CommonConstant.MUSIC_DOMAIN+relativeUrl;
 					musicDescriptor.setUrl(musicFullUrl);
 					// imageDescriptor.setFileSecret(fileSecret)
 					handledResult.add(musicDescriptor);
@@ -449,7 +494,7 @@ public class ArticleController extends BaseController {
 					imageDescriptor.setName(name);
 					imageDescriptor.setBucketPath(CommonConstant.IMG_BUCKET_NAME);
 					imageDescriptor.setRelativePath(relativeUrl);
-					String imageFullUrl = CommonConstant.HTTPS+CommonConstant.IMG_BUCKET_NAME+CommonConstant.DEFAULT_UPYUN_DOMAIN_SUFFIX+relativeUrl;
+					String imageFullUrl = CommonConstant.HTTPS+CommonConstant.IMAGE_DOMAIN+relativeUrl;
 					imageDescriptor.setUrl(imageFullUrl);
 					// imageDescriptor.setFileSecret(fileSecret)
 					handledResult.add(imageDescriptor);

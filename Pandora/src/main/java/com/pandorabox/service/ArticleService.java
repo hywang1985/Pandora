@@ -24,4 +24,8 @@ public interface ArticleService {
 	public Article getArticleById(int articleId);
 	
 	public List<Article> getArticlesByPage(int start,int count);
+	
+	public List<Article> getPreviousArticles(int articleId,int count);
+	
+	public List<Article> getNextArticles(int articleId, int count);
 }

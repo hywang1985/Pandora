@@ -10,11 +10,11 @@ import java.util.List;
  * */
 public interface User extends Serializable{
 	
-	public int getUserId();
-	public void setUserId(int userId);
+	public Integer getUserId();
+	public void setUserId(Integer userId);
 	
-	public int getWeiboUid();
-	public void setWeiboUid(int weiboUid);
+	public Integer getWeiboUid();
+	public void setWeiboUid(Integer weiboUid);
 	/**
 	 * 用户名
 	 */

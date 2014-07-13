@@ -1,6 +1,5 @@
 package com.pandorabox.dao;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,13 +27,13 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 	private ArticleDao articleDao;
 	
 	@Test
-	public void findArticlesByTitle(){
+	public void testFindArticlesByTitle(){
 		List<Article> articles = articleDao.getByTitle("abc");
 		Assert.assertTrue(articles.isEmpty());
 	}
 	
 	@Test
-	public void addArtile(){
+	public void testAddArtile(){
 		System.out.println("**************存储文章****************");
 		//创建用户
 		User user = new BaseUser();
@@ -179,7 +178,7 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 	}
 	
 	@Test
-	public void getArticlesByPage(){
+	public void testGetArticlesByPage(){
 		List<Article> articles = articleDao.getArticlesByPage(1, 3); //从第二条记录开始，加载三条记录
 		for(int i=0;i<articles.size();i++){
 			Article article = articles.get(i);
@@ -196,5 +195,43 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 			}
 		}
 	}
+	
+	@Test
+	public void testGetNextArticles(){
+		List<Article> articles = articleDao.getNextArticles(1, 2);
+		for(int i=0;i<articles.size();i++){
+			Article article = articles.get(i);
+			int articleId = article.getArticleId();
+			switch(i){
+			case 0:
+				Assert.assertEquals(2, articleId);
+				break;
+			case 1:
+				Assert.assertEquals(3,articleId);
+				break;
+			}
+		}
+	}
+	
+	@Test
+	public void testGetPreviousArticles(){
+		List<Article> articles = articleDao.getPreviousArticles(4, 3);
+		for(int i=0;i<articles.size();i++){
+			Article article = articles.get(i);
+			int articleId = article.getArticleId();
+			switch(i){
+			case 0:
+				Assert.assertEquals(3, articleId);
+				break;
+			case 1:
+				Assert.assertEquals(2,articleId);
+				break;
+			case 2:
+				Assert.assertEquals(1,articleId);
+				break;
+			}
+		}
+	}
+	
 	
 }

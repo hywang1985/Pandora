@@ -51,6 +51,12 @@ public class CommonConstant {
 
 	/** 文件Bucket名称 */
 	public static final String FILE_BUCKET_NAME = "pandora002";
+	
+	/** 又拍云绑定的图片域名*/
+	public static final String IMAGE_DOMAIN = "image.ransanity.com";
+	
+	/** 又拍云绑定的音乐域名*/
+	public static final String MUSIC_DOMAIN = "music.ransanity.com";
 
 	public static final String HTTP_METHOD_HEADER_NAME = "http_method_name";
 	
@@ -67,7 +73,9 @@ public class CommonConstant {
 	
 	public static final String ARTICLE_START_INDEX_HEADER_NAME= "startIndex";
 	
-	public static final int ARTICLE_LOAD_COUNT= 3;
+	public static final String START_ARTICLE_ID_HEADER_NAME= "startId";
+	
+	public static final int ARTICLE_LOAD_COUNT= 1;
 	
 	public static final String HTTP = "http://";
 	

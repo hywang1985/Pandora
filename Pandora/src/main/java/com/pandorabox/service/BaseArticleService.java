@@ -45,4 +45,14 @@ public class BaseArticleService implements ArticleService {
 		return articleDao.get(articleId);
 	}
 
+	@Override
+	public List<Article> getPreviousArticles(int articleId, int count) {
+		return articleDao.getPreviousArticles(articleId, count);
+	}
+
+	@Override
+	public List<Article> getNextArticles(int articleId, int count) {
+		return articleDao.getNextArticles(articleId, count);
+	}
+
 }

@@ -13,9 +13,9 @@ public class BaseUser implements User {
 
 	private static final long serialVersionUID = -484835266759517694L;
 
-	private int userId;
+	private Integer userId;
 	
-	private int weiboUid;
+	private Integer weiboUid;
 	
 	private String username;
 	
@@ -65,11 +65,11 @@ public class BaseUser implements User {
 		this.articles = articles;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -81,11 +81,11 @@ public class BaseUser implements User {
 		this.username = username;
 	}
 
-	public int getWeiboUid() {
+	public Integer getWeiboUid() {
 		return weiboUid;
 	}
 
-	public void setWeiboUid(int weiboUid) {
+	public void setWeiboUid(Integer weiboUid) {
 		this.weiboUid = weiboUid;
 	}
 

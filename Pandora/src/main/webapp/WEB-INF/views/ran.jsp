@@ -1,5 +1,14 @@
+<%@page import="net.sf.json.JSONObject"%>
+<%@page import="com.pandorabox.domain.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	String contextPath = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+	+ request.getServerName() + ":" + request.getServerPort()
+					+ contextPath + "/";
+ %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,17 +22,45 @@
 <meta name="copyright" content="Ransanity" />
 <meta name="robots" content="all" />
 <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
-<link href="css/layout.css" rel="stylesheet" type="text/css" />
-<link href="css/vertical.css" rel="stylesheet" type="text/css" />
+<!-- <link href="css/layout.css" rel="stylesheet" type="text/css" /> -->
+<link href="<c:url value="/css/layout.css" />" rel="stylesheet">
+<link href="<c:url value="/css/vertical.css" />" rel="stylesheet">
+<!-- <link href="css/vertical.css" rel="stylesheet" type="text/css" /> -->
 <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 <!--KindEditor-->
-<script charset="utf-8" src="js/kindeditor-all-min.js"></script>
-<script charset="utf-8" src="js/lang/zh_CN.js"></script>
-<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=90749187" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="js/pandora.js" ></script>
+<script src="<c:url value="/js/kindeditor-all-min.js" />"></script>
+<script charset="utf-8" src="<c:url value="/js/lang/zh_CN.js" />"></script>
+<script src="<c:url value="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=90749187" />" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="<c:url value="/js/pandora.js" />"></script>
 </head>
 
 <body>
+<script>
+$(document).ready(function () {
+	applicationParams.applicationContext = "<%=contextPath%>";
+	applicationParams.basePath = "<%=basePath%>";
+});
+</script>
+<%JSONObject articleData = (JSONObject)request.getAttribute("article");
+int id=-1;
+if(articleData!=null){ 
+	id = articleData.getInt("articleId");
+} 
+if(id>=0){
+%>
+<script>
+$(document).ready(function () {
+ 	createArticle(<%=articleData%>);
+ 	showCurrentArticle();
+});
+</script>
+<% } else{%>
+<script>
+$(document).ready(function () {
+	ajaxLoad(true);
+});
+</script>
+<%} %>
 <script>
 
 	//自定义分享内容时的APPKEY
@@ -56,22 +93,7 @@
 </div>
 
 <!--这是所有文章列表-->
-<ul class="article_container">
-  <!--第一篇文章-->
-<!--   <li> -->
-<!--     <div class="article" aid="1"> -->
-<!--       <div class="wrapbg"> <img src="images/u1.png" alt="梵高 . 星月夜"/> </div> -->
-<!--       <h1 class="shown_title">梵高 . 星月夜</h1> -->
-<!--       <div class="inner"> -->
-<!--         <p><b>这位易激动而富于神经质的艺术家，在其短暂一生中留下大量的杰作。他的艺术，是心灵的表现。他曾说：“作画我并不谋求准确，我要更有力地表现我自己”，他并不关注于客观物象的再现，而注重表现对事物的感受。亨利·福西隆在论述凡高时说道：“他是他时代中最热情和最抒情的画家。……对他来说，一切事物都具有表情、迫切性和吸引力。一切形式、一切面容都具有一种惊人的诗意”，“他感到大自然生命中具有一种神秘的升华，他希望将它捕捉。这一切对他意味着是一个充满狂热和甜蜜的谜，他希望他的艺术能将其吞没一切的热情传达给人类” (奥夫沙罗夫编《凡高论》，1987年，第95页)。</b></p> -->
-<!--         <p>为了能更充分地表现内在的情感，梵高探索出一种所谓表现主义的绘画语言。他认为：“颜色不是要达到局部的真实，而是要启示某种激情。”在他画中，浓重响亮的色彩对比往往达到极限。而他那富于激情的旋转、跃动的笔触，则使他的麦田、柏树、星空等，有如火焰般升腾、颤动，震撼观者的心灵。在他的画上，强烈的情感完全溶化在色彩与笔触的交响乐中。 -->
-<!--         <p>1853年3月30日生于津德尔特，早期因为表达内心的悲痛，曾割断了自己的耳朵。1890年7月29日在法国瓦兹河畔因困扰其多年的发作自杀身亡。早年经商，后热衷于，1880年以后开始学习绘画。曾在巴黎结识E·、P·和P·高更等画家。</p> -->
-<!--         <p>早期作品受和画派影响，代表作有《食土豆者》、《塞纳河滨》等。曾两次在咖啡馆和饭馆等地向劳工阶层展出自己的作品。不久厌倦巴黎生活，来到法国南部的阿尔勒，开始追求更有表现力的技巧；同时受革新文艺思潮的推动和的启发，以达到线和色彩的自身表现力和画面的、寓意性。台湾译名梵谷。的作品在很长一段时间内并不被世人所接受,直到十九世纪末的时候世界正进行着一次全面的革新，人们的思想得到空前的变革，接受新事物的能力也大大的提高。而过去相对于印象派较为超前的梵高，此时正适应了人们的审美需求。</p> -->
-<!--       </div> -->
-<!--     </div> -->
-<!--   </li> -->
-  
-</ul>
+<ul class="article_container"></ul>
 <div class="bottombar cl"> 
 	<span> 
 		<a href="#" class="icon like likeon">喜欢</a> 
