@@ -92,17 +92,20 @@ $(document).ready(function () {
   </div>
 </div>
 
+<a class ="step previous" href="#"></a>
+<a class ="step next" href="#"></a>
+
 <!--这是所有文章列表-->
 <ul class="article_container"></ul>
 <div class="bottombar cl"> 
 	<span> 
-		<a href="#" class="icon like likeon">喜欢</a> 
+		<a href="#" class="icon like">喜欢</a> 
 		<a href="#" class="icon music">音乐</a> </span> 
 				<cite>
 					<a href="#" class="icon edit">编辑</a>
 					<a href="#" class="icon del">× 删除</a>By wbrover
 				</cite>
-		<a href="#" class="icon talk">讨论</a> <a href="#" class="icon share">分享</a> 
+		<a href="#" class="icon comment">讨论</a> <a href="#" class="icon share">分享</a> 
 <!-- JiaThis Button BEGIN -->
 	<div class="jiathis_style_24x24">
 		<a class="jiathis_button_tsina"></a>

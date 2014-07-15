@@ -310,31 +310,39 @@
 	//Slider效果
 	$(document).keydown(function (event) {
 		
-		var articleSize=$(".article").size();
 		if (event.keyCode == 37) { //判断当event.keyCode 为37时（即左键）
 			
+			triggerNext();
+		
+		} else if (event.keyCode == 39) { //判断当event.keyCode 为39时（即右键）
+			
+			triggerNext(true);
+		}
+	});
+	
+	function triggerNext(isNext){
+		if(isNext){
+			var articleSize=$(".article").size();
+			if(currentArticleIndex == articleSize-1){
+				  console.log("currentIndex: "+currentArticleIndex+" articles_count:"+articleSize);
+				  ajaxLoad(true);
+				  alert("ajax loading...");	
+				}else{
+					currentArticleIndex++;
+					showCurrentArticle();
+				}
+		}else{
 			if(currentArticleIndex == 0){
 				ajaxLoad(false);
+				alert("ajax loading...");	
 			}else if(currentArticleIndex > 0){
 				currentArticleIndex--;
 				showCurrentArticle();
 			}
-			
-		
-		} else if (event.keyCode == 39) { //判断当event.keyCode 为39时（即右键）
-			
-			if(currentArticleIndex == articleSize-1){
-			  //ajax加载新的文章
-			  console.log("currentIndex: "+currentArticleIndex+" articles_count:"+articleSize);
-			  ajaxLoad(true);
-			  alert("ajax loading...");	
-			}else{
-				currentArticleIndex++;
-				showCurrentArticle();
-			}
-			
 		}
-	});
+		
+	}
+	
 
 	//显示文章标题
 	var $shownTitle;
@@ -675,8 +683,10 @@ $(document).ready(function () {
 	$(window).resize(function () {
 		confSize();
 	});
-	//分享按钮
-	$(".share").click(function(){
+	
+	//给button绑定图标变换和事件
+	var $shareBtn=$(".share");
+	$shareBtn.click(function(){
 		return false;
 	});
 	var isSharePanelHoving=false;
@@ -686,11 +696,14 @@ $(document).ready(function () {
 	}).mouseenter(function(){
 		isSharePanelHoving = true;
 	});
-	$(".share").hover(function(){
+	$shareBtn.hover(
+	function(){
+		$(this).removeClass("share").addClass("share_in");
 	    timer = setTimeout(function(){
 	    	$sharePanel.show();
 	    },700);
 	},function(){
+		$(this).removeClass("share_in").addClass("share");
 		setTimeout(function(){
 			if(!isSharePanelHoving){
 				$sharePanel.hide();
@@ -699,7 +712,9 @@ $(document).ready(function () {
 	    clearTimeout(timer);
 	});
 	
-	$(".bottombar a.music").click(function(){
+	var $musicBtn=$(".bottombar a.music");
+	
+	$musicBtn.click(function(){
 		if(!play){
 			musicPlayer.play();
 			play = true;
@@ -710,6 +725,68 @@ $(document).ready(function () {
 		return false;
 	});
 	
+	$musicBtn.hover(
+	 function(){
+		 $(this).removeClass("music").addClass("music_in");
+	 },
+	 function(){
+		 $(this).removeClass("music_in").addClass("music");
+	 }
+	);
+	
+	var $commentBtn =$(".bottombar a.comment");
+	$commentBtn.hover(
+			function(){ 
+				$(this).removeClass("comment").addClass("comment_in");
+			},
+			function(){
+				 $(this).removeClass("comment_in").addClass("comment");
+			});
+	var $likeBtn = $(".bottombar a.like");
+		$likeBtn.hover(
+			function(){
+				$(this).removeClass("like").addClass("like_in");
+			},
+			function(){
+				$(this).removeClass("like_in").addClass("like");
+			}
+		);
+		
+	var $delBtn=$(".del");
+		$delBtn.hover(
+			function(){
+				$(this).removeClass("del").addClass("del_in");	
+			},
+			function(){
+				$(this).removeClass("del_in").addClass("del");
+			}
+		);
+		$delBtn.click(function () {
+			$(".confirm").show();
+			return false;
+		});
+		
+	var $editBtn=$(".edit");
+		$editBtn.hover(
+			function(){
+				$(this).removeClass("edit").addClass("edit_in");	
+			},
+			function(){
+				$(this).removeClass("edit_in").addClass("edit");
+			}
+		);
+		
+	var $previousBtn = $(".previous");
+	$previousBtn.click(function(){
+		triggerNext();
+		return false;
+	});
+	
+	var $nextBtn = $(".next");
+	$nextBtn.click(function(){
+		triggerNext(true);
+		return false;
+	});
 	//新建文章
 	$(".addArticle").click(function () {
 		//如果登陆了，可以创建，否则转入登陆流程
@@ -755,7 +832,7 @@ $(document).ready(function () {
 	});
 	
 	//编辑文章
-	$(".edit").click(function () {
+	$editBtn.click(function () {
 		clearSubmitDataCache();
 		$(".setting,.cpbottom").show();
 		$(".bar,.bottombar").hide();
@@ -885,10 +962,6 @@ $(document).ready(function () {
 			return false;
 		});
 		
-		$('.del').click(function () {
-			$(".confirm").show();
-			return false;
-		});
 		
 		$(".pnr").click(function(){
 			pandoraSubmitter.postDelete();

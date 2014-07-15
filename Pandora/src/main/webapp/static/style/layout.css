@@ -49,11 +49,18 @@ background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0
 .bottombar span { float: left; }
 	.bottombar a.icon { float:left; display: block; overflow: hidden; width: 44px; height: 44px; text-indent: -999px; background-position: 50% 50%; background-repeat: no-repeat; background-size:18px 18px;}
 	.bottombar a.like { background-image: url(../images/like.png);}
-	.bottombar a.talk { background-image:url(../images/talk.png); }
+	.bottombar a.like_in { background-image: url(../images/like_in.png);}
+	.bottombar a.like_on { background-image: url(../images/like_on.png);}
+	.bottombar a.comment { background-image:url(../images/comment.png); }
+	.bottombar a.comment_in { background-image:url(../images/comment_in.png); }
 	.bottombar a.share { background-image:url(../images/share.png); }
+	.bottombar a.share_in { background-image:url(../images/share_in.png); }
 	.bottombar a.music { background-image:url(../images/music.png); }
+	.bottombar a.music_in { background-image:url(../images/music_in.png); }
 	.bottombar a.edit { background-image:url(../images/edit.png); }
+	.bottombar a.edit_in { background-image:url(../images/edit_in.png); }
 	.bottombar a.del { background-image:url(../images/del.png); }	
+	.bottombar a.del_in { background-image:url(../images/del_in.png); }	
 .bottombar cite { float: right; color: #eee; padding-right: 20px;}
 	.bottombar cite a { margin-right: 10px; font-size: 14px; }
 
@@ -112,3 +119,6 @@ background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0
 .uploadImgBtn {background-image:url(../images/addImage_32.ico); height: 32px; width: 32px;}
 .uploadMusicBtn {background-image:url(../images/addMusic_32.ico); height: 32px; width: 32px;}
 
+.step {position: fixed; top: 50%; background-repeat:no-repeat; width: 50px; height:75px; background-position:center; z-index: 500}
+.previous {left: 0px;top: 50%; background-image: url(../images/previous.png); }
+.next {right: 0px;top: 50%; background-image: url(../images/next.png);}
