@@ -22,16 +22,16 @@
 <meta name="copyright" content="Ransanity" />
 <meta name="robots" content="all" />
 <link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
-<!-- <link href="css/layout.css" rel="stylesheet" type="text/css" /> -->
-<link href="<c:url value="/css/layout.css" />" rel="stylesheet">
-<link href="<c:url value="/css/vertical.css" />" rel="stylesheet">
-<!-- <link href="css/vertical.css" rel="stylesheet" type="text/css" /> -->
+<link href="<%=basePath%>/css/vertical.css" rel="stylesheet" />
+<link href="<%=basePath%>/css/layout.css" rel="stylesheet" />
 <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
 <!--KindEditor-->
-<script src="<c:url value="/js/kindeditor-all-min.js" />"></script>
-<script charset="utf-8" src="<c:url value="/js/lang/zh_CN.js" />"></script>
-<script src="<c:url value="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=90749187" />" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" src="<c:url value="/js/pandora.js" />"></script>
+<script src="<%=basePath%>/js/kindeditor-all-min.js"></script>
+<script charset="utf-8" src="<%=basePath%>/js/lang/zh_CN.js"/></script>
+<!-- Weibo -->
+<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=90749187" type="text/javascript" charset="utf-8"></script>
+<!-- Ransanity -->
+<script type="text/javascript" src="<%=basePath%>/js/pandora.js" /></script>
 </head>
 
 <body>
@@ -50,6 +50,7 @@ if(id>=0){
 %>
 <script>
 $(document).ready(function () {
+	alert("<%=basePath%>");
  	createArticle(<%=articleData%>);
  	showCurrentArticle();
 });
@@ -57,6 +58,7 @@ $(document).ready(function () {
 <% } else{%>
 <script>
 $(document).ready(function () {
+alert("<%=basePath%>");
 	ajaxLoad(true);
 });
 </script>

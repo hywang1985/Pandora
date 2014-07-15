@@ -67,5 +67,4 @@
 	<mvc:resources location="/static/js/" mapping="/js/**" />
 	<mvc:resources location="/static/style/" mapping="/css/**" />
 	
-	<mvc:default-servlet-handler/>
 </beans>
