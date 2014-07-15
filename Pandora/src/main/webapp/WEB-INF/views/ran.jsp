@@ -50,7 +50,6 @@ if(id>=0){
 %>
 <script>
 $(document).ready(function () {
-	alert("<%=basePath%>");
  	createArticle(<%=articleData%>);
  	showCurrentArticle();
 });
@@ -58,7 +57,6 @@ $(document).ready(function () {
 <% } else{%>
 <script>
 $(document).ready(function () {
-alert("<%=basePath%>");
 	ajaxLoad(true);
 });
 </script>
