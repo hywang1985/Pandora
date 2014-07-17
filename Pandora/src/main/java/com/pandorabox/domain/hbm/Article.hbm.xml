@@ -11,14 +11,14 @@
 		<property name="text" type="text" />
 
 		<!--文章和图片是一对多单向关系 -->
-		<list name="images" cascade="save-update" lazy="false">
+		<list name="images" cascade="all" lazy="false">
 			<key column="article_id"/>
 			<index column="image_index" type="integer" />
 			<one-to-many class="ImageDescriptor" />
 		</list>
 		
 		<!--文章和文件(音乐)是一对多单向关系 -->
-		<list name="files" cascade="save-update" lazy="false">
+		<list name="files" cascade="all" lazy="false">
 			<key column="article_id"/>
 			<index column="file_index" type="integer" />
 			<one-to-many class="FileDescriptor" />

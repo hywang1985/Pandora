@@ -429,6 +429,7 @@
 	top:100px;
 	position: absolute; 
 	padding: 0px; 
+	border-radius: 15px; 
 }
 /* toolbar */
 .ke-toolbar {

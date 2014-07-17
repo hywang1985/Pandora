@@ -13,9 +13,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Ransanity</title>
+<title>燃悦读(Ransanity)</title>
 <meta property="wb:webmaster" content="d1eb041d8f189029" />
-<meta name="keywords" content="艺术、交互设计、动漫、历史、怀旧、文化、体育、工业、建筑设计、时代、旅行、新奇、创意" />
+<meta name="keywords" content="燃悦读希望可以通过创新的内容组织方式，为你提供沁入式的阅读体验，燃悦读可以用来分享知识和想法，可以用来抒发情感和寻找同类。" />
 <meta name="description" content="燃悦读为你提供侵入灵魂的阅读体验。" />
 <meta name="author" content="hywang@ransanity.com" />
 <meta name="build" content="2013-4-30" />
@@ -67,10 +67,14 @@ $(document).ready(function () {
 	var jiathis_config = {
 		appkey : {
 			"tsina" : "90749187"
-		}
+		},
 	};
 </script>
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1397804146285506" charset="utf-8"></script>
+<!-- UY BEGIN -->
+<!-- <div id="uyan_frame"></div> -->
+<!-- <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1945036"></script> -->
+<!-- UY END -->
 <!-- JiaThis Button END -->
 <div class="bar" id="navigator">
   <div class="body"><SCRIPT LANGUAGE="JavaScript">
@@ -80,9 +84,8 @@ $(document).ready(function () {
       </SCRIPT>
     <div class="header">
       <h2>Ransanity</h2>
-      <a href="#" class="classify"><strong>艺术</strong><em>▼</em><i style="display: none">▲</i></a>
-      <div class="icon"><a href="#" class="cur">1</a><a href="#">2</a><a href="#">3</a></div>
-      <a href="#" class="addArticle"><s>+</s>创造一页内容</a> </div>
+      <a href="#" class="classify"><strong>全部</strong><em>▼</em><i style="display: none">▲</i></a>
+      <a href="#" class="addArticle"><s>+</s>写一篇</a> </div>
     <div class="selectbox">
       <div class="body">
         <div class="item"><a href="#">全部</a><a href="#">艺术</a><a href="#">交互设计</a><a href="#">动漫</a><a href="#">历史</a><a href="#">怀旧</a><a href="#">文化</a><a href="#">体育</a><a href="#">工业</a><a href="#">建筑设计</a><a href="#">时代</a><a href="#">旅行</a><a href="#">新奇</a><a href="#">创意</a></div>
@@ -120,8 +123,8 @@ $(document).ready(function () {
 
 
 <!--KeEditor Element-->
-<textarea class="keditor" name="content"></textarea>
-<input class="edit_title" type="text" name="title" hidden="true"/>
+<textarea class="keditor" name="content" placeholder = "文章正文"></textarea>
+<input class="edit_title" type="text" name="title" hidden="true" placeholder="文章标题"/>
 <div class="cp">
   <dl class="layout">
     <dt>页面布局</dt>

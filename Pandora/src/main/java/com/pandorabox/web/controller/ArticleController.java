@@ -494,7 +494,7 @@ public class ArticleController extends BaseController {
 					imageDescriptor.setName(name);
 					imageDescriptor.setBucketPath(CommonConstant.IMG_BUCKET_NAME);
 					imageDescriptor.setRelativePath(relativeUrl);
-					String imageFullUrl = CommonConstant.HTTPS+CommonConstant.IMAGE_DOMAIN+relativeUrl;
+					String imageFullUrl = CommonConstant.HTTP+CommonConstant.IMAGE_DOMAIN+relativeUrl;
 					imageDescriptor.setUrl(imageFullUrl);
 					// imageDescriptor.setFileSecret(fileSecret)
 					handledResult.add(imageDescriptor);
