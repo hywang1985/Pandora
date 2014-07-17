@@ -1024,4 +1024,27 @@ $(document).ready(function () {
 		  	    reader.readAsDataURL(f);
 		  	 }
 		  }); 
+		 
+		
+		var isBottombarHoving=false;
+		var $bottomBar=$(".bottombar");
+		$bottomBar.mouseleave(function(){
+			 isBottombarHoving = false;
+		}).mouseenter(function(){
+			isBottombarHoving = true;
+		}).hover(
+				function(){
+					$(this).animate({height:"44px"},1100);
+				},
+				function(){
+					var self = this;
+					setTimeout(function(){
+						if(!isBottombarHoving){
+							$(self).animate({height:"5px"},1100);
+						}
+					},1100);
+				    clearTimeout(timer);
+				});
+			 
+		 
 });
