@@ -29,54 +29,56 @@
 		if(next){
 			loadType = "next";
 		}
-		$.ajax({
+		$.when($.ajax({
 			 url: applicationParams.basePath+"article/dyload/"+loadType,
 			 dataType:"json",
 			 headers:{
 				"startId": aid
-				},
-		 success: function(responseText, textStatus, jqXHR){
-			 if(responseText.status=="OK"){
-				 var articles = responseText.data;
-				 var noMore = false;
-				 //没有新文章
-				 if(articles.length==0){
-					
-					 alert("No more articles!");
-					 noMore = true;
-					 //如果之前就没有文章，也没新加载出文章hywang,创建一篇空文章
-					 if(!hasArticle()){
-						var fakeData = {"title":"","text":""};
-						createArticle(fakeData,true);
-						alert("No records at all!");
+				}
+		})).then(
+				//success
+				function(responseText, textStatus, jqXHR){
+					 if(responseText.status=="OK"){
+						 var articles = responseText.data;
+						 var noMore = false;
+						 //没有新文章
+						 if(articles.length==0){
+							
+							 alert("没有文章了哦 ，写一篇吧！");
+							 noMore = true;
+							 //如果之前就没有文章，也没新加载出文章hywang,创建一篇空文章
+							 if(!hasArticle()){
+								var fakeData = {"title":"","text":""};
+								createArticle(fakeData,true);
+								alert("No records at all!");
+							 }
+							//加载出新文章
+						 }else{ 
+							 //如果刚加载文章，索引不用+1
+							 var isInitialLoad = false;
+							 if(!hasArticle()){
+								 isInitialLoad = true;
+							 }
+							 for ( var i = 0; i < articles.length; i++) {
+								 var articleData = articles[i];
+								 //创建文章
+								 createArticle(articleData,false,!next);
+								 //当前选中的artilce元素
+							 }
+						 }
+						 if(next && !isInitialLoad && !noMore){ //如果加载下一篇，成功后索引+1，如果加载前一篇，则无论成功与否均不需要改变索引
+							 currentArticleIndex++;
+						 }
+						 showCurrentArticle();
+					 }else{
+						 alert(textStratus);
 					 }
-					//加载出新文章
-				 }else{ 
-					 //如果刚加载文章，索引不用+1
-					 var isInitialLoad = false;
-					 if(!hasArticle()){
-						 isInitialLoad = true;
-					 }
-					 for ( var i = 0; i < articles.length; i++) {
-						 var articleData = articles[i];
-						 //创建文章
-						 createArticle(articleData,false,!next);
-						 //当前选中的artilce元素
-					 }
-				 }
-				 if(next && !isInitialLoad && !noMore){ //如果加载下一篇，成功后索引+1，如果加载前一篇，则无论成功与否均不需要改变索引
-					 currentArticleIndex++;
-				 }
-				 showCurrentArticle();
-			 }else{
-				 alert(textStratus);
-			 }
-		 },
-		 error: function(jqXHR, textStatus, errorThrown){
-			 var exceptionInfo = JSON.parse(jqXHR.responseText);
-			alert("code: "+exceptionInfo.code+"message: "+ exceptionInfo.message);
-		 }
-		});
+				 },
+				//fail
+				 function(jqXHR, textStatus, errorThrown){
+					var exceptionInfo = JSON.parse(jqXHR.responseText);
+				alert("code: "+exceptionInfo.code+"message: "+ exceptionInfo.message);
+			 });
 	}
 	
 	function hasArticle(){
@@ -326,7 +328,7 @@
 			if(currentArticleIndex == articleSize-1){
 				  console.log("currentIndex: "+currentArticleIndex+" articles_count:"+articleSize);
 				  ajaxLoad(true);
-				  alert("ajax loading...");	
+//				  alert("ajax loading...");	
 				}else{
 					currentArticleIndex++;
 					showCurrentArticle();
@@ -334,7 +336,7 @@
 		}else{
 			if(currentArticleIndex == 0){
 				ajaxLoad(false);
-				alert("ajax loading...");	
+//				alert("ajax loading...");	
 			}else if(currentArticleIndex > 0){
 				currentArticleIndex--;
 				showCurrentArticle();
@@ -365,7 +367,6 @@
 			/***授权成功后回调***/
 			getWbUserData(function(o){
 				/***o是/users/show.json接口返回的json对象***/
-				//alert(o.screen_name);
 				alert(o.screen_name);
 				console.log(o);
 //				self.location="http://9iu.org/qqlogin?qqsid="+o.screen_name;
@@ -472,15 +473,13 @@
 		 this.bucketType = bucketType;
 		 this.url = url;
 		 this.askAuthorization = function(successCallback,errorCallback){
-				$.ajax({
-					 type: "POST",
-					 url: this.url,
-					 headers:{
-						"bucket_type": this.bucketType
-						},		
-				 success: successCallback,
-				 error: errorCallback
-			});
+			 $.when($.ajax({
+				 type: "POST",
+				 url: this.url,
+				 headers:{
+					"bucket_type": this.bucketType
+					}
+		})).then(successCallback,errorCallback);
 		};
 	 }
 	 
@@ -539,7 +538,7 @@
 //			this.url = "article";
 			this.tags = "文艺，历史"; //hywang
 			this.postAdd = function(){
-				$.ajax({
+				$.when($.ajax({
 					type: "POST",
 					url: applicationParams.basePath+"article",
 					dataType: "json",
@@ -553,26 +552,26 @@
 						"delMscs":JSON.stringify(deleteMusicIds),
 						"layout":currentLayout,
 						"tags":this.tags
-					},
-					success: function postSubmit(responseText, textStatus, jqXHR){
-						hideElements();
-						createArticle(responseText["data"]);
-						articleNumber = $("ul.article_container > li").length;
-						currentArticleIndex = articleNumber-1;
-						showCurrentArticle();
-					},
-					error: function errorCallback(jqXHR, responseText, errorThrown){
-						alert(errorThrown);
-					},
-					complete: function(){
-						isCreate = false;
 					}
 					
+				})).then(
+						function(responseText, textStatus, jqXHR){
+							hideElements();
+							createArticle(responseText["data"]);
+							articleNumber = $("ul.article_container > li").length;
+							currentArticleIndex = articleNumber-1;
+							showCurrentArticle();
+						},	
+						 function(jqXHR, responseText, errorThrown){
+							alert(errorThrown);
+						}
+				).always(function(){
+					isCreate = false;
 				});
 			};
 			
 			this.postUpdate = function(){
-				$.ajax({
+				$.when($.ajax({
 					type: "PUT",
 					url: applicationParams.basePath+"article/"+aid,
 					dataType: "json",
@@ -587,82 +586,89 @@
 						"layout":currentLayout,
 						"tags":this.tags
 					},
-					success: function postSubmit(responseText, textStatus, jqXHR){
-						//在客户端同步更新后的数据
-						$currentArticle.find(".inner").html($keEditor.html());
-						$shownTitle.text($editTitle.val());
-						//清空缓存
-						var $imgContainer = $currentArticle.find(".ownedImgs");
-						$imgContainer.empty();
-						var $mscContainer = $currentArticle.find(".ownedMusics");
-						$mscContainer.empty();
-						//处理图片
-						var updatedImgs = responseText["imgs"];
-						if(updatedImgs){
-							var $wrapbg=$currentArticle.find(".wrapbg");
-							for ( var i = 0; i < updatedImgs.length; i++) {
-								var img = updatedImgs[i];
-								if(i==0){
-									var $img = $("<img/>").attr("src",img.url).attr("imageId",img.imageId);
-									var $bgImg=$wrapbg.find("img");
-									//如果已经有占位背景图，删除该图
-									if($bgImg.length>0){
-										$bgImg.remove();
+				
+				})).then(
+						//success
+						function postSubmit(responseText, textStatus, jqXHR){
+							//在客户端同步更新后的数据
+							$currentArticle.find(".inner").html($keEditor.html());
+							$shownTitle.text($editTitle.val());
+							//清空缓存
+							var $imgContainer = $currentArticle.find(".ownedImgs");
+							$imgContainer.empty();
+							var $mscContainer = $currentArticle.find(".ownedMusics");
+							$mscContainer.empty();
+							//处理图片
+							var updatedImgs = responseText["imgs"];
+							if(updatedImgs){
+								var $wrapbg=$currentArticle.find(".wrapbg");
+								for ( var i = 0; i < updatedImgs.length; i++) {
+									var img = updatedImgs[i];
+									if(i==0){
+										var $img = $("<img/>").attr("src",img.url).attr("imageId",img.imageId);
+										var $bgImg=$wrapbg.find("img");
+										//如果已经有占位背景图，删除该图
+										if($bgImg.length>0){
+											$bgImg.remove();
+										}
+										//更新操作之后，保证有背景图
+										if($wrapbg.length==0){
+											$wrapbg = $("<div/>").addClass("wrapbg");
+											$currentArticle.prepend($wrapbg);
+										}
+											$wrapbg.append($img);
 									}
-									//更新操作之后，保证有背景图
-									if($wrapbg.length==0){
-										$wrapbg = $("<div/>").addClass("wrapbg");
-										$currentArticle.prepend($wrapbg);
+									var $image = $("<img/>").attr("src",img.snapshotUrl);
+									var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
+									$imgContainer.append($("<li/>").attr("descriptorid",img.imageId).attr("url",img.url).append($image).append($delLink));
+								}
+							}
+							//处理音乐
+							var updateMscs = responseText["mscs"];
+							if(updateMscs){
+								for ( var i = 0; i < updateMscs.length; i++) {
+									var music = updateMscs[i];
+									var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
+									var $musicLi = $("<li/>").attr("descriptorid",music.fileId).attr("url",music.url).text(music.name+"("+3.23+"MB)").append($delLink);
+									if(music.selected){
+										$("<cite/>").append($("<img/>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
 									}
-										$wrapbg.append($img);
+									$mscContainer.append($musicLi);
 								}
-								var $image = $("<img/>").attr("src",img.snapshotUrl);
-								var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
-								$imgContainer.append($("<li/>").attr("descriptorid",img.imageId).attr("url",img.url).append($image).append($delLink));
 							}
-						}
-						//处理音乐
-						var updateMscs = responseText["mscs"];
-						if(updateMscs){
-							for ( var i = 0; i < updateMscs.length; i++) {
-								var music = updateMscs[i];
-								var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
-								var $musicLi = $("<li/>").attr("descriptorid",music.fileId).attr("url",music.url).text(music.name+"("+3.23+"MB)").append($delLink);
-								if(music.selected){
-									$("<cite/>").append($("<img/>").attr("src","images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
-								}
-								$mscContainer.append($musicLi);
-							}
-						}
-						//刷新视图
-						hideElements();
-						showCurrentArticle();
-					},
-					error: function errorCallback(jqXHR, responseText, errorThrown){
-						alert(errorThrown);
-					}
-				});
+							//刷新视图
+							hideElements();
+							showCurrentArticle();
+						},
+						//error
+						function errorCallback(jqXHR, responseText, errorThrown){
+							alert(errorThrown);
+						}		
+				);
 			};
 		
 			this.postDelete = function(){
-				$.ajax({
+				$.when($.ajax({
 					type: "DELETE",
 					url: applicationParams.basePath+"article/"+aid,
-					success: function postSubmit(responseText, textStatus, jqXHR){
-						$(".confirm").hide(function(){
-							$currentArticle.parent().remove();
-							if(currentArticleIndex==0){
-								currentArticleIndex = currentArticleIndex+1;
-							}else{
-								currentArticleIndex = currentArticleIndex-1;
-							}
-							showCurrentArticle();
-						});
-					},
-					error: function errorCallback(jqXHR, responseText, errorThrown){
-						alert(errorThrown);
-					}
-				});
+				
+				})).then(
+						function postSubmit(responseText, textStatus, jqXHR){
+							$(".confirm").hide(function(){
+								$currentArticle.parent().remove();
+								if(currentArticleIndex==0){
+									currentArticleIndex = currentArticleIndex+1;
+								}else{
+									currentArticleIndex = currentArticleIndex-1;
+								}
+								showCurrentArticle();
+							});
+						},	
+						
+						function errorCallback(jqXHR, responseText, errorThrown){
+							alert(errorThrown);
+						}
+				);
 			};
 		}
 
@@ -1028,22 +1034,27 @@ $(document).ready(function () {
 		
 		var isBottombarHoving=false;
 		var $bottomBar=$(".bottombar");
+		var bottomBarHoverOutTimer;
 		$bottomBar.mouseleave(function(){
 			 isBottombarHoving = false;
 		}).mouseenter(function(){
 			isBottombarHoving = true;
 		}).hover(
 				function(){
+					if(bottomBarHoverOutTimer){
+						clearTimeout(bottomBarHoverOutTimer);
+					}
+					
 					$(this).animate({height:"44px"},1100);
 				},
 				function(){
 					var self = this;
-					setTimeout(function(){
+					 bottomBarHoverOutTimer = setTimeout(function(){
 						if(!isBottombarHoving){
 							$(self).animate({height:"5px"},1100);
 						}
 					},1100);
-				    clearTimeout(timer);
+				
 				});
 			 
 		 
