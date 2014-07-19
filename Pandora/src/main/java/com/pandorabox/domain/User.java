@@ -44,4 +44,10 @@ public interface User extends Serializable{
 	 * */
 	public List<Article> getArticles();
 	public void setArticles(List<Article> articles);
+	
+	/**
+	 * 用户主页的URL，绝对路径
+	 * */
+	public String getUrl();
+	public void setUrl(String url);
 }

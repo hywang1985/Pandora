@@ -5,6 +5,14 @@
 	var pandoraSubmitter = new pandoraSubmitter();
 	var isCreate = false; //是否是新建文章
 	var $fakeArticle; //如果没有文章，会生成一个仿造文章
+	
+	//session中的user信息
+	var sessionUserInfo;
+	
+	//编辑文章的button
+	var $editBtn;
+	//删除文章的button
+	var $delBtn;
 	//创建文章的layout
 	var currentLayout;
 	var aid; //当前文章的ID
@@ -140,6 +148,13 @@
 		if(ic){
 			$articleMain.prepend(ic);
 		}
+		//author
+		var author = articleData.author;
+		if(author){
+			var $authorDiv = $("<div/>").addClass("author").text("By ");
+			$authorDiv.append($("<a/>").attr("href",author.url || "#").attr("uid",author.userId).text(author.username)).hide()
+			.appendTo($articleMain);
+		}
 		$articleLi.append($articleMain);
 		if(isFake){ //如果当前创建的是FAKE
 			
@@ -195,6 +210,21 @@
 		$keContainer = $(".ke-container");
 	}
 	
+	function drawConrolPanel(needEdit,needDelete,needAuthor){
+		var $authorPanel = $currentArticle.find(".author");	
+		var $controlPanel=$(".bottombar > .controlPanel");
+		var $displayAuthorPanel=$authorPanel.clone();
+		$controlPanel.detach(".edit").detach(".del");
+		$controlPanel.find(".author").remove();
+		if(!needEdit && !needDelete && needAuthor){
+			$controlPanel.append($displayAuthorPanel);
+			$displayAuthorPanel.show();
+		}else{
+			$controlPanel.append($editBtn).append($delBtn).append($displayAuthorPanel);
+			$displayAuthorPanel.show();
+		}
+	}
+	
 	//显示索引所在的文章
 	function showCurrentArticle(){
 		
@@ -204,6 +234,18 @@
 				$currentArticle = $(".article").eq(currentArticleIndex);
 				aid = $currentArticle.attr("aid");
 				$(element).show(function(){
+					//设置作者面板
+					var $authorLink = $currentArticle.find(".author > a");	
+					if(sessionUserInfo){
+							if(sessionUserInfo.userId != $authorLink.attr("uid")){
+								drawConrolPanel(false, false, true);
+							}else{
+								drawConrolPanel(true, true, true);
+							}
+						}else{
+							drawConrolPanel(false, false, true);
+						}
+					
 					 //设置当前文章需要播放的音乐的URL
 					var $pickedMusicCite=$currentArticle.find(".ownedMusics .pickedMusic");
 					if($pickedMusicCite){
@@ -361,17 +403,51 @@
 	var submittedImages = [];
 	var submittedMusics = [];
 	
+	
 	//微博登陆
 	function WB2_Login(){
 		WB2.login(function(){
 			/***授权成功后回调***/
-			getWbUserData(function(o){
+			getWbUserData(function(weiboUser){
 				/***o是/users/show.json接口返回的json对象***/
-				alert(o.screen_name);
-				console.log(o);
+//				alert(o.screen_name);
+				console.log(weiboUser);
 //				self.location="http://9iu.org/qqlogin?qqsid="+o.screen_name;
+				bindWeiboUser(weiboUser,showCurrentArticle);
 			});
 		});
+	}
+	
+	function bindWeiboUser(weiboUser,successCallback,errorCallback){
+		$.when($.ajax({
+			url: applicationParams.basePath+"user/login",
+			data: {
+				"weibo_user":JSON.stringify(weiboUser)
+			}
+			
+		})).then(
+		//success
+		 function(responseText, textStatus, jqXHR){
+			 console.log(responseText);
+			 if(responseText.status == "OK"){
+				 
+				 sessionUserInfo = responseText.user;
+				 if(successCallback){
+					 successCallback();
+				 }
+			 }
+			 
+		 },
+		 //fail
+		 function(jqXHR, responseText, errorThrown){
+			 alert(errorThrown);
+			 if(errorCallback) {
+				 errorCallback();
+			}
+			 
+			 
+		 }
+		);
 	}
 
 	function getWbUserData(callback) {
@@ -673,7 +749,7 @@
 		}
 
 
-
+//文档加载完成时调用的函数
 $(document).ready(function () {
 	
 	$editTitle = $(".edit_title");
@@ -758,7 +834,7 @@ $(document).ready(function () {
 			}
 		);
 		
-	var $delBtn=$(".del");
+	$delBtn=$("<a/>").addClass("icon").addClass("del").text("× 删除").attr("href","#");
 		$delBtn.hover(
 			function(){
 				$(this).removeClass("del").addClass("del_in");	
@@ -772,7 +848,7 @@ $(document).ready(function () {
 			return false;
 		});
 		
-	var $editBtn=$(".edit");
+		$editBtn=$("<a/>").addClass("icon").addClass("edit").text("编辑").attr("href","#");
 		$editBtn.hover(
 			function(){
 				$(this).removeClass("edit").addClass("edit_in");	
@@ -828,10 +904,6 @@ $(document).ready(function () {
 			});
 
 		}else{
-//			location.href = "user/wblogin";
-//			WB2.login(function(o){
-//				console.log(o);
-//				});
 			WB2_Login();
 		}
 		return false;
@@ -1056,6 +1128,21 @@ $(document).ready(function () {
 					},1100);
 				
 				});
-			 
-		 
+		
+		$("#wb_connect_btn").hide();
+		//weibo从cookies绑定用户
+		WB2.anyWhere(function (W) {
+		    W.widget.connectButton({
+		        id: "wb_connect_btn",
+		        type: '3,2',
+		        callback: {
+		            login: function (weiboUser) { //登录后的回调函数
+		                bindWeiboUser(weiboUser, showCurrentArticle);
+		            },
+		            logout: function () { //退出后的回调函数
+		                alert('logout');
+		            }
+		        }
+		    });
+		});
 });

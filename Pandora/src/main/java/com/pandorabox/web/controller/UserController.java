@@ -34,10 +34,12 @@ public class UserController extends BaseController {
 		try{
 			String StringWeiboUser = request.getParameter(CommonConstant.WEIBO_USER_KEY);
 			JSONObject weiboUserJSONObject = JSONObject.fromObject(StringWeiboUser);
-			String StringWeboUid = weiboUserJSONObject.getString(CommonConstant.WEIBO_UID_KEY);
-			Integer weiboUid = (StringWeboUid==null || "".equals(StringWeboUid))?null:Integer.parseInt(StringWeboUid);
+			int weiboUid = weiboUserJSONObject.getInt(CommonConstant.WEIBO_UID_KEY);
+			String relativeProfileUrl = weiboUserJSONObject.getString(CommonConstant.WEIBO_PROFILE_URL_KEY);
+			StringBuilder weiboUserFullUrl = new StringBuilder(CommonConstant.HTTP);
+			weiboUserFullUrl.append(CommonConstant.WEIBO_DOMAIN).append("/").append(relativeProfileUrl);
 			String screenName = weiboUserJSONObject.getString(CommonConstant.SCREEN_NAME_KEY);
-			User user = userService.bindWeiboUser(weiboUid, screenName);
+			User user = userService.bindWeiboUser(weiboUid, screenName,weiboUserFullUrl.toString());
 			//放user到session,以便调用
 			setSessionUser(request, user);
 			resultMap.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);

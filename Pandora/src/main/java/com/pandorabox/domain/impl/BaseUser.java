@@ -17,6 +17,8 @@ public class BaseUser implements User {
 	
 	private Integer weiboUid;
 	
+	private String url;
+	
 	private String username;
 	
 	private String passwd;
@@ -87,6 +89,16 @@ public class BaseUser implements User {
 
 	public void setWeiboUid(Integer weiboUid) {
 		this.weiboUid = weiboUid;
+	}
+
+	@Override
+	public String getUrl() {
+		return url;
+	}
+
+	@Override
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 

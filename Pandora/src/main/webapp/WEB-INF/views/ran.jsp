@@ -91,6 +91,7 @@ $(document).ready(function () {
         <div class="item"><a href="#">全部</a><a href="#">艺术</a><a href="#">交互设计</a><a href="#">动漫</a><a href="#">历史</a><a href="#">怀旧</a><a href="#">文化</a><a href="#">体育</a><a href="#">工业</a><a href="#">建筑设计</a><a href="#">时代</a><a href="#">旅行</a><a href="#">新奇</a><a href="#">创意</a></div>
         <div class="my"> <a href="#">我的收藏</a> <a href="#">我创建的</a> </div>
       </div>
+       <div id="wb_connect_btn" ></div>
     </div>
   </div>
 </div>
@@ -103,12 +104,12 @@ $(document).ready(function () {
 <div class="bottombar cl"> 
 	<span> 
 		<a href="#" class="icon like">喜欢</a> 
-		<a href="#" class="icon music">音乐</a> </span> 
-				<cite>
-					<a href="#" class="icon edit">编辑</a>
-					<a href="#" class="icon del">× 删除</a>By wbrover
-				</cite>
-		<a href="#" class="icon comment">讨论</a> <a href="#" class="icon share">分享</a> 
+		<a href="#" class="icon music">音乐</a> 
+	</span> 
+	<cite class="controlPanel">
+	</cite>
+	<a href="#" class="icon comment">讨论</a> 
+	<a href="#" class="icon share">分享</a> 
 <!-- JiaThis Button BEGIN -->
 	<div class="jiathis_style_24x24">
 		<a class="jiathis_button_tsina"></a>

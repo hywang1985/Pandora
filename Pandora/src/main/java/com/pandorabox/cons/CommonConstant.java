@@ -101,6 +101,10 @@ public class CommonConstant {
 
 	public static final String WEIBO_UID_KEY = "id";
 	
+	public static final String WEIBO_PROFILE_URL_KEY = "profile_url";
+	
+	public static final String WEIBO_DOMAIN = "www.weibo.com";
+	
 	public static final String SCREEN_NAME_KEY = "screen_name";
 	
 	public static Map<String,Map<String,String>> bucketAuthorizations = new HashMap<String,Map<String,String>>();

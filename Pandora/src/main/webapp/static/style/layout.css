@@ -64,6 +64,7 @@ background-color: currentcolor;
 	.bottombar a.del_in { background-image:url(../images/del_in.png); }	
 .bottombar cite { float: right; color: #eee; padding-right: 20px;}
 	.bottombar cite a { margin-right: 10px; font-size: 14px; }
+	.bottombar cite .author{float: right;}
 
 .cpbottom { display: none; _position:absolute; position: fixed; bottom: 0; left: 0; right: 0; padding-right:20px; height: 44px; line-height: 44px; z-index: 400; background:#000; text-align: right; z-index: 800; }
 	.cpbottom a { float: right; margin-left: 10px; }

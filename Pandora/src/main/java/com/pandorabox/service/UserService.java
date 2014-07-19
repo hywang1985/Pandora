@@ -21,7 +21,8 @@ public interface UserService {
 	/**
 	 * @param weiboUid 微博用户的唯一id
 	 * @param screenName 微博用户的昵称
+	 * @param screenName 用户的微博统一URL地址
 	 * @return User 已经和微博用户绑定好的本站账户
 	 * */
-	public User bindWeiboUser(int weiboUid,String screenName);
+	public User bindWeiboUser(int weiboUid,String screenName, String profileUrl);
 }

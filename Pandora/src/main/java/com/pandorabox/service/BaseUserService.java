@@ -14,13 +14,14 @@ public class BaseUserService implements UserService {
 	private UserDao userDao;
 	
 	@Override
-	public User bindWeiboUser(int weiboUid,String screenName) {
+	public User bindWeiboUser(int weiboUid,String screenName,String profileUrl) {
 		User bindedUser = null;
 		bindedUser = getUserByWeiboUid(weiboUid);
 		if(bindedUser==null){
 			bindedUser = new BaseUser();
 			bindedUser.setWeiboUid(weiboUid);
 			bindedUser.setUsername(screenName);
+			bindedUser.setUrl(profileUrl);
 			userDao.save(bindedUser);
 		}
 		return bindedUser;
