@@ -2,10 +2,12 @@ package com.pandorabox.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.User;
+import com.pandorabox.service.UserService;
 
 /**
  * 
@@ -13,8 +15,14 @@ import com.pandorabox.domain.User;
  * 
  */
 public class BaseController {
+	
+	private static boolean DEBUG = true;
+	private static final String DEBUG_UNAME = "fakeUser";
 	protected static final String ERROR_MSG_KEY = "errorMsg";
 
+	@Autowired
+	protected UserService userService;
+	
 	/**
 	 * 获取保存在Session中的用户对象
 	 * 
@@ -22,8 +30,14 @@ public class BaseController {
 	 * @return
 	 */
 	protected User getSessionUser(HttpServletRequest request) {
-		return (User) request.getSession().getAttribute(
+		User user = (User)request.getSession().getAttribute(
 				CommonConstant.USER_CONTEXT);
+		
+//		if(user==null && DEBUG){
+//			user = userService.getUserByUserName(DEBUG_UNAME);
+//			setSessionUser(request,user);
+//		}
+		return (User) user;
 	}
    
 	/**

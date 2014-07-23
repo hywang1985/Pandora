@@ -24,7 +24,7 @@ public class UserControllerTests extends AbstractContextControllerTests {
 
 	private static User user;
 	
-	private static final String WEIBO_USER_STRING = "{\"id\":1144243765,\"idstr\":\"1144243765\",\"class\":1,\"screen_name\":\"聒噪的hywang\"}";
+	private static final String WEIBO_USER_STRING = "{\"id\":1144243765,\"idstr\":\"1144243765\",\"class\":1,\"screen_name\":\"聒噪的hywang\",\"profile_url\":\"abc\"}";
 	
 	private static MockHttpSession mockSession;
  	@BeforeClass
@@ -39,7 +39,9 @@ public class UserControllerTests extends AbstractContextControllerTests {
 	@Test
 	public void testLogin() throws Exception{
 		ResultActions result = mockMvc.perform(get("/user/login").session(mockSession)
-				.param(CommonConstant.WEIBO_USER_KEY, WEIBO_USER_STRING).accept(MediaType.APPLICATION_JSON));
+				.param(CommonConstant.WEIBO_USER_KEY, WEIBO_USER_STRING)
+				.param(CommonConstant.WEIBO_PROFILE_URL_KEY, "")
+				.accept(MediaType.APPLICATION_JSON));
 		result.andExpect(status().isOk()).andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK)).andDo(print());
 		User sessionUser = (User) mockSession.getAttribute(CommonConstant.USER_CONTEXT);
 		Assert.assertNotNull(sessionUser);

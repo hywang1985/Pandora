@@ -42,6 +42,7 @@ import com.pandorabox.domain.impl.BaseUser;
 import com.pandorabox.exception.PandoraException;
 import com.pandorabox.service.ArticleService;
 import com.pandorabox.service.LayoutService;
+import com.pandorabox.service.UserService;
 import com.pandorabox.service.upyun.UpYunService;
 
 @Controller
@@ -59,6 +60,9 @@ public class ArticleController extends BaseController {
 	
 	@Autowired 
 	private LayoutService layoutService;
+	
+	@Autowired
+	private UserService userService;
 	
 	private static Pattern filePattern = Pattern.compile("^/\\w*/");
 	
@@ -172,9 +176,12 @@ public class ArticleController extends BaseController {
 		LayoutBehavior layoutBehavior = null;
 		try {
 			User author = getSessionUser(request);
+//			User author  = userService.getUserById(8);
 			if (author == null) {
-				author = new BaseUser();
-				author.setUsername("fakeUser");
+				author  = userService.getUserById(1);
+				setSessionUser(request, author);
+//				author = new BaseUser();
+//				author.setUsername("fakeUser");
 				// throw new NoUserException();
 			}
 			if (author != null) {
@@ -430,8 +437,10 @@ public class ArticleController extends BaseController {
 			result.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
 			User author = getSessionUser(request);
 			if (author == null) {
-				author = new BaseUser();
-				author.setUsername("fakeUser");
+				author = userService.getUserById(1);
+				setSessionUser(request, author);
+//				author = new BaseUser();
+//				author.setUsername("fakeUser");
 				// throw new NoUserException();
 			}
 			Article article = articleService.getArticleById(id);
@@ -441,6 +450,18 @@ public class ArticleController extends BaseController {
 				upService.deleteFile(img.getRelativePath());
 
 			}
+			List existArticles = author.getArticles();
+			if(existArticles.contains(article)){
+				existArticles.remove(article);
+			}
+//			Iterator it = existArticles.iterator();
+//			while(it.hasNext()){
+//				Article a = (Article)it.next();
+//				if(a.getArticleId() == article.getArticleId()){
+//					it.remove();
+//					break;
+//				}
+//			}
 			articleService.removeArticle(id);
 			result.put(CommonConstant.DELETED_KEY, id);
 		} catch (Exception e) {

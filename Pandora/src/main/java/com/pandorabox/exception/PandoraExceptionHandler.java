@@ -19,7 +19,7 @@ public class PandoraExceptionHandler extends SimpleMappingExceptionResolver {
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object o, Exception e) {
-		logger.error(e);
+		logger.error("Occured an exception: ", e);
 		if (isAjax(request)) {
 			ExceptionInfo exInfo = ExceptionInfo.valueOf(e.getClass());
 			String exceptionMessage = exInfo.getMessage();

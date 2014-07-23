@@ -80,5 +80,36 @@ public class BaseImageDescriptor implements ImageDescriptor {
 		return url+CommonConstant.IMAGE_SNAPSHOT_SUFFIX;
 	}
 
+	@Override
+	public int hashCode() {
+		int result = 17;
+		int imageId = getImageId();
+		int name = getName()==null?0:getName().hashCode();
+		int url = getUrl()==null?0:getUrl().hashCode();
+		result = 31*result+imageId;
+		result = 31*result+name;
+		result = 31*result+url;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof BaseImageDescriptor)) {
+			return false;
+		}
+
+		BaseImageDescriptor target = (BaseImageDescriptor) obj;
+		boolean result = true;
+		result = (getImageId() == target.getImageId()) && result;
+		result = (getName()==null?target.getName()==null: getName().equals(target.getName())) && result;
+		result = (getUrl()==null?target.getUrl()==null: getUrl().equals(target.getUrl())) && result;
+		return result;
+	}
 
 }

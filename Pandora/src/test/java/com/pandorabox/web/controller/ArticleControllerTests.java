@@ -37,7 +37,7 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	
 	
 	@Test
-	public void addArticles() throws Exception {
+	public void testAddArticles() throws Exception {
 		JSONArray addedImages = new JSONArray();
 		JSONObject img1 = new JSONObject();
 		JSONObject img2 = new JSONObject();
@@ -127,7 +127,7 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	}
 	
 	@Test
-	public void updateArticle() throws Exception {
+	public void testUpdateArticle() throws Exception {
 		JSONArray addedImages = new JSONArray();
 		JSONObject img1 = new JSONObject();
 		JSONObject img2 = new JSONObject();
@@ -170,7 +170,7 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	
 	
 	@Test
-	public void loadArticlesByPage() throws Exception{
+	public void testLoadArticlesByPage() throws Exception{
 		mockMvc.perform(
 				get("/article/dyload").header(CommonConstant.ARTICLE_START_INDEX_HEADER_NAME, 1).accept(MediaType.APPLICATION_JSON)
 						.sessionAttr(CommonConstant.USER_CONTEXT, user))
@@ -180,7 +180,7 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	}
 	
 	@Test
-	public void deleterticle() throws Exception {
+	public void testDeleteArticle() throws Exception {
 
 		mockMvc.perform(
 				delete("/article/4")
@@ -188,6 +188,45 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 				.andExpect(
 						content().string(
 								"{\"status\":\"OK\",\"deleted\":4}"))
+				.andDo(print());
+	}
+	
+	@Test
+	public void testReAddArticle() throws Exception {
+		JSONArray addedImages = new JSONArray();
+		JSONObject img1 = new JSONObject();
+		JSONObject img2 = new JSONObject();
+		img1.put("url", "/fakeUser/castle.jpg");
+		img2.put("url", "/fakeUser/angle.jpg");
+		img2.put("time", "1398511699");
+		img2.put("message", "OK");
+		img2.put("sign", "b0caf896238ec85bf3e3e14de80299bf");
+		img2.put("code", "200");
+		img2.put("image-width", "1024");
+		img2.put("image-height", "768");
+		img2.put("image-frames", "1");
+		img2.put("image-type", "JPEG");
+		addedImages.add(img1);
+		addedImages.add(img2);
+		JSONArray addedMusics = new JSONArray();
+		JSONObject music1 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
+		JSONObject music2 = JSONObject.fromObject("{\"code\":200,\"message\":\"ok\",\"url\":\"\\/fakeUser/SPITZ.mp3\",\"time\":1398511699,\"sign\":\"b0caf896238ec85bf3e3e14de80299bf\"}");
+		addedMusics.add(music1);
+		addedMusics.add(music2);
+		mockMvc.perform(
+				post("/article").param(CommonConstant.ARTICLE_TAGS_KEY, "文艺")
+						.param(CommonConstant.ARTICLE_TITLE_KEY, "title1")
+						.param(CommonConstant.ARTICLE_CONTENT_KEY, "content")
+						.param(CommonConstant.ARTICLE_LAYOUT_KEY,
+								LayoutBehavior.HORIZONTAL_LAYOUT_NAME)
+						.param(CommonConstant.ARTICLE_COMMITTED_IMAGES_KEY,
+								addedImages.toString())
+						.param(CommonConstant.ARTICLE_COMMITTED_MUSIC_KEY,
+								addedMusics.toString())
+						.param(CommonConstant.MUSIC_SELECTED_INDEX_KEY,"1").accept(MediaType.APPLICATION_JSON)
+						.sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
 	}
 	

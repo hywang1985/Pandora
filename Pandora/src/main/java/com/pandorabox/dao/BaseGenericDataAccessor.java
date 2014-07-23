@@ -89,6 +89,7 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	 */
 	public void remove(E entity) {
 		getSession().delete(entity);
+//		getSession().clear();
 	}
 
 	/**
@@ -97,7 +98,7 @@ public abstract class BaseGenericDataAccessor<E extends Serializable,EID extends
 	 * @param entity
 	 */
 	public void update(E entity) {
-		getSession().update(entity);
+		getSession().saveOrUpdate(entity);
 	}
 
 	/**

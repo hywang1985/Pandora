@@ -21,7 +21,7 @@
 <meta name="build" content="2013-4-30" />
 <meta name="copyright" content="Ransanity" />
 <meta name="robots" content="all" />
-<link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+<link rel="shortcut icon" type="image/ico" href="<%=basePath%>/images/ran.ico" />
 <link href="<%=basePath%>/css/vertical.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/layout.css" rel="stylesheet" />
 <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>

@@ -12,7 +12,9 @@ public class BaseUserDao extends BaseGenericDataAccessor<User, Integer> implemen
 
 	private static String GET_USER_BY_NAME = "from User user where user.username like ?";
 	
-	private static String GET_USER_BY_UID = "from User user where user.weiboUid like ?";
+	private static String GET_USER_BY_WEIBO_UID = "from User user where user.weiboUid like ?";
+	
+	private static String GET_USER_BY_ID = "from User user where user.userId like ?";
 
 	@Override
 	public User getUserByUserName(String userName) {
@@ -27,11 +29,11 @@ public class BaseUserDao extends BaseGenericDataAccessor<User, Integer> implemen
 	@Override
 	public User getUserByWeiboUid(int weiboUid) {
 		User user = null;
-		List result = find(GET_USER_BY_UID,weiboUid);
+		List result = find(GET_USER_BY_WEIBO_UID,weiboUid);
 		if(result!=null && !result.isEmpty()){
 			user = (User)result.get(0);
 		}
 		return user;
 	}
-
+	
 }

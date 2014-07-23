@@ -101,5 +101,39 @@ public class BaseUser implements User {
 		this.url = url;
 	}
 
+	@Override
+	public int hashCode() {
+		int result = 17;
+		int userId = getUserId();
+		int email = getEmail()==null?0:getEmail().hashCode();
+		int userName = getUsername()==null?0:getUsername().hashCode();
+		int url =  getUrl()==null?0:getUrl().hashCode();
+		result = 31*result+userId;
+		result = 31*result+email;
+		result = 31*result+userName;
+		result = 31*result+url;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof BaseUser)) {
+			return false;
+		}
+
+		BaseUser target = (BaseUser) obj;
+		boolean result = true;
+		result = (getUserId() == target.getUserId()) && result;
+		result = (getEmail()==null?target.getEmail()==null: getEmail().equals(target.getEmail())) && result;
+		result = (getUsername()==null?target.getUsername()==null: getUsername().equals(target.getUsername())) && result;
+		result = (getUrl()==null?target.getUrl()==null: getUrl().equals(target.getUrl())) && result;
+		return result;
+	}
 
 }

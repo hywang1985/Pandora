@@ -236,16 +236,16 @@
 				$(element).show(function(){
 					//设置作者面板
 					var $authorLink = $currentArticle.find(".author > a");	
-					if(sessionUserInfo){
-							if(sessionUserInfo.userId != $authorLink.attr("uid")){
-								drawConrolPanel(false, false, true);
-							}else{
-								drawConrolPanel(true, true, true);
-							}
-						}else{
-							drawConrolPanel(false, false, true);
-						}
-					
+//					if(sessionUserInfo){
+//							if(sessionUserInfo.userId != $authorLink.attr("uid")){
+//								drawConrolPanel(false, false, true);
+//							}else{
+//								drawConrolPanel(true, true, true);
+//							}
+//						}else{
+//							drawConrolPanel(false, false, true);
+//						}
+					drawConrolPanel(true, true, true);
 					 //设置当前文章需要播放的音乐的URL
 					var $pickedMusicCite=$currentArticle.find(".ownedMusics .pickedMusic");
 					if($pickedMusicCite){
@@ -482,15 +482,45 @@
 	};
 
 	
-	function hideElements() {
+	function hideElements(callback) {
 		$(".cpbottom,.setting,.cp").hide();
 		$editTitle.hide();
 		var $editImgs=$(".bg .cl").find("li");
 		var $editMusics = $(".music .cl").find("li");
+		
+		//弹出顶Bar
+		function showTopBar(){
+			var dtdTop  = $.Deferred();
+			$(".bar").show(function(){
+				dtdTop.resolve();
+			});
+			return dtdTop;
+		}
+		
+		//弹出顶Bar
+		function showBtmBar(){
+			var dtdBtm  = $.Deferred();
+			$(".bottombar").show(function(){
+				dtdBtm.resolve();
+			});
+			return dtdBtm;
+		}
+		function fadeInInner(){
+			var dtdInner  = $.Deferred();
+			$currentArticle.find(".inner").fadeIn(1500,function(){
+				dtdInner.resolve();
+			});
+		}
+		function fadeInTitle(){
+			var dtdTitle  = $.Deferred();
+			$shownTitle.fadeIn(1500,function(){
+				dtdTitle.resolve();
+			});
+		}
 		$(".ke-container").fadeOut(function () {
-			$currentArticle.find(".inner").fadeIn(1500);
-			$shownTitle.fadeIn(1500);
-			$(".bar,.bottombar").show();
+			
+			$.when(showTopBar(),showBtmBar(),fadeInInner(),fadeInTitle())
+				.done(callback());
 		});
 		return false;
 	}
@@ -632,12 +662,14 @@
 					
 				})).then(
 						function(responseText, textStatus, jqXHR){
-							hideElements();
-							createArticle(responseText["data"]);
-							articleNumber = $("ul.article_container > li").length;
-							currentArticleIndex = articleNumber-1;
-							showCurrentArticle();
-						},	
+								hideElements(function(){
+									createArticle(responseText["data"]);
+									articleNumber = $("ul.article_container > li").length;
+									currentArticleIndex = articleNumber-1;
+									showCurrentArticle();
+								});
+							
+							},	
 						 function(jqXHR, responseText, errorThrown){
 							alert(errorThrown);
 						}
@@ -713,8 +745,7 @@
 								}
 							}
 							//刷新视图
-							hideElements();
-							showCurrentArticle();
+							hideElements(showCurrentArticle);
 						},
 						//error
 						function errorCallback(jqXHR, responseText, errorThrown){
@@ -872,7 +903,7 @@ $(document).ready(function () {
 	//新建文章
 	$(".addArticle").click(function () {
 		//如果登陆了，可以创建，否则转入登陆流程
-		if(WB2.checkLogin()){
+//		if(WB2.checkLogin()){
 			
 			isCreate = true;
 			clearSubmitDataCache();
@@ -903,9 +934,9 @@ $(document).ready(function () {
 				$keContainer.fadeIn(1500);
 			});
 
-		}else{
-			WB2_Login();
-		}
+//		}else{
+//			WB2_Login();
+//		}
 		return false;
 	});
 	
@@ -998,8 +1029,7 @@ $(document).ready(function () {
 		});
 		
 		$(".cpbottom .cancel").click(function(){
-			hideElements();
-			restoreEditItems();
+			hideElements(restoreEditItems);
 			return false;
 		});
 		

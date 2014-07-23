@@ -25,4 +25,7 @@ public interface UserService {
 	 * @return User 已经和微博用户绑定好的本站账户
 	 * */
 	public User bindWeiboUser(int weiboUid,String screenName, String profileUrl);
+	
+	public User getUserById(int uid);
+	
 }

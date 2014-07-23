@@ -53,4 +53,9 @@ public class BaseUserService implements UserService {
 		userDao.update(user);
 	}
 
+	@Override
+	public User getUserById(int uid) {
+		return userDao.get(uid);
+	}
+
 }

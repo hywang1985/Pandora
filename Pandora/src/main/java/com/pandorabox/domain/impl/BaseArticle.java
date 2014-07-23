@@ -1,6 +1,7 @@
 package com.pandorabox.domain.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.pandorabox.domain.Article;
@@ -105,6 +106,34 @@ public class BaseArticle implements Article {
 
 	public void setPickedMusicIndex(int pickedMusicIndex) {
 		this.pickedMusicIndex = pickedMusicIndex;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		int articleId = getArticleId();
+		int author = getAuthor().hashCode();
+		result = 31*result+articleId;
+		result = 31*result+author;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this){
+			return true;
+		}
+		if(obj == null){
+			return false;
+		}
+		if(!(obj instanceof BaseArticle)){
+			return false;
+		}
+		BaseArticle target= (BaseArticle)obj;
+		boolean result = true;
+		result = (getArticleId() == target.getArticleId()) && result;
+		result = (getAuthor()==null?target.getAuthor()==null: getAuthor().equals(target.getAuthor())) && result;
+		return result;
 	}
 
 }
