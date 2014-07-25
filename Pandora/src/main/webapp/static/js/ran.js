@@ -96,85 +96,41 @@
 	//创建文章节点
 	function createArticle(articleData,isFake,reverse){
 		var $articleContainer = $("ul.article_container");
-		var $articleLi = $("<li/>");
-		var articleId = articleData.articleId;
-		//main
-		var $articleMain = isFake?$("<div/>").addClass("article"):$("<div/>").addClass("article").attr("aid",articleId);
-		var $displayImgContainer = $("<div/>");
-		var $hiddenImgContainer = $("<div/>").css("display","none").addClass("ownedImgs");
-		var $musicContainer = $("<div/>").css("display","none").addClass("ownedMusics");
 		
-		if(!isFake){
-			
-			//处理图片
+			//处理图片，找到背景图
 			for ( var i = 0; i < articleData.images.length; i++) {
 				var img = articleData.images[i];
 				var ic;
 				if(i==0){
-					var $img = $("<img/>").attr("src",img.url).attr("imageId",img.imageId);
-					ic = $displayImgContainer.addClass("wrapbg").append($img);
+					articleData.wrapbg=img;
+					break;
 				}
-				var $image = $("<img/>").attr("src",img.snapshotUrl);
-				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delImg").on("click",onDelImg);
-				$hiddenImgContainer.append($("<li/>").attr("descriptorid",img.imageId).attr("url",img.url).append($image).append($delLink));
 			}
-			
-			//处理音乐
-			for ( var i = 0; i < articleData.files.length; i++) {
-				var music = articleData.files[i];
-				var $delLink = $("<a/>").attr("href","#").text("删除").addClass("delMsc").on("click",onDelMusic);
-				var $musicLi = $("<li/>").attr("descriptorid",music.fileId).attr("url",music.url).text(music.name+"("+3.23+"MB)").append($delLink);
-				
-				if(i==articleData.pickedMusicIndex){
-					$("<cite/>").append($("<img/>").attr("src",applicationParams.basePath+"images/play16.ico")).addClass("pickedMusic").appendTo($musicLi);
-				}
-				$musicContainer.append($musicLi);
-			}
-		}
-		
-		//处理标题
-		var articleTitle = articleData.title;
-		$articleMain.append($("<h1/>").addClass("shown_title").text(articleTitle));
-		//处理正文
-		$articleMain.append($("<div/>").addClass("inner").html(articleData.text));
-		
-		if(!isFake){
-			$articleMain.append($displayImgContainer);
-		}
-		$articleMain.append($hiddenImgContainer);
-		
-		$articleMain.append($musicContainer);
-		
-		if(ic){
-			$articleMain.prepend(ic);
-		}
-		//author
-		var author = articleData.author;
-		if(author){
-			var $authorDiv = $("<div/>").addClass("author").text("By ");
-			$authorDiv.append($("<a/>").attr("href",author.url || "#").attr("uid",author.userId).text(author.username)).hide()
-			.appendTo($articleMain);
-		}
-		$articleLi.append($articleMain);
-		if(isFake){ //如果当前创建的是FAKE
-			
-			$fakeArticle = $articleLi;
-			$articleContainer.append($fakeArticle);
-		
-		}else if($fakeArticle){ //如果当前创建的不是FAKE，但是有FAKE存在，置空FAKE并且替换DOM元素
-			
-			$fakeArticle.replaceWith($articleLi);
-			$fakeArticle = null;
-		
-		}else{
+			//解析模板
+			var articleTemplate = $("#article-template").html();
+			Mustache.parse(articleTemplate);   // optional, speeds up future uses
+			//编译模板
+			var articleHtmlElement = Mustache.render(articleTemplate, articleData);
+			var $articleLi = $(articleHtmlElement);
 			if(reverse){
 				$articleContainer.prepend($articleLi);
 			}else{
 				$articleContainer.append($articleLi);
 			}
-			
-		}
+				
 		
+		if(isFake){ //如果当前创建的是FAKE
+			
+			$fakeArticle = $articleLi;
+		
+		}else if($fakeArticle){ //如果当前创建的不是FAKE，但是有FAKE存在，置空FAKE并且替换DOM元素
+			
+			$fakeArticle.replaceWith($articleLi);
+			$fakeArticle = null;
+		}
+		//无论是否FAKE,都要绑定事件
+		$(".delImg").on("click",onDelImg);
+		$(".delMsc").on("click",onDelMusic);
 	}
 	
 	//初始化Editor相关
@@ -236,15 +192,15 @@
 				$(element).show(function(){
 					//设置作者面板
 					var $authorLink = $currentArticle.find(".author > a");	
-//					if(sessionUserInfo){
-//							if(sessionUserInfo.userId != $authorLink.attr("uid")){
-//								drawConrolPanel(false, false, true);
-//							}else{
-//								drawConrolPanel(true, true, true);
-//							}
-//						}else{
-//							drawConrolPanel(false, false, true);
-//						}
+					if(sessionUserInfo){
+							if(sessionUserInfo.userId != $authorLink.attr("uid")){
+								drawConrolPanel(false, false, true);
+							}else{
+								drawConrolPanel(true, true, true);
+							}
+						}else{
+							drawConrolPanel(false, false, true);
+						}
 					drawConrolPanel(true, true, true);
 					 //设置当前文章需要播放的音乐的URL
 					var $pickedMusicCite=$currentArticle.find(".ownedMusics .pickedMusic");

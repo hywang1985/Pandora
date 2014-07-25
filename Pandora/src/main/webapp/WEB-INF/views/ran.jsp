@@ -31,7 +31,8 @@
 <!-- Weibo -->
 <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=90749187" type="text/javascript" charset="utf-8"></script>
 <!-- Ransanity -->
-<script type="text/javascript" src="<%=basePath%>/js/pandora.js" /></script>
+<script type="text/javascript" src="<%=basePath%>/js/ran.js" /></script>
+<script type="text/javascript" src="<%=basePath%>/js/mustache.js" /></script>
 </head>
 
 <body>
@@ -76,6 +77,44 @@ $(document).ready(function () {
 <!-- <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1945036"></script> -->
 <!-- UY END -->
 <!-- JiaThis Button END -->
+
+
+<!--文章模板-->
+<script id="article-template" type="x-tmpl-mustache">
+<li>
+    <div class="article" aid={{articleId}}>
+		<div class="wrapbg">
+			{{#wrapbg}}
+				<img src={{url}} imageid={{imageId}} />
+			{{/wrapbg}}
+		</div>
+		<h1 class="shown_title">{{title}}</h1>
+		<div class="inner">{{{text}}}</div>
+		<ul class="ownedImgs" style="display:none;">
+			{{#images}}
+				<li descriptorid={{imageId}} url={{url}}>
+					<img src={{snapshotUrl}} />
+					<a href="#" class="delImg">删除</a>
+				</li>
+			{{/images}}
+		</ul>
+		
+		<ul class="ownedMusics" style="display:none;">
+			{{#files}}
+				<li descriptorid={{fileId}} url={{url}}>{{name}}
+					<a href="#" class="delMsc">删除</a>
+					{{#selected}}
+						<cite class="pickedMusic">
+							<img src="<%=basePath%>/images/play16.ico" />
+						</cite>
+					{{/selected}}
+				</li>
+			{{/files}}
+		</ul>
+		<div class="author" style="display:none;">By<a href={{author.url}} uid={{author.userId}}>{{author.username}}</a></div>
+	</div>
+</li>
+</script>
 <div class="bar" id="navigator">
   <div class="body"><SCRIPT LANGUAGE="JavaScript">
       <!--
