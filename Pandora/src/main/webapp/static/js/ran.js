@@ -859,7 +859,7 @@ $(document).ready(function () {
 	//新建文章
 	$(".addArticle").click(function () {
 		//如果登陆了，可以创建，否则转入登陆流程
-//		if(WB2.checkLogin()){
+		if(WB2.checkLogin()){
 			
 			isCreate = true;
 			clearSubmitDataCache();
@@ -890,9 +890,9 @@ $(document).ready(function () {
 				$keContainer.fadeIn(1500);
 			});
 
-//		}else{
-//			WB2_Login();
-//		}
+		}else{
+			WB2_Login();
+		}
 		return false;
 	});
 	
