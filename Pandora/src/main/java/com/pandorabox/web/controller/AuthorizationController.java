@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.User;
 import com.pandorabox.domain.impl.BaseUser;
+import com.pandorabox.exception.NoUserException;
 import com.pandorabox.service.upyun.UpYunFormRequest;
 import com.pandorabox.service.upyun.UpYunRequestBuilder;
 import com.pandorabox.service.upyun.UpYunRestRequest;
@@ -76,14 +77,13 @@ public class AuthorizationController extends BaseController {
 			HttpServletResponse response) {
 		UpYunFormRequest formRequest = null;
 		String bucketType = request
-				.getHeader(CommonConstant.HTTP_BUCKET_TYPE_HEADER_NAME);
+				.getParameter(CommonConstant.HTTP_BUCKET_TYPE_HEADER_NAME);
+		logger.info("bucket: "+bucketType);
 		String bucket = EBucketType.valueOf(bucketType.toUpperCase()).bucket;
 		String formApiSecret = EBucketType.valueOf(bucketType.toUpperCase()).apiFormSecret;
 		User user = getSessionUser(request);
 		if (user == null) {
-			user= new BaseUser();
-			user.setUsername("fakeUser");
-			//throw new NoUserException();
+			throw new NoUserException();
 		}
 		String userName = user.getUsername();
 		formRequest = new UpYunRequestBuilder().setFormApiSecret(formApiSecret)

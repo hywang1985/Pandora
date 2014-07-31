@@ -43,7 +43,7 @@ public class AuthorizationConrollerTests extends AbstractContextControllerTests 
 		
 		
 		ResultActions result = mockMvc.perform(post("/authorization/form")
-				.header(CommonConstant.HTTP_BUCKET_TYPE_HEADER_NAME, "image").sessionAttr(CommonConstant.USER_CONTEXT, user)
+				.param(CommonConstant.HTTP_BUCKET_TYPE_HEADER_NAME, "image").sessionAttr(CommonConstant.USER_CONTEXT, user)
 				);
 		result.andExpect(status().isOk()).andDo(print());
 	}

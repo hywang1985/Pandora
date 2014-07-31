@@ -68,8 +68,8 @@ public class CommonConstant {
 	
 	public static final String MUSIC_SELECTED_INDEX_KEY= "musicSelected";
 	
-	//上线以后用/{random}{.suffix}
-	public static final String COMMON_SAVE_KEY = "/{filename}{.suffix}";
+	//上线以后用/{random32}{.suffix}
+	public static final String COMMON_SAVE_KEY = "/{random32}{.suffix}";
 	
 	public static final String ARTICLE_START_INDEX_HEADER_NAME= "startIndex";
 	

@@ -36,7 +36,7 @@ a:hover{color:#FFFF99;}
 .article { overflow: auto; position: absolute; background:#000; background:rgba(0,0,0,0.8); filter:alpha(opacity=80); padding: 30px; }
 	.article h1 { font-size: 20px; font-weight: 700; color: #FFFF99; margin-bottom: 20px; }
 	.article .edit_title{font-size: 20px; font-weight: 700; margin-bottom: 20px; border: 5px solid; border-color: #18b2b8; border-radius: 25px; text-align: center;}
-	.article .inner { overflow-y: auto; }
+	.article .inner { overflow-y: visible; }
 
 .bottombar { _position:absolute; position: fixed; bottom: 0; left: 0; right: 0; height: 5px; line-height: 44px; z-index: 400; 
 background-image: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 40%, rgba(0, 0, 0, 0.4) 98%, #FFFFFF 100%); 

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +15,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.PropertyFilter;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,8 +59,6 @@ public class ArticleController extends BaseController {
 	
 	@Autowired 
 	private LayoutService layoutService;
-	
-	private static Pattern filePattern = Pattern.compile("^/\\w*/");
 	
 	private static Logger logger = Logger.getLogger(ArticleController.class);
 
@@ -463,11 +461,16 @@ public class ArticleController extends BaseController {
 		Iterator it = imagesInfos.iterator();
 		if(!isDelete){
 			while(it.hasNext()){
-				String name = null;
+				String fileName = null;
 				JSONObject info = JSONObject.fromObject(it.next());
 				String relativeUrl = info.getString(CommonConstant.URL_KEY);
 				//从类似于/user/abc.pic这样的路径下通过正则表达式找到文件名abc.pic
-				name = filePattern.split(relativeUrl)[1];
+				String[] splited = StringUtils.split(relativeUrl, "/");
+				if(splited.length>1){
+					fileName = splited[splited.length-1];
+				}else{
+					fileName = relativeUrl;
+				}
 				
 				switch (fileType) {
 				case FILE:
@@ -476,7 +479,7 @@ public class ArticleController extends BaseController {
 					}
 					
 					FileDescriptor musicDescriptor = new BaseFileDescriptor();
-					musicDescriptor.setName(name);
+					musicDescriptor.setName(fileName);
 					musicDescriptor.setBucketPath(CommonConstant.IMG_BUCKET_NAME);
 					musicDescriptor.setRelativePath(relativeUrl);
 					String musicFullUrl = CommonConstant.HTTP+CommonConstant.MUSIC_DOMAIN+relativeUrl;
@@ -490,7 +493,7 @@ public class ArticleController extends BaseController {
 						handledResult = new ArrayList<ImageDescriptor>();
 					}
 					ImageDescriptor imageDescriptor = new BaseImageDescriptor();
-					imageDescriptor.setName(name);
+					imageDescriptor.setName(fileName);
 					imageDescriptor.setBucketPath(CommonConstant.IMG_BUCKET_NAME);
 					imageDescriptor.setRelativePath(relativeUrl);
 					String imageFullUrl = CommonConstant.HTTP+CommonConstant.IMAGE_DOMAIN+relativeUrl;

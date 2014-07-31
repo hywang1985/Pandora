@@ -535,10 +535,10 @@
 		 this.bucketType = bucketType;
 		 this.url = url;
 		 this.askAuthorization = function(successCallback,errorCallback){
-			 $.when($.ajax({
+			$.when($.ajax({
 				 type: "POST",
 				 url: this.url,
-				 headers:{
+				 data:{
 					"bucket_type": this.bucketType
 					}
 		})).then(successCallback,errorCallback);

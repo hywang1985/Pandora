@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 
 import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.User;
+import com.pandorabox.domain.impl.BaseUser;
 import com.pandorabox.service.UserService;
 
 /**
@@ -18,7 +19,6 @@ public class BaseController {
 	
 	private static boolean DEBUG = true;
 	private static final String DEBUG_UNAME = "fakeUser";
-	protected static final String ERROR_MSG_KEY = "errorMsg";
 
 	@Autowired
 	protected UserService userService;
@@ -33,10 +33,12 @@ public class BaseController {
 		User user = (User)request.getSession().getAttribute(
 				CommonConstant.USER_CONTEXT);
 		
-//		if(user==null && DEBUG){
-//			user = userService.getUserByUserName(DEBUG_UNAME);
-//			setSessionUser(request,user);
-//		}
+		//Hacked code for insert a user in local develop mode.
+		if(user == null && DEBUG){
+			user = new BaseUser();
+			user.setUsername(DEBUG_UNAME);
+			setSessionUser(request,user);
+		}
 		return (User) user;
 	}
    
