@@ -2,7 +2,7 @@
 	var $keEditor;
 	var $keContainer;
 	var musicPicked = 0; //当前文章播放的音乐 hywang
-	var pandoraSubmitter = new pandoraSubmitter();
+	var pandoraSubmitter = new PandoraSubmitter();
 	var isCreate = false; //是否是新建文章
 	var $fakeArticle; //如果没有文章，会生成一个仿造文章
 	
@@ -30,6 +30,10 @@
 			applicationContext:"",
 			basePath:""
 	};
+	
+	//操作tooltip的api
+	var likeBtnTooltipApi,musicBtnTooltipApi,shareBtnTooltipApi,editBtnTooltipApi,delBtnTooltipApi,addBtnTooltipApi,
+		previousBtnTooltipApi,nextBtnTooltipApi;
 	
 	//动态加载文章
 	function ajaxLoad(next){
@@ -596,7 +600,7 @@
 		
 		
 		//如果所有文件传完，则向潘多拉服务器提交文件更新信息   
-		function pandoraSubmitter(){
+		function PandoraSubmitter(){
 //			this.url = "article";
 			this.tags = "文艺，历史"; //hywang
 			this.postAdd = function(){
@@ -743,7 +747,7 @@ $(document).ready(function () {
 	//隐藏editor对应的textarea
 	$(".keditor").hide();
 	//隐藏分享面板
-	var $sharePanel=$(".jiathis_style_24x24");
+	var $sharePanel=$(".jiathis_style_32x32");
 	$sharePanel.hide();
 	var $navigator=$("#navigator"); //hywang
 	//计算inner的高度
@@ -781,9 +785,17 @@ $(document).ready(function () {
 	    clearTimeout(timer);
 	});
 	
-	var $musicBtn=$(".bottombar a.music");
+	var $musicBtn=$(".bottombar a.music_on");
 	
 	$musicBtn.click(function(){
+		var musicBtnTipContent = "播放音乐";
+		if($(this).hasClass("music_on")){
+			$(this).removeClass("music_on").addClass("music");
+		}else{
+			$(this).removeClass("music").removeClass("music_in").addClass("music_on");
+			musicBtnTipContent = "停止播放音乐";
+		}
+		musicBtnTooltipApi.updateContent(musicBtnTipContent,false);
 		if(!play){
 			musicPlayer.play();
 			play = true;
@@ -794,32 +806,26 @@ $(document).ready(function () {
 		return false;
 	});
 	
-	$musicBtn.hover(
-	 function(){
-		 $(this).removeClass("music").addClass("music_in");
-	 },
-	 function(){
-		 $(this).removeClass("music_in").addClass("music");
-	 }
-	);
-	
-	var $commentBtn =$(".bottombar a.comment");
-	$commentBtn.hover(
-			function(){ 
-				$(this).removeClass("comment").addClass("comment_in");
-			},
-			function(){
-				 $(this).removeClass("comment_in").addClass("comment");
-			});
-	var $likeBtn = $(".bottombar a.like");
-		$likeBtn.hover(
-			function(){
-				$(this).removeClass("like").addClass("like_in");
-			},
-			function(){
-				$(this).removeClass("like_in").addClass("like");
-			}
-		);
+//	var $commentBtn =$(".bottombar a.comment");
+//	$commentBtn.hover(
+//			function(){ 
+//				$(this).removeClass("comment").addClass("comment_in");
+//			},
+//			function(){
+//				 $(this).removeClass("comment_in").addClass("comment");
+//			});
+	var $likeBtn = $(".bottombar a.like"); //hywang
+	$likeBtn.click(function(){
+		var tipContent = "喜欢这篇文章";
+		if($(this).hasClass("like_on")){
+			$(this).removeClass("like_on").addClass("like");
+		}else{
+			$(this).removeClass("like").removeClass("like_in").addClass("like_on");
+			tipContent = "取消喜欢";
+		}
+		likeBtnTooltipApi.updateContent(tipContent,false);
+		return false;
+	});
 		
 	$delBtn=$("<a/>").addClass("icon").addClass("del").text("× 删除").attr("href","#");
 		$delBtn.hover(
@@ -857,7 +863,8 @@ $(document).ready(function () {
 		return false;
 	});
 	//新建文章
-	$(".addArticle").click(function () {
+	var $addBtn=$(".addArticle");
+	$addBtn.click(function () {
 		//如果登陆了，可以创建，否则转入登陆流程
 		if(WB2.checkLogin()){
 			
@@ -1111,7 +1118,7 @@ $(document).ready(function () {
 						if(!isBottombarHoving){
 							$(self).animate({height:"5px"},1100);
 						}
-					},1100);
+					},2000);
 				
 				});
 		
@@ -1131,4 +1138,95 @@ $(document).ready(function () {
 		        }
 		    });
 		});
+		
+		//负责绑定tooltip的函数
+		function bindTooltip(obj,content,target,tooltip,width,tip,onShow,onHide,beforeHide){
+			var api = obj.qtip({
+				content: content,
+				   position: {
+					      corner: {
+					         target: target,
+					         tooltip: tooltip
+					      }
+					   },
+				   style: { 
+					      width: width,
+					      padding: 5,
+					      background: "#A2D959",
+					      textAlign: "center",
+					      border: {
+					         radius: 5,
+					         color: '#A2D959'
+					      },
+					      tip: tip,
+					      name: "light" // Inherit the rest of the attributes from the preset dark style
+					   },
+					
+			}).qtip("api");
+			if(onShow){
+				api.onShow = onShow;
+			}
+			if(onHide){
+				api.onHide = onHide;
+			}
+			if(beforeHide){
+				api.beforeHide = beforeHide;
+			}
+			return api;
+		}
+		//逐个绑定tooltip
+		var likeBtnTipContent,musicBtnTipContent,shareBtnTipContent,editBtnTipContent,delBtnTipContent,addBtnTipContent,
+		previousBtnTipContent,nextBtnTipContent;
+		editBtnTipContent = "编辑当前文章";
+		delBtnTipContent = "删除当前文章";
+		addBtnTipContent = "只需几幅图，一首歌，几句话，就可以写一篇文章";
+		previousBtnTipContent = "点击键盘左键也可以翻页哦";
+		nextBtnTipContent = "点击键盘右键也可以翻页哦";
+		if($likeBtn.hasClass("like_on")){
+			likeBtnTipContent = "取消喜欢";
+		}else {
+			likeBtnTipContent = "喜欢这篇文章";
+		}
+		if($musicBtn.hasClass("music_on")){
+			musicBtnTipContent = "停止播放音乐";
+		}else {
+			musicBtnTipContent = "播放音乐";
+		}
+		shareBtnTipContent = $sharePanel;
+		
+		likeBtnTooltipApi = bindTooltip($likeBtn,likeBtnTipContent,"topMiddle","bottomLeft",120,"bottomLeft",	
+				function(event){
+					$likeBtn.removeClass("like").addClass("like_in");
+				},
+				function(event){
+					$likeBtn.removeClass("like_in").addClass("like");
+				});
+		
+		musicBtnTooltipApi = bindTooltip($musicBtn,musicBtnTipContent,"topMiddle","bottomMiddle",120,"bottomMiddle",	
+				function(event){
+					$musicBtn.removeClass("music").addClass("music_in");
+				},
+				function(event){
+					$musicBtn.removeClass("music_in").addClass("music");
+				});
+		editBtnTooltipApi = bindTooltip($editBtn,editBtnTipContent,"topMiddle","bottomMiddle",120,"bottomMiddle",	
+				function(event){
+			$editBtn.removeClass("edit").addClass("edit_in");
+		},
+		function(event){
+			$editBtn.removeClass("edit_in").addClass("edit");
+		});
+		
+		delBtnTooltipApi = bindTooltip($delBtn,delBtnTipContent,"topMiddle","bottomMiddle",120,"bottomMiddle",	
+				function(event){
+			$delBtn.removeClass("del").addClass("del_in");
+		},
+		function(event){
+			$delBtn.removeClass("del_in").addClass("del");
+		});
+		
+		
+		addBtnTooltipApi = bindTooltip($addBtn,addBtnTipContent,"bottomLeft","rightTop",120,"rightTop");
+		previousBtnTooltipApi = bindTooltip($previousBtn,previousBtnTipContent,"rightMiddle","leftTop",120,"leftTop");
+		nextBtnTooltipApi = bindTooltip($nextBtn,nextBtnTipContent,"leftMiddle","rightTop",120,"rightTop");
 });

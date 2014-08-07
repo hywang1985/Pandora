@@ -25,7 +25,10 @@
 <link href="<%=basePath%>/css/vertical.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/layout.css" rel="stylesheet" />
 <script src="http://code.jquery.com/jquery-1.8.3.min.js" type="text/javascript"></script>
-<!--KindEditor-->
+
+<!-- qtip -->
+<script type="text/javascript" src="<%=basePath%>/js/jquery.qtip.min.js"></script>
+<!-- KindEditor -->
 <script src="<%=basePath%>/js/kindeditor-all-min.js"></script>
 <script charset="utf-8" src="<%=basePath%>/js/lang/zh_CN.js"/></script>
 <!-- Weibo -->
@@ -71,13 +74,6 @@ $(document).ready(function () {
 		},
 	};
 </script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1397804146285506" charset="utf-8"></script>
-<!-- UY BEGIN -->
-<!-- <div id="uyan_frame"></div> -->
-<!-- <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1945036"></script> -->
-<!-- UY END -->
-<!-- JiaThis Button END -->
-
 
 <!--文章模板-->
 <script id="article-template" type="x-tmpl-mustache">
@@ -111,7 +107,7 @@ $(document).ready(function () {
 				</li>
 			{{/files}}
 		</ul>
-		<div class="author" style="display:none;">By<a href={{author.url}} uid={{author.userId}}>{{author.username}}</a></div>
+		<div class="author" style="display:none;">By <a href={{author.url}} uid={{author.userId}}>{{author.username}}</a></div>
 	</div>
 </li>
 </script>
@@ -143,21 +139,21 @@ $(document).ready(function () {
 <div class="bottombar cl"> 
 	<span> 
 		<a href="#" class="icon like">喜欢</a> 
-		<a href="#" class="icon music">音乐</a> 
+		<a href="#" class="icon music_on">音乐</a> 
 	</span> 
 	<cite class="controlPanel">
 	</cite>
-	<a href="#" class="icon comment">讨论</a> 
+<!-- 	<a href="#" class="icon comment">讨论</a>  -->
 	<a href="#" class="icon share">分享</a> 
 <!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style_24x24">
+	<div class="jiathis_style_32x32" >
 		<a class="jiathis_button_tsina"></a>
 		<a class="jiathis_button_tqq"></a>
 		<a class="jiathis_button_weixin"></a>
-<!-- 		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a> -->
-</div>
-<!-- JiaThis Button END -->
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1397804146285506" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 <div class="cpbottom cl"> <a href="#" class="cancel">取消</a> <a href="#" class="submit">确定</a> </div>
 <div class="setting">页面设置<em>▼</em><i style="display: none">▲</i></div>
 

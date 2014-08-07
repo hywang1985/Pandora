@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.User;
-import com.pandorabox.domain.impl.BaseUser;
 import com.pandorabox.exception.NoUserException;
 import com.pandorabox.service.upyun.UpYunFormRequest;
 import com.pandorabox.service.upyun.UpYunRequestBuilder;

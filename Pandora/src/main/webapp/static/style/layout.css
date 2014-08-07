@@ -58,6 +58,7 @@ background-color: currentcolor;
 	.bottombar a.share_in { background-image:url(../images/share_in.png); }
 	.bottombar a.music { background-image:url(../images/music.png); }
 	.bottombar a.music_in { background-image:url(../images/music_in.png); }
+	.bottombar a.music_on { background-image:url(../images/music_on.png); }
 	.bottombar a.edit { background-image:url(../images/edit.png); }
 	.bottombar a.edit_in { background-image:url(../images/edit_in.png); }
 	.bottombar a.del { background-image:url(../images/del.png); }	
