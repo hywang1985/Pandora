@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.pandorabox.domain">
+	<class name="ImageDescriptor" table="image_descriptor">
+		<id name="imageId" column="imgdescriptor_id">
+			<generator class="increment" />
+		</id>
+		<property name="relativePath" column="relative_path" type="string" />
+		<property name="bucketPath" column="bucket_path" type="string" />
+		<property name="fileSecret" column="file_secret" type="string" />
+		<property name="name" type="string" />
+		<property name="url" type="string" />
+		<!-- 采用Table per subclass策略存每一个ImageDescriptor的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.BaseImageDescriptor" table="base_image_descriptor">
+			<key column="imgdescriptor_id" />
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

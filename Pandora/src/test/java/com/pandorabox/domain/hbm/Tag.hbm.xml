@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.pandorabox.domain">
+	<class name="Tag" table="tag">
+		<id name="tagId" column="tag_id" type="integer">
+			<generator class="increment" />
+		</id>
+		<property name="value"/>
+		<!-- 采用Table per subclass策略存每一个Tag的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.BaseTag" table="base_tag">
+			<key column="tag_id" />
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

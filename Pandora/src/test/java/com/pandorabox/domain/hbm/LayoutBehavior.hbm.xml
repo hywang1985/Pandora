@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.pandorabox.domain">
+	<class name="LayoutBehavior" table="layout">
+		<id name="layoutId" column="layout_id">
+			<generator class="increment" />
+		</id>
+		<property name="name" type="string"/>
+		<property name="relativeCSSPath" type="string"/>
+		
+		<!-- 采用Table per subclass策略存每一个LayoutBehavior的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.BaseLayoutDescriptor" table="base_layout_descriptor">
+			<key column="layout_id" />
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

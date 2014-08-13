@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.pandorabox.domain">
+	<class name="Article" table="article">
+		<id name="articleId" column="article_id">
+			<generator class="increment" />
+		</id>
+		<property name="pickedMusicIndex" column="picked_music" type="integer" />
+		<property name="title" type="string" />
+		<property name="text" type="text" />
+
+		<!--文章和图片是一对多单向关系 -->
+		<list name="images" cascade="all" lazy="false">
+			<key column="article_id"/>
+			<index column="image_index" type="integer" />
+			<one-to-many class="ImageDescriptor" />
+		</list>
+		
+		<!--文章和文件(音乐)是一对多单向关系 -->
+		<list name="files" cascade="all" lazy="false">
+			<key column="article_id"/>
+			<index column="file_index" type="integer" />
+			<one-to-many class="FileDescriptor" />
+		</list>
+
+		<!--文章和标签是多对多单向关系,通过关联表ArticleTags映射多对多的关系 -->
+		<list name="tags" table="article_tags" cascade="save-update" lazy="false">
+			<key column="article_id " not-null="true" />
+			<index column="tag_index" type="integer" />
+			<many-to-many column="tag_id" class="Tag" />
+		</list>
+
+		<!--文章和用户是多对一双向关系 -->
+		<many-to-one name="author" class="User" lazy="false"
+			column="user_id" cascade="save-update">
+		</many-to-one>
+		<!--与LayoutBehavior是多对一的关系-->
+		<many-to-one name="layoutBehavior" class="LayoutBehavior" lazy="false"
+			column="layout_id" cascade="save-update">
+		</many-to-one>
+	
+	<!-- 采用Table per subclass策略存每一个article的子类 -->
+		<joined-subclass name="com.pandorabox.domain.impl.BaseArticle" table="base_article">
+			<key column="article_id" />
+		</joined-subclass>
+	</class>
+</hibernate-mapping>
