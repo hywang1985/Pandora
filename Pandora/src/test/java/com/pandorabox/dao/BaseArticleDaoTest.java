@@ -233,5 +233,11 @@ public class BaseArticleDaoTest extends BasePandoraDaoTest {
 		}
 	}
 	
+	@Test
+	public void testGetRandomArticle(){
+		Article article = articleDao.getRandomArticle(-1,null);
+		System.out.println("Get the random article, id is: "+article.getArticleId());
+		Assert.assertNotNull(article);
+	}
 	
 }

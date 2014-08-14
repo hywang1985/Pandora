@@ -170,6 +170,7 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	
 	
 	@Test
+	@Deprecated
 	public void testLoadArticlesByPage() throws Exception{
 		mockMvc.perform(
 				get("/article/dyload").header(CommonConstant.ARTICLE_START_INDEX_HEADER_NAME, 1).accept(MediaType.APPLICATION_JSON)
@@ -177,6 +178,22 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
 				.andDo(print());
+	}
+	
+	@Test
+	public void testGetRandomArticle() throws Exception{
+		System.out.println();
+		System.out.println("======================= Test get random article =================================");
+		mockMvc.perform(
+				get("/article/dyload/random").header(CommonConstant.PREVIOUS_ID, 1).accept(MediaType.APPLICATION_JSON)
+						.sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
+				.andDo(print());
+		System.out.println();
+		System.out.println("======================= Test get random article =================================");
+		System.out.println();
+		System.out.println();
 	}
 	
 	@Test

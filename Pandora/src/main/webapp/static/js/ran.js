@@ -17,7 +17,7 @@
 	var currentLayout;
 	var aid; //当前文章的ID
 	//默认展示第一篇文章
-	var currentArticleIndex =0;
+	var currentArticleIndex = 0;
 	//当前文章
 	var $currentArticle;
 	//音乐播放器
@@ -36,50 +36,35 @@
 		previousBtnTooltipApi,nextBtnTooltipApi;
 	
 	//动态加载文章
-	function ajaxLoad(next){
-		var loadType ="previous";
-		if(next){
-			loadType = "next";
+	function ajaxLoad(){
+		if(!aid){
+			aid = -1;
 		}
 		$.when($.ajax({
-			 url: applicationParams.basePath+"article/dyload/"+loadType,
+			 url: applicationParams.basePath+"article/dyload/random",
 			 dataType:"json",
 			 headers:{
-				"startId": aid
-				}
+				 previousId: aid
+			 }
 		})).then(
 				//success
 				function(responseText, textStatus, jqXHR){
 					 if(responseText.status=="OK"){
-						 var articles = responseText.data;
-						 var noMore = false;
+						 var randomOne = responseText.data;
 						 //没有新文章
-						 if(articles.length==0){
+						 if(randomOne.length==0){
 							
 							 alert("没有文章了哦 ，写一篇吧！");
-							 noMore = true;
 							 //如果之前就没有文章，也没新加载出文章hywang,创建一篇空文章
 							 if(!hasArticle()){
 								var fakeData = {"title":"","text":""};
 								createArticle(fakeData,true);
 								alert("No records at all!");
 							 }
-							//加载出新文章
 						 }else{ 
-							 //如果刚加载文章，索引不用+1
-							 var isInitialLoad = false;
-							 if(!hasArticle()){
-								 isInitialLoad = true;
-							 }
-							 for ( var i = 0; i < articles.length; i++) {
-								 var articleData = articles[i];
-								 //创建文章
-								 createArticle(articleData,false,!next);
-								 //当前选中的artilce元素
-							 }
-						 }
-						 if(next && !isInitialLoad && !noMore){ //如果加载下一篇，成功后索引+1，如果加载前一篇，则无论成功与否均不需要改变索引
-							 currentArticleIndex++;
+							 //创建文章
+							 createArticle(randomOne,false);
+							 //当前选中的artilce元素
 						 }
 						 showCurrentArticle();
 					 }else{
@@ -98,7 +83,7 @@
 	}
 	
 	//创建文章节点
-	function createArticle(articleData,isFake,reverse){
+	function createArticle(articleData,isFake){
 		var $articleContainer = $("ul.article_container");
 		
 			//处理图片，找到背景图
@@ -116,11 +101,7 @@
 			//编译模板
 			var articleHtmlElement = Mustache.render(articleTemplate, articleData);
 			var $articleLi = $(articleHtmlElement);
-			if(reverse){
-				$articleContainer.prepend($articleLi);
-			}else{
-				$articleContainer.append($articleLi);
-			}
+			$articleContainer.empty().append($articleLi);
 				
 		
 		if(isFake){ //如果当前创建的是FAKE
@@ -187,61 +168,50 @@
 	
 	//显示索引所在的文章
 	function showCurrentArticle(){
-		
-		$("ul.article_container > li").each(function(index, element) {
-            if(index == currentArticleIndex){
-				console.log("show article "+ currentArticleIndex);
-				$currentArticle = $(".article").eq(currentArticleIndex);
-				aid = $currentArticle.attr("aid");
-				$(element).show(function(){
-					//设置作者面板
-					var $authorLink = $currentArticle.find(".author > a");	
-					if(sessionUserInfo){
-							if(sessionUserInfo.userId != $authorLink.attr("uid")){
-								drawConrolPanel(false, false, true);
-							}else{
-								drawConrolPanel(true, true, true);
-							}
-						}else{
-							drawConrolPanel(false, false, true);
-						}
-					drawConrolPanel(true, true, true);
-					 //设置当前文章需要播放的音乐的URL
-					var $pickedMusicCite=$currentArticle.find(".ownedMusics .pickedMusic");
-					if($pickedMusicCite){
-						var $pickedMusicLi = $pickedMusicCite.parent();
-						if($pickedMusicLi){
-							var url=$pickedMusicLi.attr("url");
-							if(url){
-								musicPlayer.src = url;
-							}else{
-								musicPlayer.src=  "";
-							}
-						}
+		console.log("show article "+ currentArticleIndex);
+		$currentArticle = $(".article");
+		aid = $currentArticle.attr("aid");
+		$("ul.article_container > li").show(function(){
+			//设置作者面板
+			var $authorLink = $currentArticle.find(".author > a");	
+			if(sessionUserInfo){
+					if(sessionUserInfo.userId != $authorLink.attr("uid")){
+						drawConrolPanel(false, false, true);
+					}else{
+						drawConrolPanel(true, true, true);
 					}
-					
-					//设置音乐播放器的音轨，根据播放状态播放
-					 if(play){
-						 musicPlayer.play();
-					 }
-					$shownTitle = $currentArticle.find(".shown_title");
-					
-					//当前文章的背景图进行轮播效果
-					playImages(3000,5000,1);
-				});
-			
-			}else{
-				$(element).stop(true,true).hide();
+				}else{
+					drawConrolPanel(false, false, true);
+				}
+			 //设置当前文章需要播放的音乐的URL
+			var $pickedMusicCite=$currentArticle.find(".ownedMusics .pickedMusic");
+			if($pickedMusicCite){
+				var $pickedMusicLi = $pickedMusicCite.parent();
+				if($pickedMusicLi){
+					var url=$pickedMusicLi.attr("url");
+					if(url){
+						musicPlayer.src = url;
+					}else{
+						musicPlayer.src=  "";
+					}
+				}
 			}
-        });
+			
+			//设置音乐播放器的音轨，根据播放状态播放
+			 if(play){
+				 musicPlayer.play();
+			 }
+			$shownTitle = $currentArticle.find(".shown_title");
+			
+			//当前文章的背景图进行轮播效果
+			playImages(3000,5000,1);
+		});
 		
 		replaceUrlState();
 		
 		//计算当前页面的URL并更新浏览器URL
 		function replaceUrlState(){
 			var previousUrl = location.href;
-			
-			
 			var urlSegments=previousUrl.split("/");
 			var idSuffix = urlSegments[urlSegments-1];
 			var reunionUrl;
@@ -314,37 +284,15 @@
 	//Slider效果
 	$(document).keydown(function (event) {
 		
-		if (event.keyCode == 37) { //判断当event.keyCode 为37时（即左键）
+		if (event.keyCode == 37 || event.keyCode == 39) { //判断当event.keyCode 为37时（即左键）和当event.keyCode 为39时（即右键）
 			
 			triggerNext();
 		
-		} else if (event.keyCode == 39) { //判断当event.keyCode 为39时（即右键）
-			
-			triggerNext(true);
-		}
+		} 
 	});
 	
-	function triggerNext(isNext){
-		if(isNext){
-			var articleSize=$(".article").size();
-			if(currentArticleIndex == articleSize-1){
-				  console.log("currentIndex: "+currentArticleIndex+" articles_count:"+articleSize);
-				  ajaxLoad(true);
-//				  alert("ajax loading...");	
-				}else{
-					currentArticleIndex++;
-					showCurrentArticle();
-				}
-		}else{
-			if(currentArticleIndex == 0){
-				ajaxLoad(false);
-//				alert("ajax loading...");	
-			}else if(currentArticleIndex > 0){
-				currentArticleIndex--;
-				showCurrentArticle();
-			}
-		}
-		
+	function triggerNext(){ //用triggerNext方法包裹ajaxload方法是以备需要在触发下一篇文章的时候添加其它方法
+		ajaxLoad();
 	}
 	
 
@@ -625,7 +573,6 @@
 								hideElements(function(){
 									createArticle(responseText["data"]);
 									articleNumber = $("ul.article_container > li").length;
-									currentArticleIndex = articleNumber-1;
 									showCurrentArticle();
 								});
 							
@@ -723,12 +670,7 @@
 						function postSubmit(responseText, textStatus, jqXHR){
 							$(".confirm").hide(function(){
 								$currentArticle.parent().remove();
-								if(currentArticleIndex==0){
-									currentArticleIndex = currentArticleIndex+1;
-								}else{
-									currentArticleIndex = currentArticleIndex-1;
-								}
-								showCurrentArticle();
+								ajaxLoad();
 							});
 						},	
 						
@@ -859,7 +801,7 @@ $(document).ready(function () {
 	
 	var $nextBtn = $(".next");
 	$nextBtn.click(function(){
-		triggerNext(true);
+		triggerNext();
 		return false;
 	});
 	//新建文章

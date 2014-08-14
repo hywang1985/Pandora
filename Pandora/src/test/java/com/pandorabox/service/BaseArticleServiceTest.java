@@ -1,5 +1,7 @@
 package com.pandorabox.service;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -78,6 +80,18 @@ public class BaseArticleServiceTest extends BasePandoraServiceTest {
 		articleService.addArticle(article2);
 	}
 	
+	@Test
+	public void testGetRandomArticle(){
+		Article randomOne = articleService.getRandomArticle(-1);
+		Assert.assertNotNull(randomOne);
+		System.out.println();
+		System.out.println("=========================================================================");
+		System.out.println();
+		System.out.println("The random article has been retrieved ,id is: "+ randomOne.getArticleId());
+		System.out.println();
+		System.out.println("=========================================================================");
+		System.out.println();
+	}
 	@Test
 	public void testRemoveArticle(){
 		articleService.removeArticle(1);

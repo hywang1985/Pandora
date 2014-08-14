@@ -55,4 +55,9 @@ public class BaseArticleService implements ArticleService {
 		return articleDao.getNextArticles(articleId, count);
 	}
 
+	@Override
+	public Article getRandomArticle(int previousId) {
+		return articleDao.getRandomArticle(previousId,null);
+	}
+
 }

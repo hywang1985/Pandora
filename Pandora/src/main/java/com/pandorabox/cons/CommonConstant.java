@@ -107,6 +107,8 @@ public class CommonConstant {
 	
 	public static final String SCREEN_NAME_KEY = "screen_name";
 	
+	public static final String PREVIOUS_ID = "previousId";
+	
 	public static Map<String,Map<String,String>> bucketAuthorizations = new HashMap<String,Map<String,String>>();
 	
 	

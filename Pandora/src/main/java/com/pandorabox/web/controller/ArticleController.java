@@ -51,6 +51,9 @@ import com.pandorabox.service.upyun.UpYunService;
  * */
 public class ArticleController extends BaseController {
 
+	private static final String AUTHOR_PROPERTY_KEY = "author";
+	
+	private static Logger logger = Logger.getLogger(ArticleController.class);
 	@Autowired
 	private ArticleService articleService;
 
@@ -60,7 +63,6 @@ public class ArticleController extends BaseController {
 	@Autowired 
 	private LayoutService layoutService;
 	
-	private static Logger logger = Logger.getLogger(ArticleController.class);
 
 	 /** 显示单篇文章 */
 	 @RequestMapping(value = "/{id}")
@@ -72,20 +74,25 @@ public class ArticleController extends BaseController {
 		 JsonConfig config = new JsonConfig();
 	     config.setJsonPropertyFilter(new PropertyFilter() {
 	        public boolean apply(Object source, String name, Object value) {
-	              if ("author".equals(name)) {
+	             
+				if (AUTHOR_PROPERTY_KEY.equals(name)) {
 	                  return true;
 	              }
 	              return false;
 	           }
 	       });
 		 JSONObject articleData = JSONObject.fromObject(article,config);
-		mav.addObject("article", articleData);
+		 mav.addObject("article", articleData);
 		 return  mav;
 	 }
 
-	/** 动态加载文章,返回JSON, ajax交互用 */
+	 /** 动态加载文章,返回JSON, ajax交互用 
+	  * @Deprecated 
+	  * @see getRandomArticle
+	  * */
 	@RequestMapping(value = "/dyload", method = RequestMethod.GET)
 	@ResponseBody
+	@Deprecated
 	public Map<String,Object> loadArticle(HttpServletRequest request) {
 		logger.info("Loading articles");
 		String startIndex = request.getHeader(CommonConstant.ARTICLE_START_INDEX_HEADER_NAME);
@@ -101,9 +108,13 @@ public class ArticleController extends BaseController {
 		return articles;
 	}
 	
-	/** 加载前几篇文章,返回JSON, ajax交互用 */
+	/** 加载前几篇文章,返回JSON, ajax交互用 
+	 * @Deprecated 
+	 * @see getRandomArticle
+	 * */
 	@RequestMapping(value = "/dyload/previous", method = RequestMethod.GET)
 	@ResponseBody
+	@Deprecated
 	public Map<String,Object> loadPreviousArticles(HttpServletRequest request) {
 		logger.info("Loading articles");
 		String startId = request.getHeader(CommonConstant.START_ARTICLE_ID_HEADER_NAME);
@@ -119,7 +130,10 @@ public class ArticleController extends BaseController {
 		return articles;
 	}
 	
-	/** 加载后几篇文章,返回JSON, ajax交互用 */
+	/** 加载后几篇文章,返回JSON, ajax交互用
+	 * @Deprecated 
+	 * @see getRandomArticle
+	 * */
 	@RequestMapping(value = "/dyload/next", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,Object> loadNextArticles(HttpServletRequest request) {
@@ -142,6 +156,25 @@ public class ArticleController extends BaseController {
 			throw new PandoraException(e);
 		}
 		return articles;
+	}
+	
+	@RequestMapping(value = "/dyload/random", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> getRandomArticle(HttpServletRequest request) {
+		logger.info("Retrieving random article...");
+		String previousId = request.getHeader(CommonConstant.PREVIOUS_ID);
+		Map<String, Object> result = new HashMap<String, Object>(CommonConstant.ARTICLE_LOAD_COUNT);
+		result.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
+		try{
+			Article randomOne = articleService.getRandomArticle(Integer.parseInt(previousId));
+			if(randomOne!=null){
+				result.put("data", randomOne);
+			}
+		} catch (Exception e) {
+			result.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_FAIL);
+			throw new PandoraException(e);
+		}
+		return result;
 	}
 	
 	 

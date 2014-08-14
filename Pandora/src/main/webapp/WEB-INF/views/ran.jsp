@@ -61,7 +61,7 @@ $(document).ready(function () {
 <% } else{%>
 <script>
 $(document).ready(function () {
-	ajaxLoad(true);
+	ajaxLoad();
 });
 </script>
 <%} %>
