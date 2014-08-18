@@ -27,6 +27,8 @@ public class BaseUser implements User {
 	
 	private String email;
 	
+	private Boolean playMusic = true;
+	
 	@JsonBackReference
 	private List<Article> articles = new ArrayList<Article>();
 
@@ -108,10 +110,12 @@ public class BaseUser implements User {
 		int email = getEmail()==null?0:getEmail().hashCode();
 		int userName = getUsername()==null?0:getUsername().hashCode();
 		int url =  getUrl()==null?0:getUrl().hashCode();
+		int playMusic = isPlayMusic().hashCode();
 		result = 31*result+userId;
 		result = 31*result+email;
 		result = 31*result+userName;
 		result = 31*result+url;
+		result = 31*result+playMusic;
 		return result;
 	}
 
@@ -133,7 +137,17 @@ public class BaseUser implements User {
 		result = (getEmail()==null?target.getEmail()==null: getEmail().equals(target.getEmail())) && result;
 		result = (getUsername()==null?target.getUsername()==null: getUsername().equals(target.getUsername())) && result;
 		result = (getUrl()==null?target.getUrl()==null: getUrl().equals(target.getUrl())) && result;
+		result = (isPlayMusic() == target.isPlayMusic()) && result;
 		return result;
 	}
+
+	public Boolean isPlayMusic() {
+		return playMusic;
+	}
+
+	public void setPlayMusic(Boolean playMusic) {
+		this.playMusic = playMusic;
+	}
+
 
 }

@@ -10,7 +10,7 @@
 		<property name="bucketPath" column="bucket_path" type="string" />
 		<property name="name" type="string" />
 		<property name="url" type="string" />
-		<property name="selected" type="boolean"/>
+		<property name="selected" type="yes_no"/>
 		<!-- 采用Table per subclass策略存每一个FileDescriptor的子类 -->
 		<joined-subclass name="com.pandorabox.domain.impl.BaseFileDescriptor" table="base_file_descriptor">
 			<key column="filedescriptor_id" />

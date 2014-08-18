@@ -17,7 +17,7 @@ public class BaseUserService implements UserService {
 	public User bindWeiboUser(int weiboUid,String screenName,String profileUrl) {
 		User bindedUser = null;
 		bindedUser = getUserByWeiboUid(weiboUid);
-		if(bindedUser==null){
+		if(bindedUser == null){
 			bindedUser = new BaseUser();
 			bindedUser.setWeiboUid(weiboUid);
 			bindedUser.setUsername(screenName);

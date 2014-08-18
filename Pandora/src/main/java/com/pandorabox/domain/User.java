@@ -50,4 +50,11 @@ public interface User extends Serializable{
 	 * */
 	public String getUrl();
 	public void setUrl(String url);
+	
+	/**
+	 * 用户的播放偏好
+	 * 是否播放音乐
+	 * */
+	public Boolean isPlayMusic();
+	public void setPlayMusic(Boolean playMusic);
 }

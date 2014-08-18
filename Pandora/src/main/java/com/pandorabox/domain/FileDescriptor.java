@@ -8,8 +8,8 @@ public interface FileDescriptor extends Serializable{
 	void setFileId(int fileId);
 	
 	/**是否被选择为当前文章的播放音乐*/
-	public boolean isSelected();
-	public void setSelected(boolean selected);
+	public Boolean isSelected();
+	public void setSelected(Boolean selected);
 	
 	/**文件在图片服务器上的相对路径*/
 	public String getRelativePath();

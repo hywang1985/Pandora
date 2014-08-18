@@ -69,6 +69,17 @@ public class UserControllerTests extends AbstractContextControllerTests {
 		Assert.assertNotNull(sessionUser);
 	}
 	
+	@Test
+	public void testUpdateUserPreferences() throws Exception{
+		ResultActions result = mockMvc.perform(get("/user/updatePreference").session(mockSession)
+				.header(CommonConstant.PLAY_MUSIC_KEY, "false").accept(MediaType.APPLICATION_JSON));
+		result.andExpect(status().isOk()).andExpect(jsonPath("$."+CommonConstant.STATUS_KEY).value(CommonConstant.STATUS_OK))
+		.andExpect(jsonPath("$."+CommonConstant.PLAY_MUSIC_KEY).value(false)).andDo(print());
+		User sessionUser = (User) mockSession.getAttribute(CommonConstant.USER_CONTEXT);
+		Assert.assertNotNull(sessionUser);
+		Assert.assertFalse(sessionUser.isPlayMusic());
+	}
+	
 	@AfterClass
 	public static void postClass(){
 		user = null;

@@ -64,4 +64,24 @@ public class UserController extends BaseController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value = "/updatePreference", method = RequestMethod.GET)
+	@ResponseBody
+	public  Map<String,Object>  updatePlayPreferences(HttpServletRequest request) {
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_FAIL);
+		try {
+			String playMusic = request.getHeader(CommonConstant.PLAY_MUSIC_KEY);
+			User currentUser = getSessionUser(request);
+			if(playMusic!=null && currentUser!=null && !"".equals(playMusic)){
+				currentUser.setPlayMusic(Boolean.parseBoolean(playMusic));
+				userService.updateUser(currentUser);
+			}
+			resultMap.put(CommonConstant.STATUS_KEY, CommonConstant.STATUS_OK);
+			resultMap.put(CommonConstant.PLAY_MUSIC_KEY, Boolean.parseBoolean(playMusic));
+		} catch (Exception e) {
+			throw new PandoraException(e);
+		}
+		return resultMap;
+	}
+	
 }

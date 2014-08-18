@@ -109,6 +109,8 @@ public class CommonConstant {
 	
 	public static final String PREVIOUS_ID = "previousId";
 	
+	public static final String PLAY_MUSIC_KEY= "playMusic";
+	
 	public static Map<String,Map<String,String>> bucketAuthorizations = new HashMap<String,Map<String,String>>();
 	
 	

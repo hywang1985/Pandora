@@ -13,6 +13,13 @@
 	var $editBtn;
 	//删除文章的button
 	var $delBtn;
+	//播放音乐的button
+	var $musicBtn;
+	var $shareBtn;
+	var $likeBtn;
+	var $previousBtn;
+	var $nextBtn;
+	var $addBtn;
 	//创建文章的layout
 	var currentLayout;
 	var aid; //当前文章的ID
@@ -179,6 +186,12 @@
 						drawConrolPanel(false, false, true);
 					}else{
 						drawConrolPanel(true, true, true);
+					}
+					play = sessionUserInfo.playMusic;
+					if(play){
+						$musicBtn.removeClass("music").removeClass("music_in").addClass("music_on");
+					}else{
+						$musicBtn.removeClass("music_on").addClass("music");
 					}
 				}else{
 					drawConrolPanel(false, false, true);
@@ -700,7 +713,7 @@ $(document).ready(function () {
 	});
 	
 	//给button绑定图标变换和事件
-	var $shareBtn=$(".share");
+	$shareBtn=$(".share");
 	$shareBtn.click(function(){
 		return false;
 	});
@@ -727,7 +740,7 @@ $(document).ready(function () {
 	    clearTimeout(timer);
 	});
 	
-	var $musicBtn=$(".bottombar a.music_on");
+	$musicBtn=$(".bottombar a.music_on");
 	
 	$musicBtn.click(function(){
 		var musicBtnTipContent = "播放音乐";
@@ -745,8 +758,39 @@ $(document).ready(function () {
 			musicPlayer.pause();
 			play = false;
 		}
+		updateUserPreferences(play,function(updatedPlayOption){
+			sessionUserInfo.playMusic = updatedPlayOption;
+		});
 		return false;
+		
 	});
+	
+	var updateUserPreferences = function(playMusic,successCallback,errorCallback){
+		var url = applicationParams.basePath+"user/updatePreference";
+		$.when($.ajax({
+			 url: url,
+			 dataType: "json",
+			 headers:{
+				playMusic: playMusic
+				}
+			}))
+		.then(function(responseText, textStatus, jqXHR){
+			 console.log(responseText);
+			 if(responseText.status == "OK"){
+				 if(successCallback){
+					 successCallback(responseText.playMusic);
+				 }
+			 }
+			 
+		 },
+		 //fail
+		 function(jqXHR, responseText, errorThrown){
+			 alert(errorThrown);
+			 if(errorCallback) {
+				 errorCallback();
+			}
+		 });
+	};
 	
 //	var $commentBtn =$(".bottombar a.comment");
 //	$commentBtn.hover(
@@ -756,7 +800,7 @@ $(document).ready(function () {
 //			function(){
 //				 $(this).removeClass("comment_in").addClass("comment");
 //			});
-	var $likeBtn = $(".bottombar a.like"); //hywang
+	$likeBtn = $(".bottombar a.like"); //hywang
 	$likeBtn.click(function(){
 		var tipContent = "喜欢这篇文章";
 		if($(this).hasClass("like_on")){
@@ -793,19 +837,19 @@ $(document).ready(function () {
 			}
 		);
 		
-	var $previousBtn = $(".previous");
+	$previousBtn = $(".previous");
 	$previousBtn.click(function(){
 		triggerNext();
 		return false;
 	});
 	
-	var $nextBtn = $(".next");
+	$nextBtn = $(".next");
 	$nextBtn.click(function(){
 		triggerNext();
 		return false;
 	});
 	//新建文章
-	var $addBtn=$(".addArticle");
+	$addBtn=$(".addArticle");
 	$addBtn.click(function () {
 		//如果登陆了，可以创建，否则转入登陆流程
 		if(WB2.checkLogin()){
