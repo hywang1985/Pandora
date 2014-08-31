@@ -53,6 +53,8 @@ public class ArticleController extends BaseController {
 
 	private static final String AUTHOR_PROPERTY_KEY = "author";
 	
+	private static final String ARTICLES_PROPERTY_KEY = "articles";
+	
 	private static Logger logger = Logger.getLogger(ArticleController.class);
 	@Autowired
 	private ArticleService articleService;
@@ -71,8 +73,8 @@ public class ArticleController extends BaseController {
 		 Article article = articleService.getArticleById(id);
 		 ModelAndView mav = new ModelAndView();
 		 mav.setViewName("ran");
-		 JsonConfig config = new JsonConfig();
-	     config.setJsonPropertyFilter(new PropertyFilter() {
+		 JsonConfig filterUserconfig = new JsonConfig();
+		 filterUserconfig.setJsonPropertyFilter(new PropertyFilter() {
 	        public boolean apply(Object source, String name, Object value) {
 	             
 				if (AUTHOR_PROPERTY_KEY.equals(name)) {
@@ -81,7 +83,20 @@ public class ArticleController extends BaseController {
 	              return false;
 	           }
 	       });
-		 JSONObject articleData = JSONObject.fromObject(article,config);
+		 
+		 JsonConfig filterArticlesconfig = new JsonConfig();
+		 filterArticlesconfig.setJsonPropertyFilter(new PropertyFilter() {
+	        public boolean apply(Object source, String name, Object value) {
+	             
+				if (ARTICLES_PROPERTY_KEY.equals(name)) {
+	                  return true;
+	              }
+	              return false;
+	           }
+	       });
+	     JSONObject authorObject = JSONObject.fromObject(article.getAuthor(),filterArticlesconfig);
+		 JSONObject articleData = JSONObject.fromObject(article,filterUserconfig);
+		 articleData.put(AUTHOR_PROPERTY_KEY, authorObject);
 		 mav.addObject("article", articleData);
 		 return  mav;
 	 }
