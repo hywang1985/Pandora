@@ -95,7 +95,8 @@ public class ArticleController extends BaseController {
 	           }
 	       });
 	     JSONObject authorObject = JSONObject.fromObject(article.getAuthor(),filterArticlesconfig);
-		 JSONObject articleData = JSONObject.fromObject(article,filterUserconfig);
+
+	     JSONObject articleData = JSONObject.fromObject(article,filterUserconfig);
 		 articleData.put(AUTHOR_PROPERTY_KEY, authorObject);
 		 mav.addObject("article", articleData);
 		 return  mav;
@@ -151,6 +152,7 @@ public class ArticleController extends BaseController {
 	 * */
 	@RequestMapping(value = "/dyload/next", method = RequestMethod.GET)
 	@ResponseBody
+	@Deprecated
 	public Map<String,Object> loadNextArticles(HttpServletRequest request) {
 		logger.info("Loading articles");
 		String startId = request.getHeader(CommonConstant.START_ARTICLE_ID_HEADER_NAME);

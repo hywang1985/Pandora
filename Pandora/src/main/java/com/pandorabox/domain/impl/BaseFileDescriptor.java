@@ -16,7 +16,7 @@ public class BaseFileDescriptor implements FileDescriptor {
 	
 	private String url;
 	
-	private Boolean selected;
+	private Boolean selected = Boolean.FALSE;
 
 	public int getFileId() {
 		return fileId;
@@ -58,11 +58,11 @@ public class BaseFileDescriptor implements FileDescriptor {
 		this.url = url;
 	}
 
-	public Boolean isSelected() {
+	public boolean isSelected() {
 		return selected;
 	}
 
-	public void setSelected(Boolean selected) {
+	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 	
@@ -72,7 +72,7 @@ public class BaseFileDescriptor implements FileDescriptor {
 		int fileId = getFileId();
 		int name = getName()==null?0:getName().hashCode();
 		int url = getUrl()==null?0:getUrl().hashCode();
-		int selected = isSelected().hashCode();
+		int selected = Boolean.valueOf(isSelected()).hashCode();
 		result = 31*result+fileId;
 		result = 31*result+name;
 		result = 31*result+url;

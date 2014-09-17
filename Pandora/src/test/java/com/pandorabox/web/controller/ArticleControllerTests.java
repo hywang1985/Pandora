@@ -127,6 +127,13 @@ public class ArticleControllerTests extends AbstractContextControllerTests {
 	}
 	
 	@Test
+	public void testShowArticle() throws Exception {
+		mockMvc.perform(
+				get("/article/1").sessionAttr(CommonConstant.USER_CONTEXT, user))
+				.andDo(print());
+	}
+	
+	@Test
 	public void testUpdateArticle() throws Exception {
 		JSONArray addedImages = new JSONArray();
 		JSONObject img1 = new JSONObject();
