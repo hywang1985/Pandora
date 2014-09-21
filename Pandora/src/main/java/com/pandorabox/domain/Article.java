@@ -1,36 +1,20 @@
 package com.pandorabox.domain;
 
 import java.io.Serializable;
-import java.util.List;
+
+import com.pandorabox.domain.assist.ImageContainer;
+import com.pandorabox.domain.assist.LayoutContainer;
+import com.pandorabox.domain.assist.MusicContainer;
+import com.pandorabox.domain.assist.TagContainer;
 
 /**
  * Article用来表示一篇文章
  * @author hywang
  */
-public interface Article extends Serializable{
+public interface Article extends Serializable,TagContainer,ImageContainer,MusicContainer,LayoutContainer{
 	
 	public int getArticleId();
 	public void setArticleId(int articleId);
-	
-	/**
-	 * 文章当前选中的音乐URL
-	 */
-	public int getPickedMusicIndex();
-	public void setPickedMusicIndex(int index);
-	
-	/**
-	 * 文章的所有图片
-	 * @see ImageDescriptor
-	 */
-	public List<ImageDescriptor> getImages(); 
-	public void setImages(List<ImageDescriptor> images); 
-	
-	/**
-	 * 文章的所有文件(音乐)
-	 * @see FileDescriptor
-	 */
-	public List<FileDescriptor> getFiles(); 
-	public void setFiles(List<FileDescriptor> files); 
 	
 	/**
 	 * 文章的标题 
@@ -45,21 +29,8 @@ public interface Article extends Serializable{
 	public void setText(String text);
 	
 	/**
-	 * 文章所属的标签
-	 */
-	public List<Tag> getTags();
-	public void setTags(List<Tag> tags);
-	
-	/**
 	 * 文章作者
 	 */
 	public User getAuthor();
 	public void setAuthor(User author);
-	
-	/**
-	 * 文章布局，默认为横向布局
-	 * @see LayoutBehavior
-	 */
-	public LayoutBehavior getLayoutBehavior();
-	public void setLayoutBehavior(LayoutBehavior LayoutBehavior);
 }

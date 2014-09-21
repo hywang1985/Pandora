@@ -1,20 +1,13 @@
 package com.pandorabox.domain.impl;
 
+import com.pandorabox.domain.AbstractDescriptor;
 import com.pandorabox.domain.FileDescriptor;
 
-public class BaseFileDescriptor implements FileDescriptor {
+public class BaseFileDescriptor extends AbstractDescriptor implements FileDescriptor {
 
 	private static final long serialVersionUID = 1559436616199998385L;
 
 	private int fileId;
-	
-	private String relativePath;
-	
-	private String bucketPath;
-	
-	private String name;
-	
-	private String url;
 	
 	private Boolean selected = Boolean.FALSE;
 

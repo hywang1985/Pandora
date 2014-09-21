@@ -6,22 +6,10 @@ import java.io.Serializable;
  * ImageDescriptor对象用来描述文章中的图片
  * @author hywang
  * */
-public interface ImageDescriptor extends Serializable{
+public interface ImageDescriptor extends Descriptor,Serializable{
 	
-	int getImageId();
-	void setImageId(int imageId);
-	
-	/**图片在图片服务器上的相对路径*/
-	public String getRelativePath();
-	public void setRelativePath(String relativePath);
-	
-	/**图片存储空间的根（Bucket）路径*/
-	public String getBucketPath();
-	public void setBucketPath(String bucketPath);
-	
-	/**图片的名称*/
-	public String getName();
-	public void setName(String name);
+	public int getImageId();
+	public void setImageId(int imageId);
 	
 	/**
 	 * 设置待上传文件的"访问密钥"
@@ -33,12 +21,6 @@ public interface ImageDescriptor extends Serializable{
 	 */
 	public String getFileSecret();
 	public void setFileSecret(String fileSecret);
-	
-	/**
-	 * 图片的URL
-	 */
-	public String getUrl();
-	public void setUrl(String url);
 	
 	public String getSnapshotUrl();
 }

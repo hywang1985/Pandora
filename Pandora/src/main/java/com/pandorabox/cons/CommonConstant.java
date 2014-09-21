@@ -111,6 +111,22 @@ public class CommonConstant {
 	
 	public static final String PLAY_MUSIC_KEY= "playMusic";
 	
+	public static final String AUTHOR_DATA_OBJECT_KEY = "author";
+	
+	public static final String ARTICLES_PROPERTY_KEY = "articles";
+	
+	public static final String RAN_MAIN_PAGE_NAME = "ran";
+	
+	public static final String ARTICLE_DATA_OBJECT_KEY = "article";
+	
+	public static final String DATA_OBJECT_KEY = "data";
+	
+	public static final String URL_DATA_OBJECT_KEY = "URL";
+	
+	public static final String COMMA = ",";
+	
+	public static final String EMPTY_STRING = "";
+	
 	public static Map<String,Map<String,String>> bucketAuthorizations = new HashMap<String,Map<String,String>>();
 	
 	

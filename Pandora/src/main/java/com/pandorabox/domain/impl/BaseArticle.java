@@ -1,9 +1,9 @@
 package com.pandorabox.domain.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import com.pandorabox.cons.CommonConstant;
 import com.pandorabox.domain.Article;
 import com.pandorabox.domain.FileDescriptor;
 import com.pandorabox.domain.ImageDescriptor;
@@ -32,8 +32,7 @@ public class BaseArticle implements Article {
 	private User author;
 	
 	private LayoutBehavior layoutBehavior;
-
-
+	
 	public List<ImageDescriptor> getImages() {
 		return images;
 	}
@@ -136,4 +135,47 @@ public class BaseArticle implements Article {
 		return result;
 	}
 
+	@Override
+	public boolean containsTag(String tagValue) {
+		boolean found = false;
+		 for(Tag tag: getTags()){
+			 if(tagValue.equals(tag.getValue())){
+				 found = true;
+				 break;
+			 }
+		 }
+		 return found;
+	}
+
+	public void setupTag(String tagText) {
+		if (tagText != null
+				&& !CommonConstant.EMPTY_STRING.equals(tagText)) {
+			if (!tagText.contains(CommonConstant.COMMA)) {
+				Tag t = new BaseTag();
+				t.setValue(tagText);
+				getTags().add(t);
+			} else {
+				String[] tags = tagText.split(CommonConstant.COMMA);
+				for (String tag : tags) {
+					Tag t = new BaseTag();
+					t.setValue(tag);
+					getTags().add(t);
+				}
+			}
+		}
+	}
+	
+	
+	public void setMusicSelected(List<FileDescriptor> uploadedMusics, String musicSelectedIndex) {
+		if(musicSelectedIndex!=null && !CommonConstant.EMPTY_STRING.equals(musicSelectedIndex) ){
+			for(int i=0;i<uploadedMusics.size();i++){
+				if( Integer.parseInt(musicSelectedIndex)==i){
+					FileDescriptor music = getFiles().get(i);
+					music.setSelected(true);
+					setPickedMusicIndex(i);
+					break;
+				}
+			}
+		}
+	}
 }
