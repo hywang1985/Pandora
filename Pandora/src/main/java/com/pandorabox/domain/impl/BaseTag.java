@@ -4,28 +4,28 @@ import com.pandorabox.domain.Tag;
 
 public class BaseTag implements Tag {
 
-	private static final long serialVersionUID = -4059212636105734659L;
+    private static final long serialVersionUID = -4059212636105734659L;
 
-	private int tagId;
-	
-	private String value;
+    private int tagId;
 
-	@Override
-	public void setValue(String value) {
-		this.value = value;
-	}
+    private String value;
 
-	@Override
-	public String getValue() {
-		return this.value;
-	}
+    @Override
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public int getTagId() {
-		return tagId;
-	}
+    @Override
+    public String getValue() {
+        return this.value;
+    }
 
-	public void setTagId(int tagId) {
-		this.tagId = tagId;
-	}
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
 
 }

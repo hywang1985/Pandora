@@ -6,11 +6,11 @@ import com.pandorabox.domain.Tag;
 
 public interface TagContainer {
 
-	public boolean containsTag(String tagValue);
+    public boolean containsTag(String tagValue);
 
-	public List<Tag> getTags();
+    public List<Tag> getTags();
 
-	public void setTags(List<Tag> tags);
-	
-	public void setupTag(String tagText);
+    public void setTags(List<Tag> tags);
+
+    public void setupTag(String tagText);
 }

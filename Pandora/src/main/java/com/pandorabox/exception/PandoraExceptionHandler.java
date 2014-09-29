@@ -11,58 +11,58 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 public class PandoraExceptionHandler extends SimpleMappingExceptionResolver {
 
-	private String ajaxErrorView;
-	private boolean ajaxShowTechMessage;
-	
-	private static Logger logger = Logger.getLogger(PandoraExceptionHandler.class);
+    private String ajaxErrorView;
 
-	@Override
-	public ModelAndView resolveException(HttpServletRequest request,
-			HttpServletResponse response, Object o, Exception e) {
-		logger.error("Occured an exception: ", e);
-		if (isAjax(request)) {
-			ExceptionInfo exInfo = ExceptionInfo.valueOf(e.getClass());
-			String exceptionMessage = exInfo.getMessage();
-			if (ajaxShowTechMessage)
-				exceptionMessage += "\n" + getExceptionMessage(e);
-			ModelAndView m = new ModelAndView(ajaxErrorView);
-			JSONObject responseText = new JSONObject();
-			responseText.put("code", "\"" + exInfo.getCode() + "\"");
-			responseText.put("message", "\"" + exceptionMessage + "\"");
-			m.addObject("exceptionMessage", responseText.toString());
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return m;
-		} else {
-			return super.resolveException(request, response, o, e);
-		}
-	}
+    private boolean ajaxShowTechMessage;
 
-	private String getExceptionMessage(Throwable e) {
-		String message = "";
-		while (e != null) {
-			message += e.getMessage() + "\n";
-			e = e.getCause();
-		}
-		return message;
-	}
+    private static Logger logger = Logger.getLogger(PandoraExceptionHandler.class);
 
-	private boolean isAjax(HttpServletRequest request) {
-		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-	}
+    @Override
+    public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) {
+        logger.error("Occured an exception: ", e);
+        if (isAjax(request)) {
+            ExceptionInfo exInfo = ExceptionInfo.valueOf(e.getClass());
+            String exceptionMessage = exInfo.getMessage();
+            if (ajaxShowTechMessage)
+                exceptionMessage += "\n" + getExceptionMessage(e);
+            ModelAndView m = new ModelAndView(ajaxErrorView);
+            JSONObject responseText = new JSONObject();
+            responseText.put("code", "\"" + exInfo.getCode() + "\"");
+            responseText.put("message", "\"" + exceptionMessage + "\"");
+            m.addObject("exceptionMessage", responseText.toString());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return m;
+        } else {
+            return super.resolveException(request, response, o, e);
+        }
+    }
 
-	public String getAjaxErrorView() {
-		return ajaxErrorView;
-	}
+    private String getExceptionMessage(Throwable e) {
+        String message = "";
+        while (e != null) {
+            message += e.getMessage() + "\n";
+            e = e.getCause();
+        }
+        return message;
+    }
 
-	public void setAjaxErrorView(String ajaxErrorView) {
-		this.ajaxErrorView = ajaxErrorView;
-	}
+    private boolean isAjax(HttpServletRequest request) {
+        return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+    }
 
-	public boolean isAjaxShowTechMessage() {
-		return ajaxShowTechMessage;
-	}
+    public String getAjaxErrorView() {
+        return ajaxErrorView;
+    }
 
-	public void setAjaxShowTechMessage(boolean ajaxShowTechMessage) {
-		this.ajaxShowTechMessage = ajaxShowTechMessage;
-	}
+    public void setAjaxErrorView(String ajaxErrorView) {
+        this.ajaxErrorView = ajaxErrorView;
+    }
+
+    public boolean isAjaxShowTechMessage() {
+        return ajaxShowTechMessage;
+    }
+
+    public void setAjaxShowTechMessage(boolean ajaxShowTechMessage) {
+        this.ajaxShowTechMessage = ajaxShowTechMessage;
+    }
 }

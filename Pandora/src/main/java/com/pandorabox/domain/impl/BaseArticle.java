@@ -13,169 +13,167 @@ import com.pandorabox.domain.User;
 
 public class BaseArticle implements Article {
 
-	private static final long serialVersionUID = 3078586399874526136L;
-	
-	private int articleId;
-	
-	private int pickedMusicIndex;
+    private static final long serialVersionUID = 3078586399874526136L;
 
-	private List<ImageDescriptor> images = new ArrayList<ImageDescriptor>(); 
-	
-	private List<FileDescriptor> files = new ArrayList<FileDescriptor>(); 
-	
-	private String title;
-	
-	private String text;
-	
-	private List<Tag> tags = new ArrayList<Tag>();
+    private int articleId;
 
-	private User author;
-	
-	private LayoutBehavior layoutBehavior;
-	
-	public List<ImageDescriptor> getImages() {
-		return images;
-	}
+    private int pickedMusicIndex;
 
-	public void setImages(List<ImageDescriptor> images) {
-		this.images = images;
-	}
+    private List<ImageDescriptor> images = new ArrayList<ImageDescriptor>();
 
-	public String getTitle() {
-		return title;
-	}
+    private List<FileDescriptor> files = new ArrayList<FileDescriptor>();
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    private String title;
 
-	public String getText() {
-		return text;
-	}
+    private String text;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    private List<Tag> tags = new ArrayList<Tag>();
 
-	public List<Tag> getTags() {
-		return tags;
-	}
+    private User author;
 
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
+    private LayoutBehavior layoutBehavior;
 
-	public User getAuthor() {
-		return author;
-	}
+    public List<ImageDescriptor> getImages() {
+        return images;
+    }
 
-	public void setAuthor(User author) {
-		this.author = author;
-	}
+    public void setImages(List<ImageDescriptor> images) {
+        this.images = images;
+    }
 
-	public LayoutBehavior getLayoutBehavior() {
-		return layoutBehavior;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setLayoutBehavior(LayoutBehavior layoutBehavior) {
-		this.layoutBehavior = layoutBehavior;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public int getArticleId() {
-		return articleId;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public void setArticleId(int articleId) {
-		this.articleId = articleId;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	@Override
-	public List<FileDescriptor> getFiles() {
-		return files;
-	}
+    public List<Tag> getTags() {
+        return tags;
+    }
 
-	@Override
-	public void setFiles(List<FileDescriptor> files) {
-		this.files = files;
-	}
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
-	public int getPickedMusicIndex() {
-		return pickedMusicIndex;
-	}
+    public User getAuthor() {
+        return author;
+    }
 
-	public void setPickedMusicIndex(int pickedMusicIndex) {
-		this.pickedMusicIndex = pickedMusicIndex;
-	}
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = 17;
-		int articleId = getArticleId();
-		int author = getAuthor().hashCode();
-		result = 31*result+articleId;
-		result = 31*result+author;
-		return result;
-	}
+    public LayoutBehavior getLayoutBehavior() {
+        return layoutBehavior;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == this){
-			return true;
-		}
-		if(obj == null){
-			return false;
-		}
-		if(!(obj instanceof BaseArticle)){
-			return false;
-		}
-		BaseArticle target= (BaseArticle)obj;
-		boolean result = true;
-		result = (getArticleId() == target.getArticleId()) && result;
-		result = (getAuthor()==null?target.getAuthor()==null: getAuthor().equals(target.getAuthor())) && result;
-		return result;
-	}
+    public void setLayoutBehavior(LayoutBehavior layoutBehavior) {
+        this.layoutBehavior = layoutBehavior;
+    }
 
-	@Override
-	public boolean containsTag(String tagValue) {
-		boolean found = false;
-		 for(Tag tag: getTags()){
-			 if(tagValue.equals(tag.getValue())){
-				 found = true;
-				 break;
-			 }
-		 }
-		 return found;
-	}
+    public int getArticleId() {
+        return articleId;
+    }
 
-	public void setupTag(String tagText) {
-		if (tagText != null
-				&& !CommonConstant.EMPTY_STRING.equals(tagText)) {
-			if (!tagText.contains(CommonConstant.COMMA)) {
-				Tag t = new BaseTag();
-				t.setValue(tagText);
-				getTags().add(t);
-			} else {
-				String[] tags = tagText.split(CommonConstant.COMMA);
-				for (String tag : tags) {
-					Tag t = new BaseTag();
-					t.setValue(tag);
-					getTags().add(t);
-				}
-			}
-		}
-	}
-	
-	
-	public void setMusicSelected(List<FileDescriptor> uploadedMusics, String musicSelectedIndex) {
-		if(musicSelectedIndex!=null && !CommonConstant.EMPTY_STRING.equals(musicSelectedIndex) ){
-			for(int i=0;i<uploadedMusics.size();i++){
-				if( Integer.parseInt(musicSelectedIndex)==i){
-					FileDescriptor music = getFiles().get(i);
-					music.setSelected(true);
-					setPickedMusicIndex(i);
-					break;
-				}
-			}
-		}
-	}
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
+    }
+
+    @Override
+    public List<FileDescriptor> getFiles() {
+        return files;
+    }
+
+    @Override
+    public void setFiles(List<FileDescriptor> files) {
+        this.files = files;
+    }
+
+    public int getPickedMusicIndex() {
+        return pickedMusicIndex;
+    }
+
+    public void setPickedMusicIndex(int pickedMusicIndex) {
+        this.pickedMusicIndex = pickedMusicIndex;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        int articleId = getArticleId();
+        int author = getAuthor().hashCode();
+        result = 31 * result + articleId;
+        result = 31 * result + author;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof BaseArticle)) {
+            return false;
+        }
+        BaseArticle target = (BaseArticle) obj;
+        boolean result = true;
+        result = (getArticleId() == target.getArticleId()) && result;
+        result = (getAuthor() == null ? target.getAuthor() == null : getAuthor().equals(target.getAuthor())) && result;
+        return result;
+    }
+
+    @Override
+    public boolean containsTag(String tagValue) {
+        boolean found = false;
+        for (Tag tag : getTags()) {
+            if (tagValue.equals(tag.getValue())) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    public void setupTag(String tagText) {
+        if (tagText != null && !CommonConstant.EMPTY_STRING.equals(tagText)) {
+            if (!tagText.contains(CommonConstant.COMMA)) {
+                Tag t = new BaseTag();
+                t.setValue(tagText);
+                getTags().add(t);
+            } else {
+                String[] tags = tagText.split(CommonConstant.COMMA);
+                for (String tag : tags) {
+                    Tag t = new BaseTag();
+                    t.setValue(tag);
+                    getTags().add(t);
+                }
+            }
+        }
+    }
+
+    public void setMusicSelected(List<FileDescriptor> uploadedMusics, String musicSelectedIndex) {
+        if (musicSelectedIndex != null && !CommonConstant.EMPTY_STRING.equals(musicSelectedIndex)) {
+            for (int i = 0; i < uploadedMusics.size(); i++) {
+                if (Integer.parseInt(musicSelectedIndex) == i) {
+                    FileDescriptor music = getFiles().get(i);
+                    music.setSelected(true);
+                    setPickedMusicIndex(i);
+                    break;
+                }
+            }
+        }
+    }
 }

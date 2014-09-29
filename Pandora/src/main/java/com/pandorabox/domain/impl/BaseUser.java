@@ -11,143 +11,142 @@ import com.pandorabox.domain.User;
 
 public class BaseUser implements User {
 
-	private static final long serialVersionUID = -484835266759517694L;
+    private static final long serialVersionUID = -484835266759517694L;
 
-	private Integer userId;
-	
-	private Integer weiboUid;
-	
-	private String url;
-	
-	private String username;
-	
-	private String passwd;
-	
-	private String name;
-	
-	private String email;
-	
-	private Boolean playMusic = true;
-	
-	@JsonBackReference
-	private List<Article> articles = new ArrayList<Article>();
+    private Integer userId;
 
-	@JsonIgnore
-	public String getPasswd() {
-		return passwd;
-	}
+    private Integer weiboUid;
 
-	public void setPasswd(String passwd) {
-		this.passwd = passwd;
-	}
+    private String url;
 
-	@JsonIgnore
-	public String getName() {
-		return name;
-	}
+    private String username;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@JsonIgnore
-	public String getEmail() {
-		return email;
-	}
+    private String passwd;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    private String name;
 
-	@Override
-	public List<Article> getArticles() {
-		return this.articles;
-	}
+    private String email;
 
-	@Override
-	public void setArticles(List<Article> articles) {
-		this.articles = articles;
-	}
+    private Boolean playMusic = true;
 
-	public Integer getUserId() {
-		return userId;
-	}
+    @JsonBackReference
+    private List<Article> articles = new ArrayList<Article>();
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    @JsonIgnore
+    public String getPasswd() {
+        return passwd;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @JsonIgnore
+    public String getName() {
+        return name;
+    }
 
-	public Integer getWeiboUid() {
-		return weiboUid;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setWeiboUid(Integer weiboUid) {
-		this.weiboUid = weiboUid;
-	}
+    @JsonIgnore
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public String getUrl() {
-		return url;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    @Override
+    public List<Article> getArticles() {
+        return this.articles;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = 17;
-		int userId = getUserId();
-		int email = getEmail()==null?0:getEmail().hashCode();
-		int userName = getUsername()==null?0:getUsername().hashCode();
-		int url =  getUrl()==null?0:getUrl().hashCode();
-		int playMusic = isPlayMusic().hashCode();
-		result = 31*result+userId;
-		result = 31*result+email;
-		result = 31*result+userName;
-		result = 31*result+url;
-		result = 31*result+playMusic;
-		return result;
-	}
+    @Override
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof BaseUser)) {
-			return false;
-		}
+    public Integer getUserId() {
+        return userId;
+    }
 
-		BaseUser target = (BaseUser) obj;
-		boolean result = true;
-		result = (getUserId() == target.getUserId()) && result;
-		result = (getEmail()==null?target.getEmail()==null: getEmail().equals(target.getEmail())) && result;
-		result = (getUsername()==null?target.getUsername()==null: getUsername().equals(target.getUsername())) && result;
-		result = (getUrl()==null?target.getUrl()==null: getUrl().equals(target.getUrl())) && result;
-		result = (isPlayMusic() == target.isPlayMusic()) && result;
-		return result;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public Boolean isPlayMusic() {
-		return playMusic;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setPlayMusic(Boolean playMusic) {
-		this.playMusic = playMusic;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public Integer getWeiboUid() {
+        return weiboUid;
+    }
+
+    public void setWeiboUid(Integer weiboUid) {
+        this.weiboUid = weiboUid;
+    }
+
+    @Override
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        int userId = getUserId();
+        int email = getEmail() == null ? 0 : getEmail().hashCode();
+        int userName = getUsername() == null ? 0 : getUsername().hashCode();
+        int url = getUrl() == null ? 0 : getUrl().hashCode();
+        int playMusic = isPlayMusic().hashCode();
+        result = 31 * result + userId;
+        result = 31 * result + email;
+        result = 31 * result + userName;
+        result = 31 * result + url;
+        result = 31 * result + playMusic;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof BaseUser)) {
+            return false;
+        }
+
+        BaseUser target = (BaseUser) obj;
+        boolean result = true;
+        result = (getUserId() == target.getUserId()) && result;
+        result = (getEmail() == null ? target.getEmail() == null : getEmail().equals(target.getEmail())) && result;
+        result = (getUsername() == null ? target.getUsername() == null : getUsername().equals(target.getUsername())) && result;
+        result = (getUrl() == null ? target.getUrl() == null : getUrl().equals(target.getUrl())) && result;
+        result = (isPlayMusic() == target.isPlayMusic()) && result;
+        return result;
+    }
+
+    public Boolean isPlayMusic() {
+        return playMusic;
+    }
+
+    public void setPlayMusic(Boolean playMusic) {
+        this.playMusic = playMusic;
+    }
 
 }

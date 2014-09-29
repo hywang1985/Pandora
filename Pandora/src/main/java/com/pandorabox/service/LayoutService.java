@@ -5,7 +5,7 @@ import com.pandorabox.domain.LayoutBehavior;
 
 public interface LayoutService {
 
-	public LayoutBehavior getLayoutByName(String name);
-	
-	public void setupLayout(Article article, String articleLayout);
+    public LayoutBehavior getLayoutByName(String name);
+
+    public void setupLayout(Article article, String articleLayout);
 }

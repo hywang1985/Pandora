@@ -2,44 +2,44 @@ package com.pandorabox.domain;
 
 public abstract class AbstractDescriptor implements Descriptor {
 
-	protected String relativePath;
+    protected String relativePath;
 
-	protected String bucketPath;
+    protected String bucketPath;
 
-	protected String name;
-	
-	protected String url;
+    protected String name;
 
-	public String getRelativePath() {
-		return relativePath;
-	}
+    protected String url;
 
-	public void setRelativePath(String relativePath) {
-		this.relativePath = relativePath;
-	}
+    public String getRelativePath() {
+        return relativePath;
+    }
 
-	public String getBucketPath() {
-		return bucketPath;
-	}
+    public void setRelativePath(String relativePath) {
+        this.relativePath = relativePath;
+    }
 
-	public void setBucketPath(String bucketPath) {
-		this.bucketPath = bucketPath;
-	}
+    public String getBucketPath() {
+        return bucketPath;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setBucketPath(String bucketPath) {
+        this.bucketPath = bucketPath;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
 }

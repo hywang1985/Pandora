@@ -6,7 +6,7 @@ import com.pandorabox.domain.ImageDescriptor;
 
 public interface ImageContainer {
 
-	public List<ImageDescriptor> getImages();
+    public List<ImageDescriptor> getImages();
 
-	public void setImages(List<ImageDescriptor> images);
+    public void setImages(List<ImageDescriptor> images);
 }
